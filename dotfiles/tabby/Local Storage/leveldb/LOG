@@ -1,0 +1,38 @@
+2025/07/05-20:44:13.161 8bd Reusing MANIFEST /home/tco/.config/tabby/Local Storage/leveldb/MANIFEST-000001
+2025/07/05-20:44:13.172 8bd Recovering log #30
+2025/07/05-20:44:13.174 8bd Level-0 table #33: started
+2025/07/05-20:44:13.177 8bd Level-0 table #33: 29963 bytes OK
+2025/07/05-20:44:13.179 8bd Delete type=0 #30
+2025/07/05-20:45:14.012 8be Level-0 table #36: started
+2025/07/05-20:45:14.032 8be Level-0 table #36: 26512 bytes OK
+2025/07/05-20:45:14.037 8be Delete type=0 #34
+2025/07/05-20:45:14.038 8be Compacting 4@0 + 1@1 files
+2025/07/05-20:45:14.047 8be Generated table #37@0: 3 keys, 26512 bytes
+2025/07/05-20:45:14.047 8be Compacted 4@0 + 1@1 files => 26512 bytes
+2025/07/05-20:45:14.051 8be compacted to: files[ 0 1 1 0 0 0 0 ]
+2025/07/05-20:45:14.052 8be Delete type=2 #27
+2025/07/05-20:45:14.052 8be Delete type=2 #29
+2025/07/05-20:45:14.052 8be Delete type=2 #31
+2025/07/05-20:45:14.052 8be Delete type=2 #33
+2025/07/05-20:45:14.053 8be Delete type=2 #36
+2025/07/05-20:49:14.010 8be Level-0 table #39: started
+2025/07/05-20:49:14.037 8be Level-0 table #39: 25898 bytes OK
+2025/07/05-20:49:14.040 8be Delete type=0 #35
+2025/07/05-20:50:14.011 8be Level-0 table #41: started
+2025/07/05-20:50:14.044 8be Level-0 table #41: 25491 bytes OK
+2025/07/05-20:50:14.071 8be Delete type=0 #38
+2025/07/05-20:51:14.011 8be Level-0 table #43: started
+2025/07/05-20:51:14.029 8be Level-0 table #43: 26834 bytes OK
+2025/07/05-20:51:14.035 8be Delete type=0 #40
+2025/07/05-20:52:14.011 8be Level-0 table #45: started
+2025/07/05-20:52:14.029 8be Level-0 table #45: 26881 bytes OK
+2025/07/05-20:52:14.035 8be Delete type=0 #42
+2025/07/05-20:52:14.036 8be Compacting 4@0 + 1@1 files
+2025/07/05-20:52:14.043 8be Generated table #46@0: 3 keys, 26896 bytes
+2025/07/05-20:52:14.044 8be Compacted 4@0 + 1@1 files => 26896 bytes
+2025/07/05-20:52:14.048 8be compacted to: files[ 0 1 1 0 0 0 0 ]
+2025/07/05-20:52:14.049 8be Delete type=2 #37
+2025/07/05-20:52:14.050 8be Delete type=2 #39
+2025/07/05-20:52:14.050 8be Delete type=2 #41
+2025/07/05-20:52:14.050 8be Delete type=2 #43
+2025/07/05-20:52:14.050 8be Delete type=2 #45
