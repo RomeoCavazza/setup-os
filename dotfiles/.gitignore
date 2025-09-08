@@ -1,0 +1,38 @@
+# caches génériques
+**/.cache/
+**/Cache/
+**/*.log
+**/*.save
+**/*.swp
+**/*~ 
+
+# node / rust / py
+**/node_modules/
+**/target/
+**/venv*/
+**/__pycache__/
+
+# Tabby et caches Chromium-like
+tabby/GPUCache/
+tabby/Code\ Cache/
+tabby/DawnGraphiteCache/
+tabby/DawnWebGPUCache/
+tabby/Local\ Storage/
+tabby/Session\ Storage/
+tabby/Shared\ Dictionary/
+tabby/SingletonCookie
+tabby/SingletonLock
+tabby/SingletonSocket
+tabby/log.txt
+tabby/Crashpad/completed/
+tabby/Crashpad/pending/
+tabby/Crashpad/uploads/
+tabby/Crashpad/reports/
+tabby/Crashpad/attachments/
+
+# Waybar vendored (si tu n’en veux pas)
+waybar/waybar/
+waybar/.gitkeep
+waybar/INSTALL.md
+waybar/LICENSE
+waybar/README.md
