@@ -3,7 +3,7 @@
 ![Rocky Linux](https://img.shields.io/badge/Rocky%20Linux-10B981?logo=rockylinux&logoColor=white)
 ![GNOME](https://img.shields.io/badge/GNOME-4A86CF?logo=gnome&logoColor=white)
 
-ISO **Rocky Linux 10** avec **GNOME Desktop** pour déploiement serveur et développement.
+ISO **Rocky Linux 10** avec **GNOME Desktop**.
 
 ---
 
@@ -11,18 +11,14 @@ ISO **Rocky Linux 10** avec **GNOME Desktop** pour déploiement serveur et déve
 
 ```
 rocky-linux/
-└── rocky-10-gnome.iso    # ISO Rocky Linux 10 GNOME
+└── rocky-10-gnome.iso
 ```
 
-**Spécifications** :
-- **Version** : Rocky Linux 10
-- **Desktop** : GNOME
-- **Architecture** : x86_64
-- **Taille** : ~4.4GB
+**Spécifications** : Rocky Linux 10, GNOME, x86_64, ~4.4GB
 
 ---
 
-## 🚀 Créer une clé USB bootable
+## 🚀 Créer clé USB bootable
 
 ### macOS
 
@@ -44,16 +40,16 @@ sync
 
 ### Windows
 
-Utiliser [Rufus](https://rufus.ie/) ou [Etcher](https://etcher.balena.io/)
+[Rufus](https://rufus.ie/) ou [Etcher](https://etcher.balena.io/)
 
 ---
 
 ## 📋 Installation
 
 1. Booter depuis USB
-2. Sélectionner "Test this media and install Rocky Linux"
+2. "Test this media and install Rocky Linux"
 3. Configurer réseau (DHCP)
-4. Sélectionner "GNOME Desktop + Development Tools"
+4. "GNOME Desktop + Development Tools"
 5. Créer utilisateur + mot de passe
 6. Installer (~15-20 min)
 
@@ -70,10 +66,7 @@ sudo dnf update -y
 ### Paquets essentiels
 
 ```bash
-sudo dnf install -y \
-  vim git wget curl \
-  htop btop neofetch \
-  @development-tools
+sudo dnf install -y vim git wget curl htop btop neofetch @development-tools
 ```
 
 ### RPM Fusion
@@ -102,4 +95,4 @@ sudo usermod -aG docker $USER
 
 ---
 
-⭐ **ISO stable** — Rocky Linux 10 GNOME pour serveurs
+⭐ **ISO stable** — Rocky Linux 10 GNOME
