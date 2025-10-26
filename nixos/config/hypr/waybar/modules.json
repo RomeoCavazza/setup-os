@@ -1,0 +1,272 @@
+{
+    "custom/arch": {
+        "format": "󰣇",
+        "on-click": "wofi --show drun",
+        "tooltip": true,
+        "tooltip-format": "btw 😎"
+    },
+    
+    "custom/search": {
+        "format": "🔍",
+        "on-click": "$HOME/.config/hypr/web-search.sh",
+        "tooltip": true,
+        "tooltip-format": "Web Search"
+    },
+    
+    "custom/cava_mviz": {
+	"exec": "$HOME/.config/waybar/WaybarCava.sh",
+	"format": "{}"
+	},
+
+
+    "hyprland/workspaces": {
+        "disable-scroll": false,
+        "all-outputs": true,
+        "warp-on-scroll": true,
+        "format": "{name}",
+        "format-icons": {
+            "urgent": "",
+            "active": "",
+            "default": "",
+        "exec": "hyprctl clients -w -f"
+        }
+    },
+ /*   "wlr/taskbar": {
+        "format": "{icon} {title:.17}",
+        "icon-size": 28,
+        "spacing": 3,
+        "on-click-middle": "close",
+        "tooltip-format": "{title}",
+        "ignore-list": [],
+        "on-click": "activate"
+    },
+    */
+	"hyprland/window": {
+        "format": "{title}",
+        //"max-length": 30,
+        "on-click": "hyprctl dispatch window_activate {id}",
+        "on-scroll-up": "hyprctl dispatch window_raise {id}",
+        "on-scroll-down": "hyprctl dispatch window_lower {id}",
+        "exec": "hyprctl clients -w -f"
+    },
+    "custom/swaync": {
+	"tooltip": true,
+	"tooltip-format": "Left Click: Launch Notification Center\nRight Click: Do not Disturb",
+	"format": "{} {icon}",
+	"format-icons": {
+		"notification": "<span foreground='red'><sup></sup></span>",
+		"none": "",
+		"dnd-notification": "<span foreground='red'><sup></sup></span>",
+		"dnd-none": "",
+		"inhibited-notification": "<span foreground='red'><sup></sup></span>",
+		"inhibited-none": "",
+		"dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
+		"dnd-inhibited-none": ""
+	},
+	"return-type": "json",
+	"exec-if": "which swaync-client",
+	"exec": "swaync-client -swb",
+	"on-click": "sleep 0.1 && swaync-client -t -sw",
+	"on-click-right": "swaync-client -d -sw",
+	"escape": true,
+},
+
+
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "",
+            "deactivated": ""
+        }
+    },
+    "pulseaudio": {
+        "format": "{icon}  {volume}%",
+        "format-bluetooth": "{icon} {volume}%  {format_source}",
+        "format-bluetooth-muted": " {icon} {format_source}",
+        "format-muted": " {format_source}",
+        "format-source": " {volume}%",
+        "format-source-muted": "",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol"
+    },
+    "pulseaudio#microphone": {
+	"format": "{format_source}",
+	"format-source": " {volume}%",
+	"format-source-muted": "",
+	"on-click": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",
+	"on-click-right": "pavucontrol -t 4",
+	"on-scroll-up": "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%-",
+	"on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%+",
+	"tooltip-format": "{source_desc} | {source_volume}%",
+	"scroll-step": 5,
+},
+    "network": {
+	"format": "{ifname}",
+	"format-wifi": "{icon}",
+	"format-ethernet": "󰌘",
+	"format-disconnected": "󰌙",
+	"tooltip-format": "{ipaddr}  {bandwidthUpBits}  {bandwidthDownBits}",
+	"format-linked": "󰈁 {ifname} (No IP)",
+	"tooltip-format-wifi": "{essid} {icon} {signalStrength}%",
+	"tooltip-format-ethernet": "{ifname} 󰌘",
+	"tooltip-format-disconnected": "󰌙 Disconnected",
+	"max-length": 30,
+	"format-icons": [
+		"󰤯", "󰤟", "󰤢", "󰤥", "󰤨"
+	],
+	"on-click-right": "kitty nmtui"
+	
+},
+	"network#speed": {
+	"interval": 1,
+	"format": "{ifname}",
+	"format-wifi": "{icon}  {bandwidthUpBytes}  {bandwidthDownBytes}",
+	"format-ethernet": "󰌘  {bandwidthUpBytes}  {bandwidthDownBytes}",
+	"format-disconnected": "󰌙",
+	"tooltip-format": "{ipaddr}",
+	"format-linked": "󰈁 {ifname} (No IP)",
+	"tooltip-format-wifi": "{essid} {icon} {signalStrength}%",
+	"tooltip-format-ethernet": "{ifname} 󰌘",
+	"tooltip-format-disconnected": "󰌙 Disconnected",
+	"min-length": 24,
+	"max-length": 24,
+	"format-icons": [
+		"󰤯", "󰤟", "󰤢", "󰤥", "󰤨"
+	]
+},
+    "cpu": {
+        "format": "  {usage}%",
+        "tooltip": true,
+        "on-click": "kitty htop &"
+    },
+    "memory": {
+        "format": "  {}%",
+		"tooltip": true,
+		"on-click": "gnome-disks &"
+    },
+    "temperature": {
+        "interval": 10,
+        "hwmon-path": "/sys/devices/platform/coretemp.0/hwmon/hwmon4/temp1_input",
+        "critical-threshold": 100,
+        "format-critical": " {temperatureC}",
+        "format": " {temperatureC}°C"
+    },
+    "hyprland/language": {
+       "format": "  {}",
+       "format-en": "EN",
+       "format-ru": "RU"
+    },
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 20
+        },
+        "on-click-middle": "acpi -i",
+        "format": "{icon}  {capacity}%",
+        "format-full": "{icon}  {capacity}%",
+        "format-charging": "  {capacity}%",
+        "format-plugged": "  {capacity}%",
+        "format-alt": "{time}  {icon}",
+        "format-icons": ["", "", "", "", ""]        
+    },
+    "clock": {
+        "format": "{:%H:%M} ",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format-alt": "{:%d-%m-%Y}"
+    },
+    "power-profiles-daemon": {
+		"format": "{icon}",
+		"tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+		"tooltip": true,
+		"format-icons": {
+		"default": "",
+		"performance": "",
+		"balanced": "",
+		"power-saver": ""
+	}
+	},
+    "custom/power": {
+        "tooltip": true,
+        "on-click": "wlogout &",
+        "format": "",
+        "tooltip-format": "Power Menu"
+    },
+    "tray": {
+	"icon-size": 20,
+	"spacing": 4,
+	},
+	"bluetooth": {
+	"format": "",
+	"format-disabled": "󰂳",
+	"format-connected": "󰂱 {num_connections}",
+	"tooltip-format": " {device_alias}",
+	"tooltip-format-connected": "{device_enumerate}",
+	"tooltip-format-enumerate-connected": " {device_alias} 󰂄{device_battery_percentage}%",
+	"tooltip": true,
+	"on-click": "blueberry",
+},
+"backlight": {
+	"interval": 2,
+	"align": 0,
+	"rotate": 0,
+	"format": "{icon} {percent}%",
+	"format-icons": [
+		" ",
+		" ",
+		" ",
+		"󰃝 ",
+		"󰃞 ",
+		"󰃟 ",
+		"󰃠 "
+	],
+	//"format": "{icon}",
+	//"format-icons": ["","","","","","","","","","","","","","",""],
+	"tooltip-format": "backlight {percent}%",
+	"icon-size": 10,
+	"on-click": "",
+	"on-click-middle": "",
+	"on-click-right": "",
+	"on-update": "",
+	"on-scroll-up": "brightnessctl s +5%",
+	"on-scroll-down": "brightnessctl s 5%-",
+	"smooth-scrolling-threshold": 1,
+},
+"mpris": {
+	"interval": 10,
+	"format": "{player_icon}",
+	"format-paused": "{status_icon} <i>{dynamic}</i>",
+	"on-click-middle": "playerctl play-pause",
+	"on-click": "playerctl previous",
+	"on-click-right": "playerctl next",
+	"scroll-step": 5.0,
+	"on-scroll-up": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-",
+	"on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+",
+	"smooth-scrolling-threshold": 1,
+	"player-icons": {
+		"chromium": "",
+		"default": "",
+		"firefox": "",
+		"kdeconnect": "",
+		"mopidy": "",
+		"mpv": "󰐹",
+		"spotify": "",
+		"vlc": "󰕼",
+	},
+	"status-icons": {
+		"paused": "󰐎",
+		"playing": "",
+		"stopped": "",
+	},
+	// "ignored-players": ["firefox"]
+	"max-length": 30,
+}
+
+}

@@ -1,0 +1,28 @@
+# Fichiers ISO volumineux
+*.iso
+
+# Configuration matérielle (UUID de disques, interfaces réseau)
+hardware-configuration.nix
+
+# Fichiers de verrouillage
+flake.lock
+
+# Fichiers de système NixOS générés
+result
+result-*
+
+# Fichiers temporaires
+*.swp
+*.bak
+*~
+
+# Secrets et clés
+*.key
+*.pem
+*.p12
+.secrets/
+secrets.nix
+
+# Fichiers de backup
+*.backup
+*.old
