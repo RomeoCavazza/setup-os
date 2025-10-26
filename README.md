@@ -30,6 +30,16 @@ setup-os/
 
 ---
 
+## 🔗 Liens ISO Officiels
+
+Télécharger les ISO des distributions officielles :
+
+- **Arch Linux** : [https://archlinux.org/download/](https://archlinux.org/download/)
+- **NixOS** : [https://nixos.org/download/](https://nixos.org/download/)
+- **Rocky Linux** : [https://rockylinux.org/download](https://rockylinux.org/download)
+
+---
+
 ## 🚀 Quick Start
 
 ### NixOS

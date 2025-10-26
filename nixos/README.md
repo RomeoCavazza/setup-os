@@ -26,6 +26,12 @@ nixos/
 
 ---
 
+## 🔗 Télécharger l'ISO NixOS
+
+📥 [https://nixos.org/download/](https://nixos.org/download/)
+
+---
+
 ## 🚀 Installation
 
 ```bash
