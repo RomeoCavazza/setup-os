@@ -1,0 +1,249 @@
+@import "mocha.css";
+* {
+    /* `otf-font-awesome` and SpaceMono Nerd Font are required to be installed for icons */
+    font-family: "SpaceMono Nerd Font";
+    font-size: 15px;
+}
+
+window#waybar {
+    background: transparent;
+    color: @teal;
+    border-radius: 7rem;
+    border-width: 2px;
+    border-style: solid;
+    border-color: @teal;
+}
+
+window#waybar.empty #window {
+    background-color: transparent;
+    padding: 0px;
+    border: 0px;
+}
+
+#clock,
+#battery,
+#cpu,
+#memory,
+#disk,
+#temperature,
+#backlight,
+#network,
+#pulseaudio,
+#wireplumber,
+#custom-media,
+#tray,
+#bluetooth,
+#mode,
+#idle_inhibitor,
+#scratchpad,
+#power-profiles-daemon,
+#language,
+#mpd {
+	background-color: transparent;
+    padding: 0 10px;
+    border-radius: 7rem;
+    /*border-width: 2px;
+    border-style: solid;
+    border-color: @teal;*/
+}
+
+
+#clock:hover,
+#battery:hover,
+#cpu:hover,
+#memory:hover,
+#disk:hover,
+#temperature:hover,
+#backlight:hover,
+#network:hover,
+#pulseaudio:hover,
+#wireplumber:hover,
+#custom-media:hover,
+#tray:hover,
+#mode:hover,
+#bluetooth:hover,
+#idle_inhibitor:hover,
+#scratchpad:hover,
+#power-profiles-daemon:hover,
+#language:hover,
+#mpd:hover {
+    background-color: @maroon;
+    color: @brown;
+}
+
+
+#workspaces {
+  border-radius: 7rem;
+  background-color: transparent;
+  /*border-width: 2px;
+  border-style: solid;
+  border-color: @teal;*/
+}
+
+#workspaces button {
+  color: @teal;
+  border-radius: 7rem;
+}
+
+#workspaces button.active {
+  color: @brown;
+  background-color: @teal;
+  border-radius: 7rem;
+}
+
+#workspaces button:hover {
+  color: @brown;
+  background-color: @maroon;
+  border-radius: 7rem;
+}
+
+#custom-arch {
+    margin-left: 5px;
+    padding: 0 10px;
+    font-size: 25px;
+    background-color: transparent;
+    border-radius: 7rem;
+	/*border-width: 2px;
+	border-style: solid;
+	border-color: @teal;*/
+}
+#custom-arch:hover {
+    background-color: @maroon;
+    color: @brown;
+}
+#custom-search {
+    padding: 0 10px;
+    font-size: 20px;
+    background-color: transparent;
+    border-radius: 7rem;
+	/*border-width: 2px;
+	border-style: solid;
+	border-color: @teal;*/
+}
+#custom-search:hover {
+    background-color: @maroon;
+    color: @brown;
+}
+#custom-swaync {
+    padding: 0 10px;
+    background-color: transparent;
+    border-radius: 7rem;
+    /*border-width: 2px;
+	border-style: solid;
+	border-color: @teal;*/
+}
+#custom-swaync:hover {
+    background-color: @maroon;
+    color: @brown;
+}
+#custom-power {
+    margin-right: 5px;
+    padding: 0 10px;
+    background-color: transparent;
+    border-radius: 7rem;
+    /*border-width: 2px;
+	border-style: solid;
+	border-color: @teal;*/
+}
+#custom-power:hover {
+    background-color: @maroon;
+    color: @brown;
+}
+/*
+#taskbar {
+}
+
+#taskbar button {
+	border-radius: 7rem;
+	background: transparent;
+	border-width: 2px;
+	border-style: solid;
+	border-color: @teal;
+	margin-left: 2px;
+	margin-right: 2px;
+	padding-left: 8px;
+	padding-right: 8px;
+	color: @text;
+}
+
+#taskbar button.active {
+	border-radius: 7rem;
+	background-color: @surface0;
+	border-width: 2px;
+	border-style: solid;
+	border-color: @teal;
+}
+*/
+
+
+  #window {
+  border-radius: 7rem;
+  /*border-width: 2px;
+  border-style: solid;
+  border-color: @teal;*/
+  padding: 0 10px;
+  background-color: transparent;
+  color: @teal;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+#window:hover {
+    background-color: @maroon;
+    color: @brown;
+}
+#pulseaudio-slider slider {
+	min-width: 0px;
+	min-height: 0px;
+	opacity: 0;
+	background-image: none;
+	border: none;
+	box-shadow: none;
+}
+
+#pulseaudio-slider trough {
+	min-width: 80px;
+	min-height: 5px;
+	border-radius: 5px;
+}
+
+#pulseaudio-slider highlight {
+	min-height: 10px;
+	border-radius: 5px;
+}
+
+#backlight-slider slider {
+	min-width: 0px;
+	min-height: 0px;
+	opacity: 0;
+	background-image: none;
+	border: none;
+	box-shadow: none;
+}
+
+#backlight-slider trough {
+	min-width: 80px;
+	min-height: 10px;
+	border-radius: 5px;
+}
+
+#backlight-slider highlight {
+	min-width: 10px;
+	border-radius: 5px;
+}
+
+#mpris {
+	border-radius: 7rem;
+	background-color: transparent;
+	padding: 0 10px;
+	/*border-width: 2px;
+	border-style: solid;
+	border-color: @teal;*/
+}
+#mpris:hover {
+    background-color: @maroon;
+    color: @brown;
+}
+
+#custom-cava_mviz {
+	color: @pink;
+}
