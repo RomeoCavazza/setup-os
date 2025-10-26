@@ -18,6 +18,12 @@ rocky-linux/
 
 ---
 
+## 🔗 Télécharger l'ISO Rocky Linux
+
+📥 [https://rockylinux.org/download](https://rockylinux.org/download)
+
+---
+
 ## 🚀 Créer clé USB bootable
 
 ### macOS
