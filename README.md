@@ -91,7 +91,7 @@ imports = [
 
 ## 📖 Documentation
 
-- 📦 [NixOS](nixos/README.md)
+- ❄️ [NixOS](nixos/README.md)
 - 🐧 [Arch Linux](arch-linux/README.md)
 - 🪨 [Rocky Linux](rocky-linux/README.md)
 
