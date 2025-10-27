@@ -114,7 +114,3 @@ imports = [ ./modules/streamlit.nix ];
 
 - [NixOS Wiki](https://nixos.wiki/)
 - [Hyprland Wiki](https://wiki.hyprland.org/)
-
----
-
-⭐ **100% reproductible**
