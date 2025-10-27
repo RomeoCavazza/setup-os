@@ -97,8 +97,6 @@ sudo usermod -aG docker $USER
 ## 📚 Ressources
 
 - [Rocky Linux Docs](https://docs.rockylinux.org/)
+- [Ventoy](https://www.ventoy.net/en/download.html)
+- [Rufus](https://rufus.ie/en/#google_vignette)
 - [RPM Fusion](https://rpmfusion.org/)
-
----
-
-⭐ **ISO stable** — Rocky Linux 10 GNOME
