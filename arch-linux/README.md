@@ -93,7 +93,3 @@ Configuration terminal avec profils et shortcuts
 
 - [Hyprland Wiki](https://wiki.hyprland.org/)
 - [Arch Wiki](https://wiki.archlinux.org/)
-
----
-
-⭐ **Dotfiles minimalistes** — config clean
