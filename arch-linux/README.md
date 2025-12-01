@@ -1,12 +1,24 @@
-# Arch Linux Dotfiles
+# 🐧 Arch Linux Dotfiles
 
-![Arch Linux](https://img.shields.io/badge/Arch%20Linux-1793D1?logo=archlinux&logoColor=white)
-![Hyprland](https://img.shields.io/badge/Hyprland-44586a?logo=hyprland&logoColor=white)
-![Waybar](https://img.shields.io/badge/Waybar-1a1b1e?logo=waybar&logoColor=white)
-![Tabby](https://img.shields.io/badge/Tabby-FCD535?logo=tabby&logoColor=black)
-![VSCodium](https://img.shields.io/badge/VSCodium-0078D4?logo=vscode&logoColor=white)
+[![Arch Linux](https://img.shields.io/badge/Arch_Linux-1793D1?style=for-the-badge&logo=archlinux&logoColor=white)](https://archlinux.org)
+[![Hyprland](https://img.shields.io/badge/Hyprland-58E1FF?style=for-the-badge&logo=hyprland&logoColor=white)](https://hyprland.org)
+[![Waybar](https://img.shields.io/badge/Waybar-1a1b26?style=for-the-badge&logo=wayland&logoColor=white)](https://github.com/Alexays/Waybar)
 
-Configuration Arch Linux avec Hyprland, Waybar, Tabby et dotfiles.
+[![Tabby](https://img.shields.io/badge/Tabby-FCD535?style=flat-square&logo=terminal&logoColor=black)](https://tabby.sh)
+[![VSCodium](https://img.shields.io/badge/VSCodium-2F80ED?style=flat-square&logo=vscodium&logoColor=white)](https://vscodium.com)
+[![Ollama](https://img.shields.io/badge/Ollama-000000?style=flat-square&logo=ollama&logoColor=white)](https://ollama.ai)
+[![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white)](https://nodejs.org)
+[![Rust](https://img.shields.io/badge/Rust-000000?style=flat-square&logo=rust&logoColor=white)](https://rust-lang.org)
+
+> Configuration Arch Linux avec Hyprland, Waybar, Tabby et dotfiles.
+
+---
+
+## 💿 Télécharger l'ISO
+
+| Version | Téléchargement |
+|---------|----------------|
+| **Arch Linux** (rolling release) | [📥 archlinux.org/download](https://archlinux.org/download/) |
 
 ---
 
@@ -26,12 +38,6 @@ arch-linux/
 └── scripts/
     └── install.sh
 ```
-
----
-
-## 🔗 Télécharger l'ISO Arch Linux
-
-📥 [https://archlinux.org/download/](https://archlinux.org/download/)
 
 ---
 
