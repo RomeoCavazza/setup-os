@@ -1,9 +1,22 @@
-# Rocky Linux ISO
+# 🪨 Rocky Linux
 
-![Rocky Linux](https://img.shields.io/badge/Rocky%20Linux-10B981?logo=rockylinux&logoColor=white)
-![GNOME](https://img.shields.io/badge/GNOME-4A86CF?logo=gnome&logoColor=white)
+[![Rocky Linux](https://img.shields.io/badge/Rocky_Linux_9-10B981?style=for-the-badge&logo=rockylinux&logoColor=white)](https://rockylinux.org)
+[![GNOME](https://img.shields.io/badge/GNOME-4A86CF?style=for-the-badge&logo=gnome&logoColor=white)](https://gnome.org)
+[![RHEL](https://img.shields.io/badge/RHEL_Compatible-EE0000?style=for-the-badge&logo=redhat&logoColor=white)](https://redhat.com)
 
-ISO **Rocky Linux 10** avec **GNOME Desktop**.
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)](https://docker.com)
+[![DNF](https://img.shields.io/badge/DNF-294172?style=flat-square&logo=fedora&logoColor=white)](https://dnf.readthedocs.io)
+[![RPM Fusion](https://img.shields.io/badge/RPM_Fusion-1A5276?style=flat-square&logo=linux&logoColor=white)](https://rpmfusion.org)
+
+> Distribution enterprise-grade basée sur RHEL, avec GNOME Desktop.
+
+---
+
+## 💿 Télécharger l'ISO
+
+| Version | Téléchargement |
+|---------|----------------|
+| **Rocky Linux 9 GNOME** | [📥 rockylinux.org/download](https://rockylinux.org/download) |
 
 ---
 
@@ -11,16 +24,10 @@ ISO **Rocky Linux 10** avec **GNOME Desktop**.
 
 ```
 rocky-linux/
-└── rocky-10-gnome.iso
+└── README.md
 ```
 
-**Spécifications** : Rocky Linux 10, GNOME, x86_64, ~4.4GB
-
----
-
-## 🔗 Télécharger l'ISO Rocky Linux
-
-📥 [https://rockylinux.org/download](https://rockylinux.org/download)
+**Spécifications** : Rocky Linux 9, GNOME, x86_64
 
 ---
 
@@ -31,7 +38,7 @@ rocky-linux/
 ```bash
 diskutil list
 diskutil unmountDisk /dev/disk2
-sudo dd if=rocky-10-gnome.iso of=/dev/rdisk2 bs=1m
+sudo dd if=rocky-9-gnome.iso of=/dev/rdisk2 bs=1m
 diskutil eject /dev/disk2
 ```
 
@@ -40,7 +47,7 @@ diskutil eject /dev/disk2
 ```bash
 lsblk
 sudo umount /dev/sdb*
-sudo dd if=rocky-10-gnome.iso of=/dev/sdb bs=4M status=progress
+sudo dd if=rocky-9-gnome.iso of=/dev/sdb bs=4M status=progress
 sync
 ```
 
@@ -98,5 +105,5 @@ sudo usermod -aG docker $USER
 
 - [Rocky Linux Docs](https://docs.rockylinux.org/)
 - [Ventoy](https://www.ventoy.net/en/download.html)
-- [Rufus](https://rufus.ie/en/#google_vignette)
+- [Rufus](https://rufus.ie/)
 - [RPM Fusion](https://rpmfusion.org/)
