@@ -1,8 +1,8 @@
+<h1 align="center">Arch Linux</h1>
+
 <p align="center">
   <img src="../assets/fastfetch-arch.png" alt="Arch Linux" width="550">
 </p>
-
-<h1 align="center">Arch Linux</h1>
 
 <p align="center">
   <strong>Dotfiles avec Hyprland, Waybar et Tabby</strong>
