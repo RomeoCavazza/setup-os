@@ -5,36 +5,11 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Arch_Linux-1793D1?style=for-the-badge&logo=archlinux&logoColor=white" alt="Arch Linux">
-  <img src="https://img.shields.io/badge/NixOS-5277C3?style=for-the-badge&logo=nixos&logoColor=white" alt="NixOS">
-  <img src="https://img.shields.io/badge/Rocky_Linux-10B981?style=for-the-badge&logo=rockylinux&logoColor=white" alt="Rocky Linux">
   <img src="https://img.shields.io/badge/Hyprland-58E1FF?style=for-the-badge&logo=hyprland&logoColor=white" alt="Hyprland">
   <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
+  <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL">
+  <img src="https://img.shields.io/badge/Ollama-000000?style=for-the-badge&logo=ollama&logoColor=white" alt="Ollama">
 </p>
-
----
-
-## Distributions
-
-<table>
-<tr>
-<td width="33%" align="center">
-<img src="assets/nixos.png" alt="NixOS" width="60"><br>
-<strong>NixOS</strong><br>
-<a href="https://channels.nixos.org/nixos-25.05/latest-nixos-graphical-x86_64-linux.iso">nixos-iso</a> · <a href="nixos/README.md">docs</a>
-</td>
-<td width="33%" align="center">
-<img src="assets/arch-linux.png" alt="Arch Linux" width="60"><br>
-<strong>Arch Linux</strong><br>
-<a href="https://archlinux.org/download/">arch-iso</a> · <a href="arch-linux/README.md">docs</a>
-</td>
-<td width="33%" align="center">
-<img src="assets/rocky.png" alt="Rocky Linux" width="60"><br>
-<strong>Rocky Linux</strong><br>
-<a href="https://rockylinux.org/download">rocky-iso</a> · <a href="rocky-linux/README.md">docs</a>
-</td>
-</tr>
-</table>
 
 ---
 
@@ -49,9 +24,15 @@ setup-os/
 
 ---
 
-## NixOS
+## <img src="assets/nixos.png" alt="NixOS" width="28"> NixOS
+
+<p align="center">
+  <img src="assets/fastfetch-nixos.png" alt="NixOS" width="500">
+</p>
 
 Configuration déclarative avec Flakes, Hyprland et modules système.
+
+[nixos-iso](https://channels.nixos.org/nixos-25.05/latest-nixos-graphical-x86_64-linux.iso) · [documentation](nixos/README.md)
 
 ```bash
 sudo git clone https://github.com/RomeoCavazza/setup-os.git /etc/nixos
@@ -68,9 +49,15 @@ cd /etc/nixos/nixos && sudo nixos-rebuild switch
 
 ---
 
-## Arch Linux
+## <img src="assets/arch-linux.png" alt="Arch Linux" width="28"> Arch Linux
+
+<p align="center">
+  <img src="assets/fastfetch-arch.png" alt="Arch Linux" width="500">
+</p>
 
 Dotfiles avec Hyprland, Waybar, Tabby, VSCodium et Ollama.
+
+[arch-iso](https://archlinux.org/download/) · [documentation](arch-linux/README.md)
 
 ```bash
 cd arch-linux && chmod +x scripts/install.sh && ./scripts/install.sh
@@ -78,9 +65,15 @@ cd arch-linux && chmod +x scripts/install.sh && ./scripts/install.sh
 
 ---
 
-## Rocky Linux
+## <img src="assets/rocky.png" alt="Rocky Linux" width="28"> Rocky Linux
+
+<p align="center">
+  <img src="assets/fastfetch-rocky.png" alt="Rocky Linux" width="500">
+</p>
 
 Distribution entreprise RHEL-compatible avec GNOME.
+
+[rocky-iso](https://rockylinux.org/download) · [documentation](rocky-linux/README.md)
 
 ```bash
 sudo dd if=rocky-9-gnome.iso of=/dev/sdb bs=4M status=progress
