@@ -66,10 +66,6 @@ cd /etc/nixos/nixos && sudo nixos-rebuild switch
 | ollama.nix | IA locale | 11434 |
 | nginx.nix | Reverse proxy | 8081-8083 |
 
-<p align="center">
-  <img src="assets/fastfetch-nixos.png" alt="NixOS" width="550">
-</p>
-
 ---
 
 ## Arch Linux
@@ -80,10 +76,6 @@ Dotfiles avec Hyprland, Waybar, Tabby, VSCodium et Ollama.
 cd arch-linux && chmod +x scripts/install.sh && ./scripts/install.sh
 ```
 
-<p align="center">
-  <img src="assets/fastfetch-arch.png" alt="Arch Linux" width="550">
-</p>
-
 ---
 
 ## Rocky Linux
@@ -93,10 +85,6 @@ Distribution entreprise RHEL-compatible avec GNOME.
 ```bash
 sudo dd if=rocky-9-gnome.iso of=/dev/sdb bs=4M status=progress
 ```
-
-<p align="center">
-  <img src="assets/fastfetch-rocky.png" alt="Rocky Linux" width="550">
-</p>
 
 ---
 

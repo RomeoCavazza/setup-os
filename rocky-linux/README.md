@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="../assets/rocky.png" alt="Rocky Linux" width="80">
+  <img src="../assets/fastfetch-rocky.png" alt="Rocky Linux" width="550">
 </p>
 
 <h1 align="center">Rocky Linux</h1>
@@ -100,10 +100,6 @@ sudo usermod -aG docker $USER
 ```
 
 ---
-
-<p align="center">
-  <img src="../assets/fastfetch-rocky.png" alt="Rocky Linux" width="550">
-</p>
 
 ---
 
