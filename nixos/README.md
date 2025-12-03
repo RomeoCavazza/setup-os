@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="../assets/nixos.png" alt="NixOS" width="80">
+  <img src="../assets/fastfetch-nixos.png" alt="NixOS" width="550">
 </p>
 
 <h1 align="center">NixOS</h1>
@@ -94,10 +94,6 @@ imports = [
 | Nginx | 8081-8083 |
 
 ---
-
-<p align="center">
-  <img src="../assets/fastfetch-nixos.png" alt="NixOS" width="550">
-</p>
 
 ---
 
