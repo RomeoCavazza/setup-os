@@ -1,21 +1,37 @@
-# Setup-OS
+<p align="center">
+  <img src="assets/nixos.png" alt="NixOS" width="80">
+  <img src="assets/arch-linux.png" alt="Arch Linux" width="80">
+  <img src="assets/rocky.png" alt="Rocky Linux" width="80">
+</p>
 
-[![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://kernel.org)
-[![Arch Linux](https://img.shields.io/badge/Arch_Linux-1793D1?style=for-the-badge&logo=archlinux&logoColor=white)](https://archlinux.org)
-[![NixOS](https://img.shields.io/badge/NixOS-5277C3?style=for-the-badge&logo=nixos&logoColor=white)](https://nixos.org)
-[![Rocky Linux](https://img.shields.io/badge/Rocky_Linux-10B981?style=for-the-badge&logo=rockylinux&logoColor=white)](https://rockylinux.org)
+<h1 align="center">🐧 Setup-OS</h1>
 
-[![Hyprland](https://img.shields.io/badge/Hyprland-58E1FF?style=flat-square&logo=hyprland&logoColor=white)](https://hyprland.org)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)](https://postgresql.org)
-[![Redis](https://img.shields.io/badge/Redis-DC382D?style=flat-square&logo=redis&logoColor=white)](https://redis.io)
-[![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)](https://docker.com)
-[![Ollama](https://img.shields.io/badge/Ollama-000000?style=flat-square&logo=ollama&logoColor=white)](https://ollama.ai)
+<p align="center">
+  <strong>Configurations Linux centralisées : Arch, NixOS et Rocky Linux</strong>
+</p>
 
-> Repository centralisé pour configurations Linux — **Arch**, **NixOS** et **Rocky Linux** — avec Hyprland, dotfiles et stack de développement.
+<p align="center">
+  <img src="https://img.shields.io/badge/Arch_Linux-1793D1?style=for-the-badge&logo=archlinux&logoColor=white" alt="Arch Linux">
+  <img src="https://img.shields.io/badge/NixOS-5277C3?style=for-the-badge&logo=nixos&logoColor=white" alt="NixOS">
+  <img src="https://img.shields.io/badge/Rocky_Linux-10B981?style=for-the-badge&logo=rockylinux&logoColor=white" alt="Rocky Linux">
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Hyprland-58E1FF?style=for-the-badge&logo=hyprland&logoColor=white" alt="Hyprland">
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
+  <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL">
+  <img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white" alt="Redis">
+</p>
 
 ---
 
-## 📁 Structure
+## Aperçu
+
+Repository centralisé pour configurations Linux avec Hyprland, dotfiles et stack de développement.
+
+---
+
+## Structure
 
 ```
 setup-os/
@@ -33,19 +49,19 @@ setup-os/
 
 ---
 
-## 💿 Téléchargement des ISO
+## Téléchargement des ISO
 
-| Distribution | Lien de téléchargement |
-|--------------|------------------------|
-| ❄️ **NixOS 24.05** | [📥 nixos-gnome-24.05.5695.iso](https://releases.nixos.org/nixos/24.05/nixos-gnome-24.05.5695.59fb44bbd20-x86_64-linux.iso) |
-| 🐧 **Arch Linux** | [📥 archlinux.org/download](https://archlinux.org/download/) |
-| 🪨 **Rocky Linux** | [📥 rockylinux.org/download](https://rockylinux.org/download) |
+| Distribution | Lien |
+|--------------|------|
+| NixOS 24.05 | [nixos-gnome-24.05.iso](https://releases.nixos.org/nixos/24.05/nixos-gnome-24.05.5695.59fb44bbd20-x86_64-linux.iso) |
+| Arch Linux | [archlinux.org/download](https://archlinux.org/download/) |
+| Rocky Linux | [rockylinux.org/download](https://rockylinux.org/download) |
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
-### ❄️ NixOS
+### NixOS
 
 ```bash
 sudo cp -r /etc/nixos /etc/nixos-backup-$(date +%Y%m%d)
@@ -56,7 +72,7 @@ sudo nixos-rebuild switch
 
 **Modules** : PostgreSQL, Redis, Ollama, observabilité (Loki/Prometheus/Grafana), LAMP
 
-### 🐧 Arch Linux
+### Arch Linux
 
 ```bash
 cd arch-linux
@@ -66,7 +82,7 @@ chmod +x scripts/install.sh
 
 **Inclut** : Hyprland, Waybar, Tabby, VSCodium, Ollama
 
-### 🪨 Rocky Linux
+### Rocky Linux
 
 ```bash
 sudo dd if=rocky-linux/rocky-10-gnome.iso of=/dev/sdb bs=4M status=progress
@@ -74,7 +90,7 @@ sudo dd if=rocky-linux/rocky-10-gnome.iso of=/dev/sdb bs=4M status=progress
 
 ---
 
-## 📋 Modules NixOS
+## Modules NixOS
 
 | Module | Services | Ports |
 |--------|----------|-------|
@@ -98,16 +114,22 @@ imports = [
 
 ---
 
-## 📖 Documentation
+## Documentation
 
 | OS | README |
 |----|--------|
-| ❄️ NixOS | [nixos/README.md](nixos/README.md) |
-| 🐧 Arch Linux | [arch-linux/README.md](arch-linux/README.md) |
-| 🪨 Rocky Linux | [rocky-linux/README.md](rocky-linux/README.md) |
+| NixOS | [nixos/README.md](nixos/README.md) |
+| Arch Linux | [arch-linux/README.md](arch-linux/README.md) |
+| Rocky Linux | [rocky-linux/README.md](rocky-linux/README.md) |
 
 ---
 
-## 🔒 Sécurité
+## Sécurité
 
-⚠️ **Exclus** (`.gitignore`) : `hardware-configuration.nix`, `flake.lock`, secrets
+**Exclus** (`.gitignore`) : `hardware-configuration.nix`, `flake.lock`, secrets
+
+---
+
+<p align="center">
+  Made by <a href="https://github.com/RomeoCavazza">Romeo Cavazza</a>
+</p>
