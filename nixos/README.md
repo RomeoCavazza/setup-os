@@ -1,31 +1,35 @@
-# ❄️ NixOS Configuration
+<p align="center">
+  <img src="../assets/nixos.png" alt="NixOS" width="80">
+</p>
 
-[![NixOS](https://img.shields.io/badge/NixOS_24.05-5277C3?style=for-the-badge&logo=nixos&logoColor=white)](https://nixos.org)
-[![Hyprland](https://img.shields.io/badge/Hyprland-58E1FF?style=for-the-badge&logo=hyprland&logoColor=white)](https://hyprland.org)
-[![Flakes](https://img.shields.io/badge/Flakes-7EBAE4?style=for-the-badge&logo=snowflake&logoColor=white)](https://nixos.wiki/wiki/Flakes)
+<h1 align="center">NixOS Configuration</h1>
 
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL_17-4169E1?style=flat-square&logo=postgresql&logoColor=white)](https://postgresql.org)
-[![Redis](https://img.shields.io/badge/Redis-DC382D?style=flat-square&logo=redis&logoColor=white)](https://redis.io)
-[![Grafana](https://img.shields.io/badge/Grafana-F46800?style=flat-square&logo=grafana&logoColor=white)](https://grafana.com)
-[![Prometheus](https://img.shields.io/badge/Prometheus-E6522C?style=flat-square&logo=prometheus&logoColor=white)](https://prometheus.io)
-[![Nginx](https://img.shields.io/badge/Nginx-009639?style=flat-square&logo=nginx&logoColor=white)](https://nginx.org)
-[![Ollama](https://img.shields.io/badge/Ollama-000000?style=flat-square&logo=ollama&logoColor=white)](https://ollama.ai)
-[![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)](https://docker.com)
+<p align="center">
+  <strong>Configuration déclarative et modulaire avec Hyprland</strong>
+</p>
 
-> Configuration NixOS déclarative et modulaire avec Hyprland, PostgreSQL, Redis, Ollama, stack observabilité.
+<p align="center">
+  <img src="https://img.shields.io/badge/NixOS_24.05-5277C3?style=for-the-badge&logo=nixos&logoColor=white" alt="NixOS">
+  <img src="https://img.shields.io/badge/Hyprland-58E1FF?style=for-the-badge&logo=hyprland&logoColor=white" alt="Hyprland">
+  <img src="https://img.shields.io/badge/Flakes-7EBAE4?style=for-the-badge&logo=snowflake&logoColor=white" alt="Flakes">
+</p>
 
----
-
-## 💿 Télécharger l'ISO
-
-| Version | Téléchargement |
-|---------|----------------|
-| **NixOS 24.05 GNOME** (recommandée) | [📥 nixos-gnome-24.05.5695.iso](https://releases.nixos.org/nixos/24.05/nixos-gnome-24.05.5695.59fb44bbd20-x86_64-linux.iso) |
-| Autres versions | [nixos.org/download](https://nixos.org/download/) |
+<p align="center">
+  <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL">
+  <img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white" alt="Redis">
+  <img src="https://img.shields.io/badge/Grafana-F46800?style=for-the-badge&logo=grafana&logoColor=white" alt="Grafana">
+  <img src="https://img.shields.io/badge/Ollama-000000?style=for-the-badge&logo=ollama&logoColor=white" alt="Ollama">
+</p>
 
 ---
 
-## 📁 Structure
+## Télécharger l'ISO
+
+[**nixos-iso**](https://releases.nixos.org/nixos/24.05/nixos-gnome-24.05.5695.59fb44bbd20-x86_64-linux.iso) · [Autres versions](https://nixos.org/download/)
+
+---
+
+## Structure
 
 ```
 nixos/
@@ -46,7 +50,7 @@ nixos/
 
 ---
 
-## 🚀 Installation
+## Installation
 
 ```bash
 sudo cp -r /etc/nixos /etc/nixos-backup
@@ -57,7 +61,7 @@ sudo nixos-rebuild switch
 
 ---
 
-## 📦 Modules
+## Modules
 
 ### Databases (`modules/databases.nix`)
 
@@ -105,7 +109,7 @@ Configuration NVIDIA PRIME pour laptops hybrides (Intel + NVIDIA)
 imports = [ ./modules/nvidia-prime.nix ];
 ```
 
-⚠️ **Désactivé par défaut** — décommenter les blocs pour activer
+**Désactivé par défaut** — décommenter les blocs pour activer
 
 ### Observabilité (`modules/observability.nix`)
 
@@ -147,7 +151,7 @@ imports = [ ./modules/tmpfiles.nix ];
 
 ---
 
-## 🎨 Hyprland
+## Hyprland
 
 - **Layout** : dwindle
 - **Gaps** : 8px (in), 16px (out)
@@ -158,7 +162,7 @@ imports = [ ./modules/tmpfiles.nix ];
 
 ---
 
-## 🛠️ Services
+## Services
 
 | Service | Port |
 |---------|------|
@@ -171,7 +175,19 @@ imports = [ ./modules/tmpfiles.nix ];
 
 ---
 
-## 📚 Ressources
+<p align="center">
+  <img src="../assets/fastfetch-nixos.png" alt="NixOS Fastfetch" width="600">
+</p>
+
+---
+
+## Ressources
 
 - [NixOS Wiki](https://nixos.wiki/)
 - [Hyprland Wiki](https://wiki.hyprland.org/)
+
+---
+
+<p align="center">
+  Made by <a href="https://github.com/RomeoCavazza">Romeo Cavazza</a>
+</p>

@@ -1,26 +1,33 @@
-# 🪨 Rocky Linux
+<p align="center">
+  <img src="../assets/rocky.png" alt="Rocky Linux" width="80">
+</p>
 
-[![Rocky Linux](https://img.shields.io/badge/Rocky_Linux_9-10B981?style=for-the-badge&logo=rockylinux&logoColor=white)](https://rockylinux.org)
-[![GNOME](https://img.shields.io/badge/GNOME-4A86CF?style=for-the-badge&logo=gnome&logoColor=white)](https://gnome.org)
-[![RHEL](https://img.shields.io/badge/RHEL_Compatible-EE0000?style=for-the-badge&logo=redhat&logoColor=white)](https://redhat.com)
+<h1 align="center">Rocky Linux</h1>
 
-[![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)](https://docker.com)
-[![DNF](https://img.shields.io/badge/DNF-294172?style=flat-square&logo=fedora&logoColor=white)](https://dnf.readthedocs.io)
-[![RPM Fusion](https://img.shields.io/badge/RPM_Fusion-1A5276?style=flat-square&logo=linux&logoColor=white)](https://rpmfusion.org)
+<p align="center">
+  <strong>Distribution enterprise-grade basée sur RHEL</strong>
+</p>
 
-> Distribution enterprise-grade basée sur RHEL, avec GNOME Desktop.
+<p align="center">
+  <img src="https://img.shields.io/badge/Rocky_Linux_9-10B981?style=for-the-badge&logo=rockylinux&logoColor=white" alt="Rocky Linux">
+  <img src="https://img.shields.io/badge/GNOME-4A86CF?style=for-the-badge&logo=gnome&logoColor=white" alt="GNOME">
+  <img src="https://img.shields.io/badge/RHEL_Compatible-EE0000?style=for-the-badge&logo=redhat&logoColor=white" alt="RHEL">
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
+  <img src="https://img.shields.io/badge/DNF-294172?style=for-the-badge&logo=fedora&logoColor=white" alt="DNF">
+</p>
 
 ---
 
-## 💿 Télécharger l'ISO
+## Télécharger l'ISO
 
-| Version | Téléchargement |
-|---------|----------------|
-| **Rocky Linux 9 GNOME** | [📥 rockylinux.org/download](https://rockylinux.org/download) |
+[**rocky-iso**](https://rockylinux.org/download)
 
 ---
 
-## 📁 Contenu
+## Contenu
 
 ```
 rocky-linux/
@@ -31,7 +38,7 @@ rocky-linux/
 
 ---
 
-## 🚀 Créer clé USB bootable
+## Créer clé USB bootable
 
 ### macOS
 
@@ -57,7 +64,7 @@ sync
 
 ---
 
-## 📋 Installation
+## Installation
 
 1. Booter depuis USB
 2. "Test this media and install Rocky Linux"
@@ -68,7 +75,7 @@ sync
 
 ---
 
-## 🛠️ Post-installation
+## Post-installation
 
 ### Mise à jour
 
@@ -101,9 +108,21 @@ sudo usermod -aG docker $USER
 
 ---
 
-## 📚 Ressources
+<p align="center">
+  <img src="../assets/fastfetch-rocky.png" alt="Rocky Fastfetch" width="600">
+</p>
+
+---
+
+## Ressources
 
 - [Rocky Linux Docs](https://docs.rockylinux.org/)
 - [Ventoy](https://www.ventoy.net/en/download.html)
 - [Rufus](https://rufus.ie/)
 - [RPM Fusion](https://rpmfusion.org/)
+
+---
+
+<p align="center">
+  Made by <a href="https://github.com/RomeoCavazza">Romeo Cavazza</a>
+</p>
