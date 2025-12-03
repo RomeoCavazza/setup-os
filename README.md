@@ -21,7 +21,7 @@
 <td width="33%" align="center">
 <img src="assets/nixos.png" alt="NixOS" width="60"><br>
 <strong>NixOS</strong><br>
-<a href="https://releases.nixos.org/nixos/24.05/nixos-gnome-24.05.5695.59fb44bbd20-x86_64-linux.iso">nixos-iso</a> · <a href="nixos/README.md">docs</a>
+<a href="https://channels.nixos.org/nixos-25.05/latest-nixos-graphical-x86_64-linux.iso">nixos-iso</a> · <a href="nixos/README.md">docs</a>
 </td>
 <td width="33%" align="center">
 <img src="assets/arch-linux.png" alt="Arch Linux" width="60"><br>
