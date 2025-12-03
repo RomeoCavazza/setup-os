@@ -1,10 +1,6 @@
 <h1 align="center">Arch Linux</h1>
 
 <p align="center">
-  <img src="../assets/fastfetch-arch.png" alt="Arch Linux" width="550">
-</p>
-
-<p align="center">
   <strong>Dotfiles avec Hyprland, Waybar et Tabby</strong>
 </p>
 
@@ -13,6 +9,8 @@
   <img src="https://img.shields.io/badge/Hyprland-58E1FF?style=for-the-badge&logo=hyprland&logoColor=white" alt="Hyprland">
   <img src="https://img.shields.io/badge/Waybar-1a1b26?style=for-the-badge&logo=wayland&logoColor=white" alt="Waybar">
 </p>
+
+<img src="../assets/fastfetch-arch.png" alt="Arch Linux" width="550">
 
 <p align="center">
   <a href="https://archlinux.org/download/"><strong>Télécharger l'ISO</strong></a>

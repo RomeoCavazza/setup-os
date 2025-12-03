@@ -1,10 +1,6 @@
 <h1 align="center">Rocky Linux</h1>
 
 <p align="center">
-  <img src="../assets/fastfetch-rocky.png" alt="Rocky Linux" width="550">
-</p>
-
-<p align="center">
   <strong>Distribution enterprise-grade basée sur RHEL</strong>
 </p>
 
@@ -13,6 +9,8 @@
   <img src="https://img.shields.io/badge/GNOME-4A86CF?style=for-the-badge&logo=gnome&logoColor=white" alt="GNOME">
   <img src="https://img.shields.io/badge/RHEL-EE0000?style=for-the-badge&logo=redhat&logoColor=white" alt="RHEL">
 </p>
+
+<img src="../assets/fastfetch-rocky.png" alt="Rocky Linux" width="550">
 
 <p align="center">
   <a href="https://rockylinux.org/download"><strong>Télécharger l'ISO</strong></a>
