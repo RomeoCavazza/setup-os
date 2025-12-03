@@ -1,10 +1,6 @@
 <h1 align="center">NixOS</h1>
 
 <p align="center">
-  <img src="../assets/fastfetch-nixos.png" alt="NixOS" width="550">
-</p>
-
-<p align="center">
   <strong>Configuration déclarative et modulaire avec Hyprland</strong>
 </p>
 
@@ -13,6 +9,8 @@
   <img src="https://img.shields.io/badge/Flakes-7EBAE4?style=for-the-badge&logo=snowflake&logoColor=white" alt="Flakes">
   <img src="https://img.shields.io/badge/Hyprland-58E1FF?style=for-the-badge&logo=hyprland&logoColor=white" alt="Hyprland">
 </p>
+
+<img src="../assets/fastfetch-nixos.png" alt="NixOS" width="550">
 
 <p align="center">
   <a href="https://channels.nixos.org/nixos-25.05/latest-nixos-graphical-x86_64-linux.iso"><strong>Télécharger l'ISO</strong></a>
