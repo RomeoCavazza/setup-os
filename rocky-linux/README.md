@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="../assets/rocky.png" alt="Rocky Linux" width="80">
+</p>
+
 <h1 align="center">Rocky Linux</h1>
 
 <p align="center">
@@ -8,6 +12,12 @@
   <img src="https://img.shields.io/badge/Rocky_Linux_9-10B981?style=for-the-badge&logo=rockylinux&logoColor=white" alt="Rocky Linux">
   <img src="https://img.shields.io/badge/GNOME-4A86CF?style=for-the-badge&logo=gnome&logoColor=white" alt="GNOME">
   <img src="https://img.shields.io/badge/RHEL-EE0000?style=for-the-badge&logo=redhat&logoColor=white" alt="RHEL">
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
+  <img src="https://img.shields.io/badge/DNF-294172?style=for-the-badge&logo=fedora&logoColor=white" alt="DNF">
+  <img src="https://img.shields.io/badge/RPM_Fusion-1A5276?style=for-the-badge&logo=linux&logoColor=white" alt="RPM Fusion">
 </p>
 
 <img src="../assets/fastfetch-rocky.png" alt="Rocky Linux" width="550">
