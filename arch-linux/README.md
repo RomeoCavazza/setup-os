@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="../assets/arch-linux.png" alt="Arch Linux" width="80">
+  <img src="../assets/fastfetch-arch.png" alt="Arch Linux" width="550">
 </p>
 
 <h1 align="center">Arch Linux</h1>
@@ -89,10 +89,6 @@ Terminal avec profils et shortcuts personnalisés
 | IA | ollama |
 
 ---
-
-<p align="center">
-  <img src="../assets/fastfetch-arch.png" alt="Arch Linux" width="550">
-</p>
 
 ---
 
