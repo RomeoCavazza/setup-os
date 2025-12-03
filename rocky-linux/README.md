@@ -11,43 +11,27 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Rocky_Linux_9-10B981?style=for-the-badge&logo=rockylinux&logoColor=white" alt="Rocky Linux">
   <img src="https://img.shields.io/badge/GNOME-4A86CF?style=for-the-badge&logo=gnome&logoColor=white" alt="GNOME">
-  <img src="https://img.shields.io/badge/RHEL_Compatible-EE0000?style=for-the-badge&logo=redhat&logoColor=white" alt="RHEL">
+  <img src="https://img.shields.io/badge/RHEL-EE0000?style=for-the-badge&logo=redhat&logoColor=white" alt="RHEL">
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
-  <img src="https://img.shields.io/badge/DNF-294172?style=for-the-badge&logo=fedora&logoColor=white" alt="DNF">
+  <a href="https://rockylinux.org/download"><strong>Télécharger l'ISO</strong></a>
 </p>
 
 ---
 
-## Télécharger l'ISO
-
-[**rocky-iso**](https://rockylinux.org/download)
-
----
-
-## Contenu
+## Structure
 
 ```
 rocky-linux/
 └── README.md
 ```
 
-**Spécifications** : Rocky Linux 9, GNOME, x86_64
+Spécifications : Rocky Linux 9, GNOME, x86_64
 
 ---
 
-## Créer clé USB bootable
-
-### macOS
-
-```bash
-diskutil list
-diskutil unmountDisk /dev/disk2
-sudo dd if=rocky-9-gnome.iso of=/dev/rdisk2 bs=1m
-diskutil eject /dev/disk2
-```
+## Clé USB bootable
 
 ### Linux
 
@@ -56,6 +40,15 @@ lsblk
 sudo umount /dev/sdb*
 sudo dd if=rocky-9-gnome.iso of=/dev/sdb bs=4M status=progress
 sync
+```
+
+### macOS
+
+```bash
+diskutil list
+diskutil unmountDisk /dev/disk2
+sudo dd if=rocky-9-gnome.iso of=/dev/rdisk2 bs=1m
+diskutil eject /dev/disk2
 ```
 
 ### Windows
@@ -67,9 +60,9 @@ sync
 ## Installation
 
 1. Booter depuis USB
-2. "Test this media and install Rocky Linux"
+2. Test this media and install Rocky Linux
 3. Configurer réseau (DHCP)
-4. "GNOME Desktop + Development Tools"
+4. GNOME Desktop + Development Tools
 5. Créer utilisateur + mot de passe
 6. Installer (~15-20 min)
 
@@ -109,17 +102,14 @@ sudo usermod -aG docker $USER
 ---
 
 <p align="center">
-  <img src="../assets/fastfetch-rocky.png" alt="Rocky Fastfetch" width="600">
+  <img src="../assets/fastfetch-rocky.png" alt="Rocky Linux" width="550">
 </p>
 
 ---
 
 ## Ressources
 
-- [Rocky Linux Docs](https://docs.rockylinux.org/)
-- [Ventoy](https://www.ventoy.net/en/download.html)
-- [Rufus](https://rufus.ie/)
-- [RPM Fusion](https://rpmfusion.org/)
+[Rocky Docs](https://docs.rockylinux.org/) · [RPM Fusion](https://rpmfusion.org/) · [Ventoy](https://www.ventoy.net/)
 
 ---
 

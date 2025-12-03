@@ -1,4 +1,4 @@
-<h1 align="center">🐧 Setup-OS</h1>
+<h1 align="center">Setup-OS</h1>
 
 <p align="center">
   <strong>Configurations Linux centralisées : Arch, NixOS et Rocky Linux</strong>
@@ -14,97 +14,95 @@
 
 ---
 
+## Distributions
+
+<table>
+<tr>
+<td width="33%" align="center">
+<img src="assets/nixos.png" alt="NixOS" width="60"><br>
+<strong>NixOS</strong><br>
+<a href="https://releases.nixos.org/nixos/24.05/nixos-gnome-24.05.5695.59fb44bbd20-x86_64-linux.iso">nixos-iso</a> · <a href="nixos/README.md">docs</a>
+</td>
+<td width="33%" align="center">
+<img src="assets/arch-linux.png" alt="Arch Linux" width="60"><br>
+<strong>Arch Linux</strong><br>
+<a href="https://archlinux.org/download/">arch-iso</a> · <a href="arch-linux/README.md">docs</a>
+</td>
+<td width="33%" align="center">
+<img src="assets/rocky.png" alt="Rocky Linux" width="60"><br>
+<strong>Rocky Linux</strong><br>
+<a href="https://rockylinux.org/download">rocky-iso</a> · <a href="rocky-linux/README.md">docs</a>
+</td>
+</tr>
+</table>
+
+---
+
 ## Structure
 
 ```
 setup-os/
-├── nixos/
-├── arch-linux/
-└── rocky-linux/
+├── nixos/           # Configuration déclarative + modules
+├── arch-linux/      # Dotfiles + scripts
+└── rocky-linux/     # Documentation RHEL
 ```
 
 ---
 
-## Distributions
-
-### <img src="assets/nixos.png" alt="NixOS" width="28"> NixOS
+## NixOS
 
 Configuration déclarative avec Flakes, Hyprland et modules système.
 
-[**nixos-iso**](https://releases.nixos.org/nixos/24.05/nixos-gnome-24.05.5695.59fb44bbd20-x86_64-linux.iso) · [Documentation](nixos/README.md)
-
 ```bash
-sudo cp -r /etc/nixos /etc/nixos-backup-$(date +%Y%m%d)
 sudo git clone https://github.com/RomeoCavazza/setup-os.git /etc/nixos
-cd /etc/nixos/nixos
-sudo nixos-rebuild switch
+cd /etc/nixos/nixos && sudo nixos-rebuild switch
 ```
-
-**Modules disponibles** :
 
 | Module | Services | Ports |
 |--------|----------|-------|
-| `databases.nix` | PostgreSQL 17 + Redis | 5432, 6379 |
-| `lamp.nix` | Apache + PHP + MariaDB | 80, 3306 |
-| `launcher.nix` | Rofi + Nemo + Waybar | — |
-| `nginx.nix` | Reverse proxy | 8081, 8082, 8083 |
-| `nvidia-prime.nix` | NVIDIA PRIME (optionnel) | — |
-| `observability.nix` | Loki + Prometheus + Grafana | 3000, 9090, 3100 |
-| `ollama.nix` | IA locale | 11434 |
-| `streamlit.nix` | Apps Streamlit | 8501 |
-| `tmpfiles.nix` | Règles tmpfiles systemd | — |
-
-```nix
-imports = [
-  ./modules/databases.nix
-  ./modules/observability.nix
-  ./modules/ollama.nix
-];
-```
+| databases.nix | PostgreSQL 17, Redis | 5432, 6379 |
+| lamp.nix | Apache, PHP, MariaDB | 80, 3306 |
+| observability.nix | Loki, Prometheus, Grafana | 3000, 9090, 3100 |
+| ollama.nix | IA locale | 11434 |
+| nginx.nix | Reverse proxy | 8081-8083 |
 
 <p align="center">
-  <img src="assets/fastfetch-nixos.png" alt="NixOS Fastfetch" width="600">
+  <img src="assets/fastfetch-nixos.png" alt="NixOS" width="550">
 </p>
 
 ---
 
-### <img src="assets/arch-linux.png" alt="Arch Linux" width="28"> Arch Linux
+## Arch Linux
 
 Dotfiles avec Hyprland, Waybar, Tabby, VSCodium et Ollama.
 
-[**arch-iso**](https://archlinux.org/download/) · [Documentation](arch-linux/README.md)
-
 ```bash
-cd arch-linux
-chmod +x scripts/install.sh
-./scripts/install.sh
+cd arch-linux && chmod +x scripts/install.sh && ./scripts/install.sh
 ```
 
 <p align="center">
-  <img src="assets/fastfetch-arch.png" alt="Arch Fastfetch" width="600">
+  <img src="assets/fastfetch-arch.png" alt="Arch Linux" width="550">
 </p>
 
 ---
 
-### <img src="assets/rocky.png" alt="Rocky Linux" width="28"> Rocky Linux
+## Rocky Linux
 
-Distribution entreprise RHEL-compatible.
-
-[**rocky-iso**](https://rockylinux.org/download) · [Documentation](rocky-linux/README.md)
+Distribution entreprise RHEL-compatible avec GNOME.
 
 ```bash
-sudo dd if=rocky-linux/rocky-10-gnome.iso of=/dev/sdb bs=4M status=progress
+sudo dd if=rocky-9-gnome.iso of=/dev/sdb bs=4M status=progress
 ```
 
 <p align="center">
-  <img src="assets/fastfetch-rocky.png" alt="Rocky Fastfetch" width="600">
+  <img src="assets/fastfetch-rocky.png" alt="Rocky Linux" width="550">
 </p>
 
 ---
 
 ## Sécurité
 
-**Exclus** (`.gitignore`) : `hardware-configuration.nix`, `flake.lock`, secrets
+Exclus du repo : `hardware-configuration.nix`, `flake.lock`, secrets
 
 ---
 
