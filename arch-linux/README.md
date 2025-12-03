@@ -24,10 +24,6 @@
 
 <img src="../assets/fastfetch-arch.png" alt="Arch Linux" width="550">
 
-<p align="center">
-  <a href="https://archlinux.org/download/"><strong>Télécharger l'ISO</strong></a>
-</p>
-
 ---
 
 ## Structure
@@ -44,6 +40,8 @@ arch-linux/
 ---
 
 ## Installation
+
+[Télécharger l'ISO](https://archlinux.org/download/)
 
 ### Prérequis
 

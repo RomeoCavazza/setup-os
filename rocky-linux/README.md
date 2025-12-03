@@ -22,10 +22,6 @@
 
 <img src="../assets/fastfetch-rocky.png" alt="Rocky Linux" width="550">
 
-<p align="center">
-  <a href="https://rockylinux.org/download"><strong>Télécharger l'ISO</strong></a>
-</p>
-
 ---
 
 ## Structure
@@ -40,6 +36,8 @@ Spécifications : Rocky Linux 9, GNOME, x86_64
 ---
 
 ## Clé USB bootable
+
+[Télécharger l'ISO](https://rockylinux.org/download)
 
 ### Linux
 
