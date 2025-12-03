@@ -26,9 +26,7 @@ setup-os/
 
 ## <img src="assets/nixos.png" alt="NixOS" width="28"> NixOS
 
-<p align="center">
-  <img src="assets/fastfetch-nixos.png" alt="NixOS" width="500">
-</p>
+<img src="assets/fastfetch-nixos.png" alt="NixOS" width="500">
 
 Configuration déclarative avec Flakes, Hyprland et modules système.
 
@@ -51,9 +49,7 @@ cd /etc/nixos/nixos && sudo nixos-rebuild switch
 
 ## <img src="assets/arch-linux.png" alt="Arch Linux" width="28"> Arch Linux
 
-<p align="center">
-  <img src="assets/fastfetch-arch.png" alt="Arch Linux" width="500">
-</p>
+<img src="assets/fastfetch-arch.png" alt="Arch Linux" width="500">
 
 Dotfiles avec Hyprland, Waybar, Tabby, VSCodium et Ollama.
 
@@ -67,9 +63,7 @@ cd arch-linux && chmod +x scripts/install.sh && ./scripts/install.sh
 
 ## <img src="assets/rocky.png" alt="Rocky Linux" width="28"> Rocky Linux
 
-<p align="center">
-  <img src="assets/fastfetch-rocky.png" alt="Rocky Linux" width="500">
-</p>
+<img src="assets/fastfetch-rocky.png" alt="Rocky Linux" width="500">
 
 Distribution entreprise RHEL-compatible avec GNOME.
 

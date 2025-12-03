@@ -1,8 +1,8 @@
+<h1 align="center">Rocky Linux</h1>
+
 <p align="center">
   <img src="../assets/fastfetch-rocky.png" alt="Rocky Linux" width="550">
 </p>
-
-<h1 align="center">Rocky Linux</h1>
 
 <p align="center">
   <strong>Distribution enterprise-grade basée sur RHEL</strong>
