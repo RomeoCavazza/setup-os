@@ -26,10 +26,6 @@
 
 <img src="../assets/fastfetch-nixos.png" alt="NixOS" width="550">
 
-<p align="center">
-  <a href="https://channels.nixos.org/nixos-25.05/latest-nixos-graphical-x86_64-linux.iso"><strong>Télécharger l'ISO</strong></a>
-</p>
-
 ---
 
 ## Structure
@@ -45,6 +41,8 @@ nixos/
 ---
 
 ## Installation
+
+[Télécharger l'ISO](https://channels.nixos.org/nixos-25.05/latest-nixos-graphical-x86_64-linux.iso)
 
 ```bash
 sudo cp -r /etc/nixos /etc/nixos-backup
