@@ -2,10 +2,10 @@
   <img src="../assets/arch-linux.png" alt="Arch Linux" width="80">
 </p>
 
-<h1 align="center">Arch Linux Dotfiles</h1>
+<h1 align="center">Arch Linux</h1>
 
 <p align="center">
-  <strong>Configuration avec Hyprland, Waybar et Tabby</strong>
+  <strong>Dotfiles avec Hyprland, Waybar et Tabby</strong>
 </p>
 
 <p align="center">
@@ -15,16 +15,8 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Tabby-FCD535?style=for-the-badge&logo=terminal&logoColor=black" alt="Tabby">
-  <img src="https://img.shields.io/badge/VSCodium-2F80ED?style=for-the-badge&logo=vscodium&logoColor=white" alt="VSCodium">
-  <img src="https://img.shields.io/badge/Ollama-000000?style=for-the-badge&logo=ollama&logoColor=white" alt="Ollama">
+  <a href="https://archlinux.org/download/"><strong>Télécharger l'ISO</strong></a>
 </p>
-
----
-
-## Télécharger l'ISO
-
-[**arch-iso**](https://archlinux.org/download/)
 
 ---
 
@@ -33,16 +25,10 @@
 ```
 arch-linux/
 ├── dotfiles/
-│   ├── hypr/
-│   │   └── hyprland.conf
+│   ├── hypr/hyprland.conf
 │   ├── waybar/
-│   │   ├── config.jsonc
-│   │   └── style.css
 │   └── tabby/
-│       ├── config.yaml
-│       └── settings.json
-└── scripts/
-    └── install.sh
+└── scripts/install.sh
 ```
 
 ---
@@ -51,14 +37,12 @@ arch-linux/
 
 ### Prérequis
 
-Arch Linux avec **paru** (AUR helper)
-
 ```bash
 git clone https://aur.archlinux.org/paru.git
 cd paru && makepkg -si
 ```
 
-### Installation automatique
+### Script automatique
 
 ```bash
 cd arch-linux
@@ -66,7 +50,7 @@ chmod +x scripts/install.sh
 ./scripts/install.sh
 ```
 
-**Installe** : Hyprland, Waybar, Tabby, VSCodium, Ollama, toolchains (Rust, Node.js)
+Installe : Hyprland, Waybar, Tabby, VSCodium, Ollama, Rust, Node.js
 
 ---
 
@@ -74,43 +58,47 @@ chmod +x scripts/install.sh
 
 ### Hyprland
 
-- **Layout** : dwindle
-- **Gaps** : 8px (in), 18px (out)
-- **Workspaces** : 5 (F1-F5)
+| Paramètre | Valeur |
+|-----------|--------|
+| Layout | dwindle |
+| Gaps | 8px (in), 18px (out) |
+| Workspaces | 5 (F1-F5) |
 
-**Raccourcis** : `Super + Return` (terminal), `Super + Tab` (files), `Super + F` (float)
+**Raccourcis** : `Super+Return` terminal · `Super+Tab` files · `Super+F` float
 
 ### Waybar
 
 Modules : clock, workspaces, network, battery, memory, temperature
 
-**Theme** : Catppuccin Mocha
+Theme : Catppuccin Mocha
 
 ### Tabby
 
-Configuration terminal avec profils et shortcuts
+Terminal avec profils et shortcuts personnalisés
 
 ---
 
 ## Paquets
 
-- hyprland, waybar, tabby
-- vscodium, ollama
-- zsh, kitty, neovim
-- nodejs, rust, cargo
+| Catégorie | Paquets |
+|-----------|---------|
+| WM | hyprland, waybar |
+| Terminal | tabby, kitty, zsh |
+| Éditeurs | vscodium, neovim |
+| Dev | nodejs, rust, cargo |
+| IA | ollama |
 
 ---
 
 <p align="center">
-  <img src="../assets/fastfetch-arch.png" alt="Arch Fastfetch" width="600">
+  <img src="../assets/fastfetch-arch.png" alt="Arch Linux" width="550">
 </p>
 
 ---
 
 ## Ressources
 
-- [Hyprland Wiki](https://wiki.hyprland.org/)
-- [Arch Wiki](https://wiki.archlinux.org/)
+[Arch Wiki](https://wiki.archlinux.org/) · [Hyprland Wiki](https://wiki.hyprland.org/)
 
 ---
 
