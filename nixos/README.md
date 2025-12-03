@@ -1,8 +1,8 @@
+<h1 align="center">NixOS</h1>
+
 <p align="center">
   <img src="../assets/fastfetch-nixos.png" alt="NixOS" width="550">
 </p>
-
-<h1 align="center">NixOS</h1>
 
 <p align="center">
   <strong>Configuration déclarative et modulaire avec Hyprland</strong>
