@@ -1,28 +1,34 @@
-# 🐧 Arch Linux Dotfiles
+<p align="center">
+  <img src="../assets/arch-linux.png" alt="Arch Linux" width="80">
+</p>
 
-[![Arch Linux](https://img.shields.io/badge/Arch_Linux-1793D1?style=for-the-badge&logo=archlinux&logoColor=white)](https://archlinux.org)
-[![Hyprland](https://img.shields.io/badge/Hyprland-58E1FF?style=for-the-badge&logo=hyprland&logoColor=white)](https://hyprland.org)
-[![Waybar](https://img.shields.io/badge/Waybar-1a1b26?style=for-the-badge&logo=wayland&logoColor=white)](https://github.com/Alexays/Waybar)
+<h1 align="center">Arch Linux Dotfiles</h1>
 
-[![Tabby](https://img.shields.io/badge/Tabby-FCD535?style=flat-square&logo=terminal&logoColor=black)](https://tabby.sh)
-[![VSCodium](https://img.shields.io/badge/VSCodium-2F80ED?style=flat-square&logo=vscodium&logoColor=white)](https://vscodium.com)
-[![Ollama](https://img.shields.io/badge/Ollama-000000?style=flat-square&logo=ollama&logoColor=white)](https://ollama.ai)
-[![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white)](https://nodejs.org)
-[![Rust](https://img.shields.io/badge/Rust-000000?style=flat-square&logo=rust&logoColor=white)](https://rust-lang.org)
+<p align="center">
+  <strong>Configuration avec Hyprland, Waybar et Tabby</strong>
+</p>
 
-> Configuration Arch Linux avec Hyprland, Waybar, Tabby et dotfiles.
+<p align="center">
+  <img src="https://img.shields.io/badge/Arch_Linux-1793D1?style=for-the-badge&logo=archlinux&logoColor=white" alt="Arch Linux">
+  <img src="https://img.shields.io/badge/Hyprland-58E1FF?style=for-the-badge&logo=hyprland&logoColor=white" alt="Hyprland">
+  <img src="https://img.shields.io/badge/Waybar-1a1b26?style=for-the-badge&logo=wayland&logoColor=white" alt="Waybar">
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Tabby-FCD535?style=for-the-badge&logo=terminal&logoColor=black" alt="Tabby">
+  <img src="https://img.shields.io/badge/VSCodium-2F80ED?style=for-the-badge&logo=vscodium&logoColor=white" alt="VSCodium">
+  <img src="https://img.shields.io/badge/Ollama-000000?style=for-the-badge&logo=ollama&logoColor=white" alt="Ollama">
+</p>
 
 ---
 
-## 💿 Télécharger l'ISO
+## Télécharger l'ISO
 
-| Version | Téléchargement |
-|---------|----------------|
-| **Arch Linux** (rolling release) | [📥 archlinux.org/download](https://archlinux.org/download/) |
+[**arch-iso**](https://archlinux.org/download/)
 
 ---
 
-## 📁 Structure
+## Structure
 
 ```
 arch-linux/
@@ -41,7 +47,7 @@ arch-linux/
 
 ---
 
-## 🚀 Installation
+## Installation
 
 ### Prérequis
 
@@ -64,7 +70,7 @@ chmod +x scripts/install.sh
 
 ---
 
-## 🎨 Configuration
+## Configuration
 
 ### Hyprland
 
@@ -86,7 +92,7 @@ Configuration terminal avec profils et shortcuts
 
 ---
 
-## 🔧 Paquets
+## Paquets
 
 - hyprland, waybar, tabby
 - vscodium, ollama
@@ -95,7 +101,19 @@ Configuration terminal avec profils et shortcuts
 
 ---
 
-## 📚 Ressources
+<p align="center">
+  <img src="../assets/fastfetch-arch.png" alt="Arch Fastfetch" width="600">
+</p>
+
+---
+
+## Ressources
 
 - [Hyprland Wiki](https://wiki.hyprland.org/)
 - [Arch Wiki](https://wiki.archlinux.org/)
+
+---
+
+<p align="center">
+  Made by <a href="https://github.com/RomeoCavazza">Romeo Cavazza</a>
+</p>
