@@ -9,13 +9,13 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/NixOS_24.05-5277C3?style=for-the-badge&logo=nixos&logoColor=white" alt="NixOS">
+  <img src="https://img.shields.io/badge/NixOS_25.05-5277C3?style=for-the-badge&logo=nixos&logoColor=white" alt="NixOS">
   <img src="https://img.shields.io/badge/Flakes-7EBAE4?style=for-the-badge&logo=snowflake&logoColor=white" alt="Flakes">
   <img src="https://img.shields.io/badge/Hyprland-58E1FF?style=for-the-badge&logo=hyprland&logoColor=white" alt="Hyprland">
 </p>
 
 <p align="center">
-  <a href="https://releases.nixos.org/nixos/24.05/nixos-gnome-24.05.5695.59fb44bbd20-x86_64-linux.iso"><strong>Télécharger l'ISO</strong></a>
+  <a href="https://channels.nixos.org/nixos-25.05/latest-nixos-graphical-x86_64-linux.iso"><strong>Télécharger l'ISO</strong></a>
 </p>
 
 ---
