@@ -2,10 +2,8 @@
 *.iso
 
 # Configuration matérielle (UUID de disques, interfaces réseau)
-hardware-configuration.nix
 
 # Fichiers de verrouillage
-flake.lock
 
 # Fichiers de système NixOS générés
 result
