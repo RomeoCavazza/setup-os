@@ -1,12 +1,13 @@
 @import "mocha.css";
+
 * {
-    /* `otf-font-awesome` and SpaceMono Nerd Font are required to be installed for icons */
     font-family: "SpaceMono Nerd Font";
     font-size: 15px;
 }
 
 window#waybar {
-    background: transparent;
+    /* Fond semi-transparent */
+    background: rgba(0, 0, 0, 0.4);
     color: @teal;
     border-radius: 7rem;
     border-width: 2px;
@@ -20,230 +21,124 @@ window#waybar.empty #window {
     border: 0px;
 }
 
-#clock,
-#battery,
-#cpu,
-#memory,
-#disk,
-#temperature,
-#backlight,
-#network,
-#pulseaudio,
-#wireplumber,
-#custom-media,
-#tray,
-#bluetooth,
-#mode,
-#idle_inhibitor,
-#scratchpad,
-#power-profiles-daemon,
-#language,
-#mpd {
-	background-color: transparent;
+/* Modules Généraux */
+#clock, #battery, #cpu, #memory, #disk, #temperature, #backlight, #network,
+#pulseaudio, #wireplumber, #custom-media, #tray, #bluetooth, #mode,
+#idle_inhibitor, #scratchpad, #power-profiles-daemon, #language, #mpd {
+    background-color: transparent;
     padding: 0 10px;
     border-radius: 7rem;
-    /*border-width: 2px;
-    border-style: solid;
-    border-color: @teal;*/
+    transition: all 0.3s ease;
 }
 
-
-#clock:hover,
-#battery:hover,
-#cpu:hover,
-#memory:hover,
-#disk:hover,
-#temperature:hover,
-#backlight:hover,
-#network:hover,
-#pulseaudio:hover,
-#wireplumber:hover,
-#custom-media:hover,
-#tray:hover,
-#mode:hover,
-#bluetooth:hover,
-#idle_inhibitor:hover,
-#scratchpad:hover,
-#power-profiles-daemon:hover,
-#language:hover,
-#mpd:hover {
-    background-color: @maroon;
-    color: @brown;
+/* --- LE PATCH HOVER --- */
+#clock:hover, #battery:hover, #cpu:hover, #memory:hover, #disk:hover,
+#temperature:hover, #backlight:hover, #network:hover, #pulseaudio:hover,
+#wireplumber:hover, #custom-media:hover, #tray:hover, #mode:hover,
+#bluetooth:hover, #idle_inhibitor:hover, #scratchpad:hover,
+#power-profiles-daemon:hover, #language:hover, #mpd:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #00f0ff;
+    box-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
 }
 
-
+/* --- WORKSPACES (CORRECTION BULLES) --- */
 #workspaces {
-  border-radius: 7rem;
-  background-color: transparent;
-  /*border-width: 2px;
-  border-style: solid;
-  border-color: @teal;*/
+    background-color: transparent;
+    border-radius: 7rem;
+    padding: 0 5px; /* Un peu d'espace autour du conteneur */
 }
 
 #workspaces button {
-  color: @teal;
-  border-radius: 7rem;
+    color: @teal;
+    background-color: transparent;
+    /* On force le rond parfait et une taille fixe pour que le point soit centré */
+    border-radius: 50%; 
+    min-width: 20px; 
+    min-height: 20px;
+    padding: 0px; 
+    margin: 0 2px; /* Espace entre les boules */
+    transition: all 0.3s ease;
 }
 
 #workspaces button.active {
-  color: @brown;
-  background-color: @teal;
-  border-radius: 7rem;
+    color: #11111b; /* Couleur du point plein */
+    background-color: @teal;
+    border-radius: 50%;
 }
 
 #workspaces button:hover {
-  color: @brown;
-  background-color: @maroon;
-  border-radius: 7rem;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #00f0ff;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(0, 240, 255, 0.4);
 }
 
-#custom-arch {
+/* Custom Modules */
+#custom-arch, #custom-search, #custom-swaync, #custom-power, #mpris {
+    padding: 0 10px;
+    background-color: transparent;
+    border-radius: 7rem;
+    transition: all 0.3s ease;
+}
+
+#custom-arch { margin-left: 5px; font-size: 25px; }
+#custom-search { font-size: 20px; }
+#custom-power { margin-right: 5px; }
+
+#custom-arch:hover, #custom-search:hover, #custom-swaync:hover,
+#custom-power:hover, #mpris:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #00f0ff;
+}
+
+#window {
+    border-radius: 7rem;
+    padding: 0 10px;
+    background-color: transparent;
+    color: @teal;
     margin-left: 5px;
-    padding: 0 10px;
-    font-size: 25px;
-    background-color: transparent;
-    border-radius: 7rem;
-	/*border-width: 2px;
-	border-style: solid;
-	border-color: @teal;*/
-}
-#custom-arch:hover {
-    background-color: @maroon;
-    color: @brown;
-}
-#custom-search {
-    padding: 0 10px;
-    font-size: 20px;
-    background-color: transparent;
-    border-radius: 7rem;
-	/*border-width: 2px;
-	border-style: solid;
-	border-color: @teal;*/
-}
-#custom-search:hover {
-    background-color: @maroon;
-    color: @brown;
-}
-#custom-swaync {
-    padding: 0 10px;
-    background-color: transparent;
-    border-radius: 7rem;
-    /*border-width: 2px;
-	border-style: solid;
-	border-color: @teal;*/
-}
-#custom-swaync:hover {
-    background-color: @maroon;
-    color: @brown;
-}
-#custom-power {
     margin-right: 5px;
-    padding: 0 10px;
-    background-color: transparent;
-    border-radius: 7rem;
-    /*border-width: 2px;
-	border-style: solid;
-	border-color: @teal;*/
-}
-#custom-power:hover {
-    background-color: @maroon;
-    color: @brown;
-}
-/*
-#taskbar {
+    transition: all 0.3s ease;
 }
 
-#taskbar button {
-	border-radius: 7rem;
-	background: transparent;
-	border-width: 2px;
-	border-style: solid;
-	border-color: @teal;
-	margin-left: 2px;
-	margin-right: 2px;
-	padding-left: 8px;
-	padding-right: 8px;
-	color: @text;
-}
-
-#taskbar button.active {
-	border-radius: 7rem;
-	background-color: @surface0;
-	border-width: 2px;
-	border-style: solid;
-	border-color: @teal;
-}
-*/
-
-
-  #window {
-  border-radius: 7rem;
-  /*border-width: 2px;
-  border-style: solid;
-  border-color: @teal;*/
-  padding: 0 10px;
-  background-color: transparent;
-  color: @teal;
-  margin-left: 5px;
-  margin-right: 5px;
-}
 #window:hover {
-    background-color: @maroon;
-    color: @brown;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #00f0ff;
 }
-#pulseaudio-slider slider {
-	min-width: 0px;
-	min-height: 0px;
-	opacity: 0;
-	background-image: none;
-	border: none;
-	box-shadow: none;
+
+/* Sliders */
+#pulseaudio-slider slider, #backlight-slider slider {
+    min-width: 0px;
+    min-height: 0px;
+    opacity: 0;
+    background-image: none;
+    border: none;
+    box-shadow: none;
 }
 
 #pulseaudio-slider trough {
-	min-width: 80px;
-	min-height: 5px;
-	border-radius: 5px;
+    min-width: 80px;
+    min-height: 5px;
+    border-radius: 5px;
 }
 
 #pulseaudio-slider highlight {
-	min-height: 10px;
-	border-radius: 5px;
-}
-
-#backlight-slider slider {
-	min-width: 0px;
-	min-height: 0px;
-	opacity: 0;
-	background-image: none;
-	border: none;
-	box-shadow: none;
+    min-height: 10px;
+    border-radius: 5px;
 }
 
 #backlight-slider trough {
-	min-width: 80px;
-	min-height: 10px;
-	border-radius: 5px;
+    min-width: 80px;
+    min-height: 10px;
+    border-radius: 5px;
 }
 
 #backlight-slider highlight {
-	min-width: 10px;
-	border-radius: 5px;
-}
-
-#mpris {
-	border-radius: 7rem;
-	background-color: transparent;
-	padding: 0 10px;
-	/*border-width: 2px;
-	border-style: solid;
-	border-color: @teal;*/
-}
-#mpris:hover {
-    background-color: @maroon;
-    color: @brown;
+    min-width: 10px;
+    border-radius: 5px;
 }
 
 #custom-cava_mviz {
-	color: @pink;
+    color: @pink;
 }
