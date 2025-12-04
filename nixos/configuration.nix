@@ -1,11 +1,12 @@
 { config, pkgs, ... }:
 
 let
-  # VSCode packagé
+  # VSCode packagé avec extensions
   myVscode = pkgs.vscode-with-extensions.override {
     vscode = pkgs.vscode;
     vscodeExtensions = with pkgs.vscode-extensions; [
       ms-python.python
+      ms-toolsai.jupyter
       redhat.java
       vscjava.vscode-java-pack
       ms-dotnettools.csharp
@@ -19,9 +20,18 @@ let
     ];
   };
 
-  # Interpréteur Python global vu par Pyright/VSCode
+  # Interpréteur Python global
   pythonEnv = pkgs.python311.withPackages (ps: with ps; [
-    # Web / API
+    # --- Data Science & Maths ---
+    jupyter
+    notebook
+    ipykernel
+    numpy
+    pandas
+    matplotlib
+    scipy
+
+    # --- Web / API ---
     fastapi uvicorn gunicorn httpx pydantic python-dotenv
     # DB / ORM / migrations
     sqlalchemy alembic psycopg psycopg2
@@ -41,6 +51,7 @@ in
     ./modules/tmpfiles.nix
     ./modules/ollama.nix
     ./modules/launcher.nix
+    ./modules/starship.nix
   ];
 
   ############################
@@ -85,18 +96,17 @@ in
   boot.loader.timeout = null;
   boot.loader.systemd-boot.editor = false;
 
-  # Désactivation watchdog via paramètres kernel
+  # Désactivation watchdog
   boot.kernelParams = [
     "nowatchdog"
     "nmi_watchdog=0"
   ];
 
-  # Kernel & firmware
-  # boot.kernelPackages = pkgs.linuxPackages_latest;
+  # Firmware
   hardware.enableRedistributableFirmware = true;
   hardware.firmware = [ pkgs.linux-firmware ];
 
-  # Blacklist watchdog matériel (chipset Intel)
+  # Blacklist watchdog matériel
   boot.blacklistedKernelModules = [
     "iTCO_wdt"
     "iTCO_vendor_support"
@@ -104,13 +114,8 @@ in
   ];
 
   networking.hostName = "nixos";
-
   networking.networkmanager.enable = true;
-  # networking.nameservers = [ "127.0.0.53" ];
   networking.hosts."127.0.0.1" = [ "dev.localhost" ];
-
-  # services.resolved.enable = true;
-  # services.resolved.fallbackDns = [ "1.1.1.1" "8.8.8.8" "9.9.9.9" ];
 
   ############################
   ## 3) Locales / Console
@@ -164,13 +169,13 @@ in
     xwayland.enable = true;
   };
 
-  # Pour les portails / keyring / dconf
+  # Services Gnome / DBus / Keyring
   services.dbus.enable = true;
   security.polkit.enable = true;
   programs.dconf.enable = true;
   services.gnome.gnome-keyring.enable = true;
 
-  # XDG Portals (Hyprland + GTK)
+  # XDG Portals
   xdg.portal = {
     enable = true;
     xdgOpenUsePortal = true;
@@ -216,39 +221,47 @@ in
     QT_QPA_PLATFORM = "wayland";
     QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
     ELECTRON_OZONE_PLATFORM_HINT = "auto";
+    
+    # Variables curseur
+    XCURSOR_THEME = "Adwaita";
+    XCURSOR_SIZE  = "24";
+    JAVA_HOME     = "${pkgs.jdk21}/lib/openjdk";
   };
 
   ############################
   ## 8) Outils dev & logiciels
   ############################
   programs.firefox.enable = true;
-
-  # nm-applet
   programs.nm-applet.enable = true;
 
-  # Alias Cursor
+  # --- Outils de Navigation Terminal ---
+  # Zoxide (Navigation intelligente 'z')
+  programs.zoxide.enable = true;
+  
+  # FZF (Recherche floue CTRL+T/CTRL+R)
+  programs.fzf.keybindings = true;
+  programs.fzf.fuzzyCompletion = true;
+
+  # Alias
   programs.bash.shellAliases.cursor =
     "appimage-run ~/.local/bin/appimages/Cursor.AppImage";
-
-  environment.variables = {
-    XCURSOR_THEME = "Adwaita";
-    XCURSOR_SIZE  = "24";
-    JAVA_HOME     = "${pkgs.jdk21}/lib/openjdk";
-  };
 
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
 
   environment.systemPackages = with pkgs; [
     # Base utils
-    vim git git-lfs gh tree eza ripgrep fd bat jq fzf zoxide unzip zip wget curl just appimage-run
+    vim git git-lfs gh tree eza ripgrep fd bat jq fzf unzip zip wget curl just appimage-run
     brightnessctl usbutils pciutils lshw fastfetch btop htop nvtopPackages.intel atop bottom cmatrix
 
+    # --- FileManager / Navigation TUI ---
+    yazi zoxide broot ranger lf walk zsh-fzf-tab
+
     # UI / outils
-    hyprland hyprpaper hypridle hyprlock waybar wl-clipboard grim slurp grimblast swappy wdisplays
-    kitty foot rofi-wayland polkit_gnome networkmanagerapplet mako cliphist
-    imv mpv discord adwaita-icon-theme papirus-icon-theme
-    xfce.thunar xfce.thunar-archive-plugin file-roller gvfs
+    hyprland hyprpaper hypridle hyprlock waybar pywal wl-clipboard grim slurp grimblast swappy wdisplays
+    kitty foot rofi-wayland polkit_gnome networkmanagerapplet mako cliphist home-manager
+    imv mpv discord adwaita-icon-theme papirus-icon-theme starship glances
+    xfce.thunar xfce.thunar-archive-plugin file-roller gvfs swaynotificationcenter
 
     # Audio
     pavucontrol helvum easyeffects bluez blueman
@@ -284,7 +297,7 @@ in
     myVscode
 
     # Divers
-    ollama
+    ollama claude-code
     docker-compose
   ];
 
@@ -302,12 +315,8 @@ in
   ];
 
   ############################
-  ## 12) VM guest utils
-  ############################
-  services.xe-guest-utilities.enable = false;
-
-  ############################
   ## 13) État système
   ############################
+  services.xe-guest-utilities.enable = false;
   system.stateVersion = "24.05";
 }
