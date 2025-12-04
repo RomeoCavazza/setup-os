@@ -32,10 +32,12 @@
 
 ```
 nixos/
-├── config/hypr/         # Hyprland + Waybar
-├── modules/             # Modules système
+├── config/hypr/         # Configuration Hyprland
+├── home/tco/           # Home Manager
+├── modules/            # Modules système
 ├── configuration.nix
-└── flake.nix
+├── flake.nix
+└── flake.lock
 ```
 
 ---
@@ -46,9 +48,10 @@ nixos/
 
 ```bash
 sudo cp -r /etc/nixos /etc/nixos-backup
-sudo git clone https://github.com/RomeoCavazza/setup-os.git /etc/nixos
-cd /etc/nixos/nixos
-sudo nixos-rebuild switch
+sudo git clone https://github.com/RomeoCavazza/setup-os.git /etc/nixos-new
+sudo cp -r /etc/nixos-new/nixos/* /etc/nixos/
+cd /etc/nixos
+sudo nixos-rebuild switch --flake .#nixos
 ```
 
 ---
@@ -64,6 +67,7 @@ sudo nixos-rebuild switch
 | nvidia-prime.nix | NVIDIA PRIME (optionnel) | — |
 | observability.nix | Loki + Prometheus + Grafana | 3000, 9090, 3100 |
 | ollama.nix | IA locale | 11434 |
+| starship.nix | Terminal prompt moderne | — |
 | streamlit.nix | Apps Streamlit | 8501 |
 | tmpfiles.nix | Règles systemd tmpfiles | — |
 
@@ -74,6 +78,7 @@ imports = [
   ./modules/databases.nix
   ./modules/observability.nix
   ./modules/ollama.nix
+  ./modules/starship.nix
 ];
 ```
 
