@@ -1,6 +1,8 @@
 /** Basic config file **/
 
 configuration {
-  show-icons:         true;
-  icon-theme:         "Papirus";
+  show-icons: true;
+  icon-theme: "Papirus";
 }
+
+@theme "~/.config/rofi/theme.rasi"
