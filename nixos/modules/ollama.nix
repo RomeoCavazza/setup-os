@@ -22,6 +22,5 @@
   ];
 
   # Optionnel: ouvrir le port si tu veux y accéder depuis le LAN
-  # (Déconseillé en dev — laisse l'écoute sur 127.0.0.1)
   # networking.firewall.allowedTCPPorts = [ 11434 ];
 }

@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-exec appimage-run ~/.local/bin/appimages/Cursor.AppImage "$@"
+exec appimage-run "$HOME/.local/bin/appimages/Cursor.AppImage" "$@"
