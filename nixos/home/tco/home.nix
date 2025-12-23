@@ -22,6 +22,25 @@
     
     # Communication
     discord
+
+    # --- EMACS DOOM TOOLS (Required for LSP/Linting) ---
+    nixfmt-rfc-style  # Nix formatter
+    shfmt             # Bash formatter
+    shellcheck        # Bash linter
+    dockfmt           # Dockerfile formatter
+    
+    # Python Basics (for Emacs support)
+    black
+    isort
+
+    # Correction Orthographique (Pour Emacs/Flyspell)
+    aspell
+    aspellDicts.fr
+    aspellDicts.en
+    aspellDicts.en-computers # Vocabulaire technique
+    
+    # Fonts (Fixes Doom Emacs warnings)
+    nerd-fonts.symbols-only
   ];
 
   # ============================================================================
