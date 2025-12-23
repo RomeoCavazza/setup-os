@@ -2,52 +2,63 @@
 
 {
   imports = [
+    # Hardware Scan
     ./hardware-configuration.nix
 
-    # Core modules
+    # --- Modules: Core ---
     ./modules/nvidia-prime.nix
     ./modules/virtualisation.nix
     ./modules/emacs.nix
     ./modules/science-data.nix
+    ./modules/launcher.nix
+    ./modules/starship.nix
 
-    # Services
+    # --- Modules: Services ---
     ./modules/databases.nix
     ./modules/ollama.nix
     ./modules/nginx.nix
-    # ./modules/observability.nix  # Active-le uniquement si tu en as besoin
+    # ./modules/observability.nix
   ];
 
-  # ---------------------------------------------------------------------------
-  # Bootloader
-  # ---------------------------------------------------------------------------
-  boot.loader.systemd-boot = {
-    enable = true;
-    editor = false;
-    configurationLimit = 3; # 1 est très strict; 3 est plus safe.
-  };
-
+  # ============================================================================
+  # BOOTLOADER (Systemd-boot)
+  # ============================================================================
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.editor = false;
+  boot.loader.systemd-boot.configurationLimit = 1; # Keep only current gen
+  boot.loader.timeout = null; # Force menu display
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Entrée Windows explicite (et stable)
+  # Windows 11 Entry Override
   boot.loader.systemd-boot.extraEntries."windows.conf" = ''
     title Windows 11
+    sort-key windows
     efi /EFI/Microsoft/Boot/bootmgfw.efi
   '';
 
-  boot.kernelParams = [
-    "nvidia-drm.modeset=1"
-  ];
+  # Enforce loader configuration (Disable auto-windows, enable firmware UI)
+  boot.loader.systemd-boot.extraInstallCommands = ''
+    ${pkgs.coreutils}/bin/mkdir -p /boot/loader
+    ${pkgs.coreutils}/bin/cat > /boot/loader/loader.conf <<'EOF'
+timeout menu-force
+editor no
+auto-entries no
+auto-firmware yes
+EOF
+    ${pkgs.coreutils}/bin/chmod 0644 /boot/loader/loader.conf || true
+  '';
 
-  # ---------------------------------------------------------------------------
-  # Nix (Best practices)
-  # ---------------------------------------------------------------------------
+  # Kernel Parameters
+  boot.kernelParams = [ "nvidia-drm.modeset=1" ];
+
+  # ============================================================================
+  # NIX SETTINGS
+  # ============================================================================
   nixpkgs.config.allowUnfree = true;
 
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
     auto-optimise-store = true;
-
-    # Optionnel, mais pratique pour éviter des surprises.
     warn-dirty = false;
   };
 
@@ -57,9 +68,9 @@
     options = "--delete-older-than 7d";
   };
 
-  # ---------------------------------------------------------------------------
-  # Locale & Network
-  # ---------------------------------------------------------------------------
+  # ============================================================================
+  # SYSTEM CORE (Locale, Network, User)
+  # ============================================================================
   networking.hostName = "nixos";
   networking.networkmanager.enable = true;
 
@@ -67,41 +78,39 @@
   i18n.defaultLocale = "fr_FR.UTF-8";
   console.keyMap = "fr";
 
-  # ---------------------------------------------------------------------------
-  # Users (centraliser les groupes ici: robuste)
-  # ---------------------------------------------------------------------------
   users.users.tco = {
     isNormalUser = true;
     shell = pkgs.bash;
-
     extraGroups = [
-      "wheel"
-      "networkmanager"
-      "video"
-      "docker"
-      "libvirtd"
-      "dialout"
+      "wheel"           # Sudo
+      "networkmanager"  # Networking
+      "video"           # Graphics
+      "docker"          # Containers
+      "libvirtd"        # VMs
+      "dialout"         # Serial/Arduino
     ];
   };
 
-  # ---------------------------------------------------------------------------
-  # Desktop
-  # ---------------------------------------------------------------------------
+  # ============================================================================
+  # DESKTOP ENVIRONMENT
+  # ============================================================================
   services.xserver = {
     enable = true;
     xkb.layout = "fr";
   };
 
+  # GDM & GNOME (Wayland)
   services.displayManager.gdm.enable = true;
   services.desktopManager.gnome.enable = true;
 
+  # Hyprland
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
   };
 
+  # Integration
   services.gnome.gnome-keyring.enable = true;
-
   xdg.portal = {
     enable = true;
     xdgOpenUsePortal = true;
@@ -111,9 +120,10 @@
     ];
   };
 
-  # ---------------------------------------------------------------------------
-  # Audio / Bluetooth / Graphics
-  # ---------------------------------------------------------------------------
+  # ============================================================================
+  # HARDWARE SUPPORT (Audio, BT, Graphics)
+  # ============================================================================
+  # Audio (Pipewire)
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -121,28 +131,38 @@
     pulse.enable = true;
   };
 
+  # Bluetooth
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
 
+  # Graphics
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
   };
 
-  # ---------------------------------------------------------------------------
-  # Minimal System Packages
-  # ---------------------------------------------------------------------------
+  # ============================================================================
+  # QUALITY OF LIFE & SYSTEM PACKAGES
+  # ============================================================================
+  programs.zoxide.enable = true;
+  programs.direnv.enable = true;
+  programs.direnv.nix-direnv.enable = true;
+  services.logrotate.enable = true;
+
+  # Handle Home Manager collisions
+  home-manager.backupFileExtension = "bak";
+
+  # Minimal System Packages (Core utilities only)
   environment.systemPackages = with pkgs; [
     vim neovim
     git wget curl
     tree ripgrep fd fzf
     fastfetch btop htop
-
     kitty foot
     firefox
-
     wl-clipboard
     pavucontrol
+    networkmanager
   ];
 
   environment.sessionVariables = {
@@ -150,8 +170,5 @@
     EDITOR = "vim";
   };
 
-  # ---------------------------------------------------------------------------
-  # State
-  # ---------------------------------------------------------------------------
   system.stateVersion = "24.05";
 }

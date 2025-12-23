@@ -1,28 +1,38 @@
 { config, pkgs, ... }:
 
 {
-  services.emacs = {
-    enable = true;
-    package = pkgs.emacs29-pgtk;
-  };
+  # ============================================================================
+  # EMACS DAEMON
+  # ============================================================================
+  # Starts Emacs server on login for instant client startup
+  services.emacs.enable = true;
+  services.emacs.package = pkgs.emacs-pgtk; # Pure GTK build (Wayland native)
 
+  # ============================================================================
+  # TOOLCHAIN & DEPENDENCIES
+  # ============================================================================
   environment.systemPackages = with pkgs; [
-    emacs29-pgtk
+    # Core Editor
+    emacs-pgtk
 
-    # Useful deps for Emacs workflows
-    ripgrep fd
-    clang cmake gnumake libtool
+    # Performance / Compilation Tools (Required for vterm, treesitter)
+    ripgrep
+    fd
+    clang
+    cmake
+    gnumake
+    libtool
     sqlite
 
-    # LSP (lightweight baseline)
-    nil
+    # LSP & Language Servers (Minimal set, others via devShells)
+    nil # Nix LSP
     nodePackages.bash-language-server
 
-    # Org / Docs
+    # Publishing & Org-Mode Tools
     pandoc
     graphviz
 
-    # LaTeX (medium profile; avoid full unless you really need it)
+    # LaTeX (Medium scheme to balance size/features)
     (texlive.combine {
       inherit (texlive)
         scheme-medium
