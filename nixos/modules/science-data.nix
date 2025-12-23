@@ -2,22 +2,32 @@
 
 {
   environment.systemPackages = with pkgs; [
-    # Data & Notes
-    obsidian
-    n8n
-    dbeaver-bin
+    # ==========================================================================
+    # KNOWLEDGE & DATABASE MANAGEMENT
+    # ==========================================================================
+    obsidian    # Note taking / Second Brain
+    dbeaver-bin # Universal Database Tool
 
-    # IoT / Embedded
+    # ==========================================================================
+    # EMBEDDED SYSTEMS / IOT
+    # ==========================================================================
     arduino-ide
     arduino-cli
-    esptool
-    minicom
+    esptool     # ESP8266/ESP32 Flasher
+    minicom     # Serial Monitor
 
-    # Monitoring (packages only; services are better managed in dedicated modules)
+    # ==========================================================================
+    # OBSERVABILITY (CLI/Binaries)
+    # ==========================================================================
+    # Note: Full services should be declared in systemd units if needed constantly
     influxdb2
     grafana
 
-    # CUDA toolkit (tools; CUDA runtime/driver comes from your NVIDIA stack)
+    # ==========================================================================
+    # GPU COMPUTING TOOLS
+    # ==========================================================================
+    # Provides command line tools (nvcc, etc). 
+    # The actual driver is handled by the Nvidia module.
     cudatoolkit
   ];
 }
