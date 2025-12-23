@@ -3,11 +3,11 @@
 {
   programs.starship = {
     enable = true;
-    
+
     settings = {
       add_newline = false;
-      
-      # Ton thème Orbital Mist
+
+      # Custom Cyberpunk Format
       format = builtins.concatStringsSep "" [
         "[░▒▓](#00f0ff)"
         "[  ](bg:#00f0ff fg:#090c0c)"
@@ -26,7 +26,7 @@
 
       character = {
         success_symbol = "[ ❯](bold #00f0ff)";
-        error_symbol = "[ ❯](bold #ff0055)";
+        error_symbol   = "[ ❯](bold #ff0055)";
       };
     };
   };
