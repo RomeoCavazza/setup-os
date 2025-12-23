@@ -1,18 +1,24 @@
-{ config, ... }:
+{ config, lib, pkgs, ... }:
+
 {
   services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.nvidia = {
     modesetting.enable = true;
 
-    open = true;
+    # Keep as default; set false if regressions
+    open = lib.mkDefault true;
+
     nvidiaSettings = true;
     nvidiaPersistenced = true;
 
-    powerManagement.enable = true;
-    powerManagement.finegrained = true;
+    powerManagement = {
+      enable = true;
+      finegrained = true;
+    };
 
-    package = config.boot.kernelPackages.nvidiaPackages.beta;
+    # Default: stable; override in configuration if you explicitly want beta
+    package = lib.mkDefault config.boot.kernelPackages.nvidiaPackages.stable;
 
     prime = {
       offload = {

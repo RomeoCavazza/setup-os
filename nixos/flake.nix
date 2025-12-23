@@ -1,7 +1,8 @@
 {
-  description = "NixOS God Tier Config";
+  description = "NixOS Workstation (GNOME + Hyprland, Dev, Science, AI)";
 
   inputs = {
+    # Pin stable via flake.lock
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     home-manager.url = "github:nix-community/home-manager";
@@ -11,32 +12,27 @@
   outputs = { self, nixpkgs, home-manager, ... }@inputs:
     let
       system = "x86_64-linux";
-      pkgs = import nixpkgs {
-        inherit system;
-        config = {
-          allowUnfree = true;
-          cudaSupport = true;
-        };
-      };
-    in {
+    in
+    {
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
         inherit system;
+
+        # Allow passing inputs into modules when needed
         specialArgs = { inherit inputs; };
+
         modules = [
+          # Base system
           ./configuration.nix
 
+          # Home Manager (integrated)
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.tco = { pkgs, ... }: {
-              home.stateVersion = "24.05";
-            };
+
+            home-manager.users.tco = import ./home/tco/home.nix;
           }
         ];
       };
-
-      devShells.${system}.datascience =
-        import ./devshells/datascience.nix { inherit pkgs; };
     };
 }
