@@ -41,6 +41,27 @@
     
     # Fonts (Fixes Doom Emacs warnings)
     nerd-fonts.symbols-only
+
+    # ==========================================
+    # 📊 MONITORING & VISUALS (Le Tableau de Bord)
+    # ==========================================
+    
+    # CPU / RAM Monitors
+    btop        # Le plus beau (Thèmes Cyberpunk, support GPU)
+    bottom      # "btm" - Une alternative en Rust très légère
+    htop        # Le classique indémodable
+    atop        # Pour l'analyse forensique (disque/réseau avancé)
+    glances     # Le couteau suisse (monitoring complet Python)
+
+    # GPU Monitor (Vital pour ta RTX 5070 Ti)
+    nvtopPackages.full # Affiche les graphs d'utilisation GPU NVIDIA
+
+    # Fun / Rice (Pour frimer quand tu ne codes pas)
+    cmatrix     # La pluie numérique de Matrix
+    cbonsai     # Fait pousser un arbre dans le terminal (zen)
+    pipes       # Des tuyaux qui se dessinent (screensaver classique)
+    sl          # Une locomotive vapeur si tu te trompes en tapant "ls" (optionnel mais drôle)
+    hollywood   # Simule un écran de hacker de film
   ];
 
   # ============================================================================
