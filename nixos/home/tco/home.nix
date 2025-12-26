@@ -156,6 +156,6 @@
     terminal = false;
     categories = [ "Development" "TextEditor" "IDE" ];
     # L'icône pointe vers ton fichier SVG
-    icon = "/home/tco/.local/share/icons/cursor-icon.svg"; 
+    icon = "/home/tco/.local/share/icons/cursor-icon.png"; 
   };
 }
