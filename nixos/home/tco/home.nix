@@ -20,6 +20,9 @@
     eza         # ls replacement
     fzf         # Fuzzy finder
     
+    # Lanceur d'AppImage
+    appimage-run
+
     # Communication
     discord
 
@@ -120,8 +123,8 @@
       g  = "git";
       
       # App Wrappers
-      cursor = "appimage-run ~/.local/bin/appimages/Cursor.AppImage";
-      
+      cursor = "appimage-run ~/.local/bin/appimages/Cursor.AppImage --enable-features=UseOzonePlatform --ozone-platform=wayland";
+
       # Nix Development Shortcuts
       devai = "nix develop /etc/nixos#ai";
       devemb = "nix develop /etc/nixos#embedded";
@@ -141,4 +144,17 @@
       touch "$HOME/.cache/wal/colors-foot.ini"
     fi
   '';
+
+  # ============================================================================
+  # DESKTOP ENTRIES (Pour Rofi / Waybar)
+  # ============================================================================
+  xdg.desktopEntries.cursor = {
+    name = "Cursor";
+    genericName = "AI Code Editor";
+    comment = "Built for AI coding";
+    exec = "appimage-run /home/tco/.local/bin/appimages/Cursor.AppImage --enable-features=UseOzonePlatform --ozone-platform=wayland";
+    terminal = false;
+    categories = [ "Development" "TextEditor" "IDE" ];
+    icon = "vscode"; # On emprunte l'icône VSCode pour l'instant
+  };
 }
