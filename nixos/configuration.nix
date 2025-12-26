@@ -1,187 +1,175 @@
-# ==============================================================================
-#  HYPRLAND MAIN CONFIGURATION
-# ==============================================================================
+{ config, lib, pkgs, ... }:
 
-# --- MONITOR CONFIGURATION ---
-monitor = ,preferred,auto,1.25
+{
+  imports = [
+    # Hardware Scan
+    ./hardware-configuration.nix
 
-# --- AUTOSTART ---
-exec-once = waybar
+    # --- Modules: Core ---
+    ./modules/nvidia-prime.nix
+    ./modules/virtualisation.nix
+    ./modules/emacs.nix
+    ./modules/science-data.nix
+    ./modules/launcher.nix
+    ./modules/starship.nix
 
-# --- ENVIRONMENT VARIABLES ---
-env = LIBSEAT_BACKEND,logind
+    # --- Modules: Services ---
+    ./modules/databases.nix
+    ./modules/ollama.nix
+    ./modules/nginx.nix
+    # ./modules/observability.nix
+  ];
 
-# --- TOOLS & APPLICATIONS ---
-$terminal    = foot
-$fileManager = nemo
-$menu        = $HOME/.config/rofi/scripts/rofi-push.sh 
-$powermenu   = $HOME/.config/rofi/scripts/rofi-push.sh
+  # ============================================================================
+  # BOOTLOADER (Systemd-boot)
+  # ============================================================================
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.editor = false;
+  boot.loader.systemd-boot.configurationLimit = 1; # Keep only current gen to save space
+  boot.loader.timeout = null; # Force menu display
+  boot.loader.efi.canTouchEfiVariables = true;
 
-# ==============================================================================
-#  APPEARANCE & THEME
-# ==============================================================================
-general {
-    layout = dwindle
-    gaps_in = 8
-    gaps_out = 16
-    border_size = 2
-    
-    # Colors
-    col.active_border = rgba(94e2d5ff)
-    col.inactive_border = rgba(595959aa)
-    
-    resize_on_border = true
-}
+  # Windows 11 Entry Override
+  boot.loader.systemd-boot.extraEntries."windows.conf" = ''
+    title Windows 11
+    sort-key windows
+    efi /EFI/Microsoft/Boot/bootmgfw.efi
+  '';
 
-decoration {
-    rounding = 10
-    active_opacity = 0.90
-    inactive_opacity = 0.80
+  # Enforce loader configuration (Disable auto-windows to avoid duplicates, enable firmware UI)
+  boot.loader.systemd-boot.extraInstallCommands = ''
+    ${pkgs.coreutils}/bin/mkdir -p /boot/loader
+    ${pkgs.coreutils}/bin/cat > /boot/loader/loader.conf <<'EOF'
+timeout menu-force
+editor no
+auto-entries no
+auto-firmware yes
+EOF
+    ${pkgs.coreutils}/bin/chmod 0644 /boot/loader/loader.conf || true
+  '';
 
-    blur {
-        enabled = true
-        size = 6
-        passes = 3
-        new_optimizations = true
-        ignore_opacity = true
-        noise = 0.01
-        contrast = 0.9
-        brightness = 0.8
-        vibrancy = 0.1696
-    }
+  # Kernel Parameters (Crucial for Nvidia Wayland)
+  boot.kernelParams = [ "nvidia-drm.modeset=1" ];
 
-    shadow {
-        enabled = true
-        range = 4
-        render_power = 3
-        color = rgba(1a1a1aee)
-    }
-}
+  # ============================================================================
+  # NIX SETTINGS
+  # ============================================================================
+  nixpkgs.config.allowUnfree = true;
 
-animations {
-    enabled = yes
-    bezier = myBezier, 0.05, 0.9, 0.1, 1.05
-    
-    animation = windows, 1, 3, myBezier
-    animation = windowsOut, 1, 3, default, popin 80%
-    animation = border, 1, 3, default
-    animation = fade, 1, 3, default
-    animation = workspaces, 1, 3, default
-}
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+    auto-optimise-store = true;
+    warn-dirty = false;
+  };
 
-dwindle {
-    pseudotile = true
-    preserve_split = true
-}
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 7d";
+  };
 
-misc {
-    force_default_wallpaper = 2
-    disable_hyprland_logo = false
-}
+  # ============================================================================
+  # SYSTEM CORE (Locale, Network, User)
+  # ============================================================================
+  networking.hostName = "nixos";
+  networking.networkmanager.enable = true;
 
-# ==============================================================================
-#  INPUT DEVICES
-# ==============================================================================
-input {
-    kb_layout = fr
-    kb_options = caps:ctrl_modifier
-    follow_mouse = 1
-    natural_scroll = yes
-    
-    touchpad {
-        natural_scroll = yes
-    }
-}
+  time.timeZone = "Europe/Paris";
+  i18n.defaultLocale = "fr_FR.UTF-8";
+  console.keyMap = "fr";
 
-# ==============================================================================
-#  WINDOW & LAYER RULES
-# ==============================================================================
+  users.users.tco = {
+    isNormalUser = true;
+    shell = pkgs.bash;
+    extraGroups = [
+      "wheel"           # Sudo
+      "networkmanager"  # Networking
+      "video"           # Graphics
+      "docker"          # Containers
+      "libvirtd"        # VMs
+      "dialout"         # Serial/Arduino
+    ];
+  };
 
-# --- ROFI DOCK STYLING ---
-windowrulev2 = float, class:^(Rofi)$
-windowrulev2 = move 0 0, class:^(Rofi)$
-windowrulev2 = pin, class:^(Rofi)$
-windowrulev2 = noborder, class:^(Rofi)$
-windowrulev2 = noshadow, class:^(Rofi)$
-windowrulev2 = size 110 100%, class:^(Rofi)$
-# Force opacity for blur effect
-windowrulev2 = opacity 0.85 override 0.85 override, class:^(Rofi)$
+  # ============================================================================
+  # DESKTOP ENVIRONMENT
+  # ============================================================================
+  services.xserver = {
+    enable = true;
+    xkb.layout = "fr";
+  };
 
-# --- WAYBAR STYLING ---
-layerrule = blur, waybar
-layerrule = ignorezero, waybar
+  # GDM & GNOME (Backend services & Fallback)
+  services.displayManager.gdm.enable = true;
+  services.desktopManager.gnome.enable = true;
 
-# ==============================================================================
-#  KEYBINDINGS
-# ==============================================================================
-$mod = SUPER
+  # Hyprland (The Real Desktop)
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
 
-# --- Core Actions ---
-bind = $mod, Return, exec, $terminal
-bind = $mod, Tab,    exec, $fileManager
-bind = $mod, Space,  exec, $powermenu
-bind = $mod, Q,      killactive
-bind = $mod, F,      togglefloating
-bind = $mod, V,      fullscreen, 0
+  # Integration & Portals (Screensharing, File Dialogs)
+  services.gnome.gnome-keyring.enable = true;
+  xdg.portal = {
+    enable = true;
+    xdgOpenUsePortal = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-hyprland
+      xdg-desktop-portal-gtk
+    ];
+  };
 
-# --- AI Agent Launcher (Specific) ---
-bind = $mod, twosuperior, exec, foot -e bash -lc "cd /home/tco/dev/ai-lab && nix develop -c python agent_cli.py"
+  # ============================================================================
+  # HARDWARE SUPPORT (Audio, BT, Graphics)
+  # ============================================================================
+  # Audio (Pipewire is the future)
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
 
-# --- Layout Management ---
-bind = $mod, less, layoutmsg, togglesplit
+  # Bluetooth
+  hardware.bluetooth.enable = true;
+  services.blueman.enable = true;
 
-# --- Focus Movement ---
-bind = $mod, left,  movefocus, l
-bind = $mod, right, movefocus, r
-bind = $mod, up,    movefocus, u
-bind = $mod, down,  movefocus, d
+  # Graphics (OpenGL/Vulkan)
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
 
-# --- Window Movement (Super + Ctrl) ---
-bind = SUPER CTRL, Left,  moveactive, -50 0
-bind = SUPER CTRL, Right, moveactive, 50 0
-bind = SUPER CTRL, Up,    moveactive, 0 -50
-bind = SUPER CTRL, Down,  moveactive, 0 50
+  # ============================================================================
+  # QUALITY OF LIFE & SYSTEM PACKAGES
+  # ============================================================================
+  programs.zoxide.enable = true; # Smarter 'cd'
+  programs.direnv.enable = true; # Auto-env loading
+  programs.direnv.nix-direnv.enable = true;
+  services.logrotate.enable = true;
 
-# --- Window Swapping (Super + Shift) ---
-bind = SUPER SHIFT, Left,  swapwindow, l
-bind = SUPER SHIFT, Right, swapwindow, r
-bind = SUPER SHIFT, Up,    swapwindow, u
-bind = SUPER SHIFT, Down,  swapwindow, d
+  # Handle Home Manager collisions during rebuilds
+  home-manager.backupFileExtension = "bak";
 
-# --- Window Resizing (Super + Alt) ---
-bind = SUPER ALT, Left,  resizeactive, -30 0
-bind = SUPER ALT, Right, resizeactive, 30 0
-bind = SUPER ALT, Up,    resizeactive, 0 -30
-bind = SUPER ALT, Down,  resizeactive, 0 30
+  # Minimal System Packages (Core utilities only)
+  environment.systemPackages = with pkgs; [
+    vim neovim
+    git wget curl
+    tree ripgrep fd fzf
+    fastfetch btop htop
+    kitty foot
+    firefox
+    wl-clipboard
+    pavucontrol
+    networkmanager
+  ];
 
-# --- Mouse Bindings ---
-bindm = $mod, mouse:272, movewindow
-bindm = $mod, mouse:273, resizewindow
+  # Session Variables
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1"; # Force Electron apps to use Wayland
+    EDITOR = "vim";
+  };
 
-# --- Workspaces (French Azerty) ---
-bind = $mod, ampersand, workspace, 1
-bind = $mod, eacute,    workspace, 2
-bind = $mod, quotedbl,  workspace, 3
-bind = $mod, apostrophe, workspace, 4
-bind = $mod, parenleft, workspace, 5
-
-bind = $mod SHIFT, ampersand, movetoworkspace, 1
-bind = $mod SHIFT, eacute,    movetoworkspace, 2
-bind = $mod SHIFT, quotedbl,  movetoworkspace, 3
-bind = $mod SHIFT, apostrophe, movetoworkspace, 4
-bind = $mod SHIFT, parenleft, movetoworkspace, 5
-
-# --- Media & Screenshots ---
-bind = , F1, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
-bind = , F2, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
-bind = , F3, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
-bind = SUPER SHIFT, S, exec, grim -g "$(slurp)" - | swappy -f -
-
-# ==============================================================================
-#  FIX PIXELISATION (XWAYLAND)
-# ==============================================================================
-# Empêche Hyprland d'étirer les vieilles applis (Cursor, Discord, etc.)
-# Résultat : Elles seront NETTES, mais peut-être petites (il faudra zoomer dedans).
-xwayland {
-  force_zero_scaling = true
+  system.stateVersion = "24.05";
 }
