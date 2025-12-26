@@ -155,6 +155,7 @@
     exec = "appimage-run /home/tco/.local/bin/appimages/Cursor.AppImage --enable-features=UseOzonePlatform --ozone-platform=wayland";
     terminal = false;
     categories = [ "Development" "TextEditor" "IDE" ];
-    icon = "vscode"; # On emprunte l'icône VSCode pour l'instant
+    # L'icône pointe vers ton fichier SVG
+    icon = "/home/tco/.local/share/icons/cursor-icon.svg"; 
   };
 }
