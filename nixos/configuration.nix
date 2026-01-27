@@ -18,6 +18,9 @@
     ./modules/ollama.nix
     ./modules/nginx.nix
     # ./modules/observability.nix
+
+    # --- Modules: Apps ---
+    ./modules/steam.nix
   ];
 
   # ============================================================================
@@ -25,8 +28,8 @@
   # ============================================================================
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.editor = false;
-  boot.loader.systemd-boot.configurationLimit = 1; # Keep only current gen to save space
-  boot.loader.timeout = null; # Force menu display
+  boot.loader.systemd-boot.configurationLimit = 1;
+  boot.loader.timeout = null;
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Windows 11 Entry Override
@@ -36,7 +39,7 @@
     efi /EFI/Microsoft/Boot/bootmgfw.efi
   '';
 
-  # Enforce loader configuration (Disable auto-windows to avoid duplicates, enable firmware UI)
+  # Enforce loader configuration
   boot.loader.systemd-boot.extraInstallCommands = ''
     ${pkgs.coreutils}/bin/mkdir -p /boot/loader
     ${pkgs.coreutils}/bin/cat > /boot/loader/loader.conf <<'EOF'
@@ -48,8 +51,16 @@ EOF
     ${pkgs.coreutils}/bin/chmod 0644 /boot/loader/loader.conf || true
   '';
 
-  # Kernel Parameters (Crucial for Nvidia Wayland)
-  boot.kernelParams = [ "nvidia-drm.modeset=1" ];
+  # Kernel Parameters
+  boot.kernelParams = [
+    "nvidia-drm.modeset=1"
+    "pcie_aspm=off"
+  ];
+
+  boot.blacklistedKernelModules = [
+    "iTCO_wdt"
+    "iTCO_vendor_support"
+  ];
 
   # ============================================================================
   # NIX SETTINGS
@@ -72,7 +83,9 @@ EOF
   # SYSTEM CORE (Locale, Network, User)
   # ============================================================================
   networking.hostName = "nixos";
+
   networking.networkmanager.enable = true;
+  networking.networkmanager.wifi.powersave = false;
 
   time.timeZone = "Europe/Paris";
   i18n.defaultLocale = "fr_FR.UTF-8";
@@ -99,18 +112,19 @@ EOF
     xkb.layout = "fr";
   };
 
-  # GDM & GNOME (Backend services & Fallback)
+  # GDM & GNOME
   services.displayManager.gdm.enable = true;
   services.desktopManager.gnome.enable = true;
 
-  # Hyprland (The Real Desktop)
+  # Hyprland
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
   };
 
-  # Integration & Portals (Screensharing, File Dialogs)
+  # Integration & Portals
   services.gnome.gnome-keyring.enable = true;
+
   xdg.portal = {
     enable = true;
     xdgOpenUsePortal = true;
@@ -121,9 +135,10 @@ EOF
   };
 
   # ============================================================================
-  # HARDWARE SUPPORT (Audio, BT, Graphics)
+  # HARDWARE SUPPORT (Audio, BT, Graphics, Firmware)
   # ============================================================================
-  # Audio (Pipewire is the future)
+  hardware.enableRedistributableFirmware = true;
+
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -131,43 +146,86 @@ EOF
     pulse.enable = true;
   };
 
-  # Bluetooth
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
 
-  # Graphics (OpenGL/Vulkan)
+  # Graphics (OpenGL/Vulkan) - 32-bit needed for Steam/Proton
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
   };
 
   # ============================================================================
+  # SECURITY / POLKIT
+  # ============================================================================
+  security.polkit.enable = true;
+
+  # Start a polkit agent in the user session
+  systemd.user.services.polkit-gnome-authentication-agent-1 = {
+    description = "polkit-gnome-authentication-agent-1";
+    wantedBy = [ "graphical-session.target" ];
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+      Restart = "on-failure";
+      RestartSec = 1;
+    };
+  };
+
+  # ============================================================================
+  # SHUTDOWN / REBOOT RELIABILITY
+  # ============================================================================
+  services.logind.settings.Login.KillUserProcesses = true;
+
+  systemd.settings.Manager = {
+    DefaultTimeoutStopSec = "15s";
+  };
+
+  # ============================================================================
   # QUALITY OF LIFE & SYSTEM PACKAGES
   # ============================================================================
-  programs.zoxide.enable = true; # Smarter 'cd'
-  programs.direnv.enable = true; # Auto-env loading
+  programs.zoxide.enable = true;
+  programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
   services.logrotate.enable = true;
 
   # Handle Home Manager collisions during rebuilds
   home-manager.backupFileExtension = "bak";
 
-  # Minimal System Packages (Core utilities only)
   environment.systemPackages = with pkgs; [
-    vim neovim
+    # Cursor themes available system-wide
+    adwaita-icon-theme
+    bibata-cursors
+
+    vim neovim node2nix
     git wget curl
+    iw ethtool pciutils usbutils
     tree ripgrep fd fzf
     fastfetch btop htop
     kitty foot
-    firefox
+    firefox google-chrome
     wl-clipboard
     pavucontrol
     networkmanager
+    polkit_gnome
+
+    # Python + pip (Nix way)
+    python3
+    python3Packages.pip
+    python3Packages.virtualenv
+    pipx
+
+    # IDE
+    arduino-ide
+
+    # (optionnel mais recommandé pour Steam/Wayland)
+    mangohud
+    gamescope
+    vulkan-tools
   ];
 
-  # Session Variables
   environment.sessionVariables = {
-    NIXOS_OZONE_WL = "1"; # Force Electron apps to use Wayland
+    NIXOS_OZONE_WL = "1";
     EDITOR = "vim";
   };
 
