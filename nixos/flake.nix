@@ -53,7 +53,8 @@
         ai = pkgs.mkShell {
           name = "ai-lab";
           buildInputs = with pkgs; [
-            python311
+            pkgs.python311
+            pkgs.git
             # Native compilation dependencies
             stdenv.cc.cc.lib
             zlib
@@ -63,6 +64,11 @@
             cudaPackages.cudnn
             cudaPackages.libcublas
             linuxPackages.nvidia_x11
+            # Agentic
+            ps.pip
+            ps.openai
+            ps.langchain
+            ps.langgraph
           ];
 
           # Environment Setup for CUDA visibility
