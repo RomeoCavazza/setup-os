@@ -1,26 +1,18 @@
 { config, lib, pkgs, ... }:
 
 {
-  # ============================================================================
-  # OLLAMA SERVICE
-  # ============================================================================
   services.ollama = {
     enable = true;
-    host = "127.0.0.1";
-    port = 11434;
 
-    # Acceleration: Explicitly use the CUDA-enabled package
     package = pkgs.ollama-cuda;
   };
 
-  # ============================================================================
-  # TOOLS
-  # ============================================================================
-  environment.systemPackages = with pkgs; [
-    pkgs.ollama-cuda # CLI client
-    jq               # JSON parsing for API responses
-  ];
-
-  # Networking: Uncomment to expose Ollama to LAN
-  # networking.firewall.allowedTCPPorts = [ 11434 ];
+  systemd.services.ollama.serviceConfig = {
+    Environment = [
+      "OLLAMA_NUM_CTX=32768"
+      "OLLAMA_KEEP_ALIVE=24h"
+      "OLLAMA_FLASH_ATTENTION=1"
+      "OLLAMA_KV_CACHE_TYPE=q8_0"
+    ];
+  };
 }

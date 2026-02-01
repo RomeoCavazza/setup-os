@@ -46,4 +46,20 @@
       notify-keyspace-events = "Ex";
     };
   };
+
+  # ============================================================================
+  # Qdrant (RAG Nvim)
+  # ============================================================================
+  services.qdrant = {
+    enable = true;
+    settings = {
+      service = {
+        host = "127.0.0.1";
+        http_port = 6333;
+      };
+      storage = {
+        storage_path = "/var/lib/qdrant";
+      };
+    };
+  };
 }

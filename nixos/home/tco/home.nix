@@ -9,62 +9,111 @@
   home.stateVersion = "25.05";
 
   # ============================================================================
-  # USER PACKAGES (CLI Tools & Utils)
+  # DESKTOP SETTINGS (GNOME - Cursor)
+  # ============================================================================
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      cursor-theme = "Adwaita";
+      cursor-size = 24;
+    };
+  };
+
+  # ============================================================================
+  # PACKAGES (Grouped by Theme)
   # ============================================================================
   home.packages = with pkgs; [
-    # Modern CLI Replacements
-    ripgrep     # grep replacement
-    jq          # JSON processor
-    yazi        # Terminal file manager
-    bat         # cat replacement
-    eza         # ls replacement
-    fzf         # Fuzzy finder
-    
-    # Lanceur d'AppImage
-    appimage-run
+    # --------------------------------------------------------------------------
+    # Core CLI / Productivity
+    # --------------------------------------------------------------------------
+    bat
+    eza
+    fd
+    fzf
+    jq
+    ripgrep
+    yazi
 
-    # Communication
-    discord
+    # --------------------------------------------------------------------------
+    # Nix
+    # --------------------------------------------------------------------------
+    dockfmt
+    nixfmt-rfc-style
+    shellcheck
+    home-manager
+    shfmt
 
-    # --- EMACS DOOM TOOLS (Required for LSP/Linting) ---
-    nixfmt-rfc-style  # Nix formatter
-    shfmt             # Bash formatter
-    shellcheck        # Bash linter
-    dockfmt           # Dockerfile formatter
-    
-    # Python Basics (for Emacs support)
+    # --------------------------------------------------------------------------
+    # Editor / Code
+    # --------------------------------------------------------------------------
+    zed-editor
+    neovim
+    git
+    lua-language-server
+    lazygit
+    aider-chat
+    desktop-file-utils
+
+    cargo
+    openssl
+    pkg-config
+    rust-analyzer
+    rustc
+    rustfmt
+
     black
     isort
 
-    # Correction Orthographique (Pour Emacs/Flyspell)
+    typescript-language-server
+    vscode-langservers-extracted
+    tailwindcss-language-server
+
+    nodejs_22
+    pnpm
+    yarn
+
+    # --------------------------------------------------------------------------
+    # Spelling / Dictionaries
+    # --------------------------------------------------------------------------
     aspell
-    aspellDicts.fr
     aspellDicts.en
-    aspellDicts.en-computers # Vocabulaire technique
-    
-    # Fonts (Fixes Doom Emacs warnings)
+    aspellDicts.en-computers
+    aspellDicts.fr
+
+    # --------------------------------------------------------------------------
+    # Fonts
+    # --------------------------------------------------------------------------
     nerd-fonts.symbols-only
 
-    # ==========================================
-    # 📊 MONITORING & VISUALS (Le Tableau de Bord)
-    # ==========================================
-    
-    # CPU / RAM Monitors
-    btop        # Le plus beau (Thèmes Cyberpunk, support GPU)
-    bottom      # "btm" - Une alternative en Rust très légère
-    htop        # Le classique indémodable
-    atop        # Pour l'analyse forensique (disque/réseau avancé)
-    glances     # Le couteau suisse (monitoring complet Python)
+    # --------------------------------------------------------------------------
+    # Monitoring / Observability (local)
+    # --------------------------------------------------------------------------
+    atop
+    bottom
+    btop
+    glances
+    htop
+    nvtopPackages.full
 
-    # GPU Monitor (Vital pour ta RTX 5070 Ti)
-    nvtopPackages.full # Affiche les graphs d'utilisation GPU NVIDIA
+    # --------------------------------------------------------------------------
+    # Apps / Desktop
+    # --------------------------------------------------------------------------
+    appimage-run
+    discord
 
-    # Fun / Rice (Pour frimer quand tu ne codes pas)
-    cmatrix     # La pluie numérique de Matrix
-    cbonsai     # Fait pousser un arbre dans le terminal (zen)
-    pipes       # Des tuyaux qui se dessinent (screensaver classique)
-    sl          # Une locomotive vapeur si tu te trompes en tapant "ls" (optionnel mais drôle)
-    hollywood   # Simule un écran de hacker de film
+    # --------------------------------------------------------------------------
+    # Terminal toys
+    # --------------------------------------------------------------------------
+    cbonsai
+    cmatrix
+    hollywood
+    pipes
+    sl
+
+    # --------------------------------------------------------------------------
+    # CAD / Electronics
+    # --------------------------------------------------------------------------
+    freecad-wayland
+    kicad
   ];
 
   # ============================================================================
@@ -73,25 +122,34 @@
   programs.vscode = {
     enable = true;
     package = pkgs.vscode;
-    
-    # Extensions (Declarative management)
-    extensions = with pkgs.vscode-extensions; [
-      ms-python.python
-      ms-toolsai.jupyter
-      ms-vscode.cpptools
-      rust-lang.rust-analyzer
-      esbenp.prettier-vscode
-      jnoortheen.nix-ide
-      mkhl.direnv
-    ];
 
-    # Settings (JSON)
-    userSettings = {
-      "editor.fontFamily" = "'JetBrainsMono Nerd Font', 'Droid Sans Mono', 'monospace'";
-      "editor.fontLigatures" = true;
-      "window.titleBarStyle" = "custom";
-      "terminal.integrated.fontFamily" = "'JetBrainsMono Nerd Font'";
-      "nix.enableLanguageServer" = true;
+    profiles.default = {
+      extensions = with pkgs.vscode-extensions; [
+        # Python / Jupyter
+        ms-python.python
+        ms-toolsai.jupyter
+
+        # C/C++
+        ms-vscode.cpptools
+
+        # Rust
+        rust-lang.rust-analyzer
+
+        # Web / Formatting
+        esbenp.prettier-vscode
+
+        # Nix
+        jnoortheen.nix-ide
+        mkhl.direnv
+      ];
+
+      userSettings = {
+        "editor.fontFamily" = "'JetBrainsMono Nerd Font', 'Droid Sans Mono', 'monospace'";
+        "editor.fontLigatures" = true;
+        "nix.enableLanguageServer" = true;
+        "terminal.integrated.fontFamily" = "'JetBrainsMono Nerd Font'";
+        "window.titleBarStyle" = "custom";
+      };
     };
   };
 
@@ -100,9 +158,13 @@
   # ============================================================================
   programs.git = {
     enable = true;
-    userName = "Romeo Cavazza";
-    userEmail = "ton.email@exemple.com"; # TODO: Update with real email
-    extraConfig = {
+
+    settings = {
+      user = {
+        name = "Romeo Cavazza";
+        email = "ton.email@exemple.com"; # TODO: remplace par ton email réel
+      };
+
       init.defaultBranch = "main";
       pull.rebase = true;
     };
@@ -115,38 +177,36 @@
     enable = true;
     enableCompletion = true;
 
-    # Aliases & Shortcuts
     shellAliases = {
-      # Modern replacements
+      g = "git";
       ll = "eza -l --icons";
       ls = "eza --icons";
-      g  = "git";
-      
-      # App Wrappers
+
+      # Cursor (AppImage)
       cursor = "appimage-run ~/.local/bin/appimages/Cursor.AppImage --enable-features=UseOzonePlatform --ozone-platform=wayland";
 
-      # Nix Development Shortcuts
+      # Dev shells (flakes)
       devai = "nix develop /etc/nixos#ai";
       devemb = "nix develop /etc/nixos#embedded";
-      
-      # System Management
-      rebuild = "sudo nixos-rebuild switch --flake /etc/nixos#nixos";
+
+      # NixOS rebuild
+      rebuild = "sudo nixos-rebuild switch --flake /etc/nixos";
     };
   };
-  
+
   # ============================================================================
   # SYSTEM ACTIVATION SCRIPTS
   # ============================================================================
-  # Ensure Pywal cache directory exists to prevent Foot terminal errors
-  home.activation.ensurePywalFootFile = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    mkdir -p "$HOME/.cache/wal"
-    if [ ! -f "$HOME/.cache/wal/colors-foot.ini" ]; then
-      touch "$HOME/.cache/wal/colors-foot.ini"
-    fi
-  '';
+  home.activation.ensurePywalFootFile =
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      mkdir -p "$HOME/.cache/wal"
+      if [ ! -f "$HOME/.cache/wal/colors-foot.ini" ]; then
+        touch "$HOME/.cache/wal/colors-foot.ini"
+      fi
+    '';
 
   # ============================================================================
-  # DESKTOP ENTRIES (Pour Rofi / Waybar)
+  # DESKTOP ENTRIES (Rofi / Waybar)
   # ============================================================================
   xdg.desktopEntries.cursor = {
     name = "Cursor";
@@ -155,7 +215,6 @@
     exec = "appimage-run /home/tco/.local/bin/appimages/Cursor.AppImage --enable-features=UseOzonePlatform --ozone-platform=wayland";
     terminal = false;
     categories = [ "Development" "TextEditor" "IDE" ];
-    # L'icône pointe vers ton fichier SVG
-    icon = "/home/tco/.local/share/icons/cursor-icon.png"; 
+    icon = "/home/tco/.local/share/icons/cursor-icon.png";
   };
 }
