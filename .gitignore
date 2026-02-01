@@ -24,3 +24,16 @@ secrets.nix
 # Fichiers de backup
 *.backup
 *.old
+
+# Python
+.venv/
+**/.venv/
+__pycache__/
+*.pyc
+
+# direnv
+.direnv/
+
+# Nix results
+result
+result-*

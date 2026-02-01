@@ -16,7 +16,7 @@
 
     # Enable Nvidia Settings menu
     nvidiaSettings = true;
-    
+
     # Experimental persistence daemon (helps with boot times/wake)
     nvidiaPersistenced = true;
 
