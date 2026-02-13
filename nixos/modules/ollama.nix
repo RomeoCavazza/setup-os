@@ -4,14 +4,13 @@
   services.ollama = {
     enable = true;
 
-    package = pkgs.ollama-cuda;
+    package = pkgs.ollama;
   };
 
   systemd.services.ollama.serviceConfig = {
     Environment = [
       "OLLAMA_NUM_CTX=32768"
       "OLLAMA_KEEP_ALIVE=24h"
-      "OLLAMA_FLASH_ATTENTION=1"
       "OLLAMA_KV_CACHE_TYPE=q8_0"
     ];
   };

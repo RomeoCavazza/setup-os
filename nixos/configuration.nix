@@ -18,9 +18,6 @@
     ./modules/ollama.nix
     ./modules/nginx.nix
     # ./modules/observability.nix
-
-    # --- Modules: Apps ---
-    ./modules/steam.nix
   ];
 
   # ============================================================================
@@ -217,11 +214,6 @@ EOF
 
     # IDE
     arduino-ide
-
-    # (optionnel mais recommandé pour Steam/Wayland)
-    mangohud
-    gamescope
-    vulkan-tools
   ];
 
   environment.sessionVariables = {

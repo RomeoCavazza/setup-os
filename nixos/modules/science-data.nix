@@ -19,15 +19,7 @@
     # ==========================================================================
     # OBSERVABILITY (CLI/Binaries)
     # ==========================================================================
-    # Note: Full services should be declared in systemd units if needed constantly
     influxdb2
     grafana
-
-    # ==========================================================================
-    # GPU COMPUTING TOOLS
-    # ==========================================================================
-    # Provides command line tools (nvcc, etc). 
-    # The actual driver is handled by the Nvidia module.
-    cudatoolkit
   ];
 }
