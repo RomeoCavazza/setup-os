@@ -1,5 +1,9 @@
 { config, pkgs, lib, ... }:
 
+let
+  # Helper: symlink depuis /etc/nixos (hors nix store)
+  mkOut = config.lib.file.mkOutOfStoreSymlink;
+in
 {
   # ============================================================================
   # USER IDENTITY & STATE
@@ -19,105 +23,64 @@
   };
 
   # ============================================================================
-  # PACKAGES (Grouped by Theme)
+  # DOTFILES (Hyprland / Waybar / Rofi / Foot / Swappy)
+  # Source of truth: /etc/nixos/nixos/config/*
+  # ============================================================================
+  xdg.enable = true;
+
+  home.file.".config/hypr".source          = mkOut "/etc/nixos/nixos/config/hypr";
+  home.file.".config/waybar".source        = mkOut "/etc/nixos/nixos/config/hypr/waybar";
+  home.file.".config/rofi".source          = mkOut "/etc/nixos/nixos/config/rofi";
+  home.file.".config/foot".source          = mkOut "/etc/nixos/nixos/config/foot";
+  home.file.".config/swappy/config".source = mkOut "/etc/nixos/nixos/config/swappy/config";
+
+  # ============================================================================
+  # PACKAGES
   # ============================================================================
   home.packages = with pkgs; [
-    # --------------------------------------------------------------------------
     # Core CLI / Productivity
-    # --------------------------------------------------------------------------
-    bat
-    eza
-    fd
-    fzf
-    jq
-    ripgrep
-    yazi
+    bat eza fd fzf jq ripgrep yazi
 
-    # --------------------------------------------------------------------------
-    # Nix
-    # --------------------------------------------------------------------------
-    dockfmt
-    nixfmt-rfc-style
-    shellcheck
-    home-manager
-    shfmt
+    # Nix tooling
+    dockfmt nixfmt-rfc-style shellcheck shfmt
 
-    # --------------------------------------------------------------------------
     # Editor / Code
-    # --------------------------------------------------------------------------
-    zed-editor
-    neovim
-    git
-    lua-language-server
-    lazygit
-    aider-chat
-    desktop-file-utils
+    zed-editor neovim git lua-language-server lazygit aider-chat desktop-file-utils
+    cargo openssl pkg-config rust-analyzer rustc rustfmt
+    black isort
+    typescript-language-server vscode-langservers-extracted tailwindcss-language-server
+    nodejs_22 pnpm yarn
 
-    cargo
-    openssl
-    pkg-config
-    rust-analyzer
-    rustc
-    rustfmt
-
-    black
-    isort
-
-    typescript-language-server
-    vscode-langservers-extracted
-    tailwindcss-language-server
-
-    nodejs_22
-    pnpm
-    yarn
-
-    # --------------------------------------------------------------------------
     # Spelling / Dictionaries
-    # --------------------------------------------------------------------------
-    aspell
-    aspellDicts.en
-    aspellDicts.en-computers
-    aspellDicts.fr
+    aspell aspellDicts.en aspellDicts.en-computers aspellDicts.fr
 
-    # --------------------------------------------------------------------------
     # Fonts
-    # --------------------------------------------------------------------------
     nerd-fonts.symbols-only
 
-    # --------------------------------------------------------------------------
-    # Monitoring / Observability (local)
-    # --------------------------------------------------------------------------
-    atop
-    bottom
-    btop
-    glances
-    htop
-    nvtopPackages.full
+    # Monitoring
+    atop bottom btop glances htop
+    # nvtopPackages.full
 
-    # --------------------------------------------------------------------------
     # Apps / Desktop
-    # --------------------------------------------------------------------------
-    appimage-run
-    discord
+    appimage-run discord
 
-    # --------------------------------------------------------------------------
     # Terminal toys
-    # --------------------------------------------------------------------------
-    cbonsai
-    cmatrix
-    hollywood
-    pipes
-    sl
+    cbonsai cmatrix hollywood pipes sl
 
-    # --------------------------------------------------------------------------
     # CAD / Electronics
-    # --------------------------------------------------------------------------
-    freecad-wayland
-    kicad
+    freecad-wayland kicad
   ];
 
   # ============================================================================
-  # VSCODE CONFIGURATION
+  # STARSHIP
+  # ============================================================================
+  programs.starship = {
+    enable = true;
+    enableBashIntegration = true;
+  };
+
+  # ============================================================================
+  # VSCODE
   # ============================================================================
   programs.vscode = {
     enable = true;
@@ -125,20 +88,11 @@
 
     profiles.default = {
       extensions = with pkgs.vscode-extensions; [
-        # Python / Jupyter
         ms-python.python
         ms-toolsai.jupyter
-
-        # C/C++
         ms-vscode.cpptools
-
-        # Rust
         rust-lang.rust-analyzer
-
-        # Web / Formatting
         esbenp.prettier-vscode
-
-        # Nix
         jnoortheen.nix-ide
         mkhl.direnv
       ];
@@ -154,24 +108,22 @@
   };
 
   # ============================================================================
-  # GIT CONFIGURATION
+  # GIT
   # ============================================================================
   programs.git = {
     enable = true;
-
     settings = {
       user = {
         name = "Romeo Cavazza";
-        email = "ton.email@exemple.com"; # TODO: remplace par ton email réel
+        email = "romeo.cavazza@gmail.com";
       };
-
       init.defaultBranch = "main";
       pull.rebase = true;
     };
   };
 
   # ============================================================================
-  # SHELL CONFIGURATION (Bash)
+  # BASH
   # ============================================================================
   programs.bash = {
     enable = true;
@@ -185,17 +137,17 @@
       # Cursor (AppImage)
       cursor = "appimage-run ~/.local/bin/appimages/Cursor.AppImage --enable-features=UseOzonePlatform --ozone-platform=wayland";
 
-      # Dev shells (flakes)
-      devai = "nix develop /etc/nixos#ai";
-      devemb = "nix develop /etc/nixos#embedded";
+      # Dev shells
+      devai = "nix develop /etc/nixos/nixos#ai";
+      devemb = "nix develop /etc/nixos/nixos#embedded";
 
-      # NixOS rebuild
-      rebuild = "sudo nixos-rebuild switch --flake /etc/nixos";
+      # Rebuild
+      rebuild = "sudo nixos-rebuild switch --flake /etc/nixos/nixos#nixos";
     };
   };
 
   # ============================================================================
-  # SYSTEM ACTIVATION SCRIPTS
+  # HOME ACTIVATION
   # ============================================================================
   home.activation.ensurePywalFootFile =
     lib.hm.dag.entryAfter [ "writeBoundary" ] ''
@@ -206,7 +158,7 @@
     '';
 
   # ============================================================================
-  # DESKTOP ENTRIES (Rofi / Waybar)
+  # DESKTOP ENTRY (Cursor)
   # ============================================================================
   xdg.desktopEntries.cursor = {
     name = "Cursor";
