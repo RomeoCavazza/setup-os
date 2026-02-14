@@ -1,44 +1,41 @@
 // -*- mode: jsonc -*-
 {
-    "layer": "top", // Waybar at top layer
-    "position": "top", // Waybar position (top|bottom|left|right)
-    //"height": 46,// Waybar height (to be removed for auto height)
-    // "width": 1900, // Waybar width
-    "spacing": 2, // Gaps between modules (4px)
-    // Choose the order of the modules
-    "modules-left": [
-        "custom/arch",
-        //"custom/search",
-        "cpu",
-        "memory",
-        "temperature",
-        "battery",
-        "power-profiles-daemon",
-        "custom/cava_mviz",
-        "mpris",
-        //"wlr/taskbar"
-        "hyprland/window"
-        
-    ],
-    "modules-center": [
-        "hyprland/workspaces"
-    ],
-    "modules-right": [
-        "idle_inhibitor",
-        "pulseaudio",
-        "backlight",
-        "network#speed",
-        "network",
-        "bluetooth",
-        "hyprland/language",
-        "tray",
-        "custom/swaync",
-        "clock",
-        "custom/power"
-    ],
-    //Modules configuration
-    
-    "include": [
-		"~/.config/waybar/modules.json"
-	]
+  "layer": "top",
+  "position": "top",
+  "spacing": 8,
+
+  "fixed-center": true,
+
+  // 2048 - (16*2) = 2016
+  "width": 2016,
+
+  // un peu plus haute
+  "height": 36,
+
+  "modules-left": [
+    "custom/nixos",
+    "custom/active_app",
+    "cpu",
+    "memory",
+    "temperature",
+    "battery",
+    "custom/cava_mviz",
+    "mpris"
+  ],
+
+  "modules-center": [
+    "hyprland/workspaces"
+  ],
+
+  "modules-right": [
+    "pulseaudio",
+    "network#speed",
+    "bluetooth",
+    "tray",
+    "clock"
+  ],
+
+  "include": [
+    "~/.config/waybar/modules.json"
+  ]
 }

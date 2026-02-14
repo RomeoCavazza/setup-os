@@ -13,24 +13,31 @@ configuration {
 * {
     c-teal:        #94E2D5;
     c-selected-bg: #313244;
+
+    /* Full transparent par défaut */
     background-color: transparent;
     text-color:       @c-teal;
 }
 
 window {
     transparency:     "real";
-    /* Fond noir à 40% (alpha 40) : Nécessaire pour que le blur "accroche" */
-    background-color: #00000040;
-    
+
+    /* FULL transparent (pas de bloc noir / blur qui accroche) */
+    background-color: transparent;
+
+    /* Bordure "existante" mais invisible */
     border:           2px;
-    border-color:     @c-teal;
-    border-radius:    0px 40px 40px 0px; 
-    
+    border-color:     transparent;
+    border-radius:    0px 40px 40px 0px;
+
+    /* Anti faux-contour */
+    box-shadow:       0px 0px 0px 0px;
+
     location:         west;
     anchor:           west;
     height:           96%;
     y-offset:         0%;
-    width:            110px; 
+    width:            110px;
 }
 
 mainbox {
@@ -65,12 +72,17 @@ listview {
 
 element {
     orientation:   vertical;
-    border-radius: 100%; 
+    border-radius: 100%;
     padding:       15px 0px;
     cursor:        pointer;
     margin:        0px 5px;
+
+    /* Bordure "existante" mais invisible */
     border:        2px;
     border-color:  transparent;
+
+    /* Anti faux-contour */
+    box-shadow:    0px 0px 0px 0px;
 }
 
 element-text {
@@ -85,5 +97,10 @@ element-icon {
 
 element selected {
     background-color: @c-selected-bg;
+
+    /* IMPORTANT : on laisse la bordure invisible même en selected */
     border-color:     @c-teal;
+
+    /* au cas où */
+    box-shadow:       0px 0px 0px 0px;
 }
