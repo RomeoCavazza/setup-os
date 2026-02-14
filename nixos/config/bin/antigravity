@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# 1) Mode "tar extract" (ton cas actuel)
+BIN_TAR="$HOME/.local/src/antigravity/Antigravity/antigravity"
+
+# 2) Si un jour tu mets une AppImage ici
+APPIMAGE="$HOME/.local/bin/appimages/Antigravity.AppImage"
+
+if [ -f "$BIN_TAR" ]; then
+  chmod +x "$BIN_TAR" 2>/dev/null || true
+  exec "$BIN_TAR" "$@"
+fi
+
+if [ -f "$APPIMAGE" ]; then
+  chmod +x "$APPIMAGE" 2>/dev/null || true
+  exec appimage-run "$APPIMAGE" "$@"
+fi
+
+echo "Antigravity introuvable." >&2
+echo "Attendu soit:" >&2
+echo "  - binaire tar: $BIN_TAR" >&2
+echo "  - appimage:   $APPIMAGE" >&2
+echo "Hint: extraire Antigravity.tar.gz dans ~/.local/src/antigravity" >&2
+exit 1

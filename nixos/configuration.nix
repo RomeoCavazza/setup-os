@@ -29,14 +29,12 @@
   boot.loader.timeout = null;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Windows 11 Entry Override
   boot.loader.systemd-boot.extraEntries."windows.conf" = ''
     title Windows 11
     sort-key windows
     efi /EFI/Microsoft/Boot/bootmgfw.efi
   '';
 
-  # Enforce loader configuration
   boot.loader.systemd-boot.extraInstallCommands = ''
     ${pkgs.coreutils}/bin/mkdir -p /boot/loader
     ${pkgs.coreutils}/bin/cat > /boot/loader/loader.conf <<'EOF'
@@ -48,7 +46,6 @@ EOF
     ${pkgs.coreutils}/bin/chmod 0644 /boot/loader/loader.conf || true
   '';
 
-  # Kernel Parameters
   boot.kernelParams = [
     "nvidia-drm.modeset=1"
     "pcie_aspm=off"
@@ -77,6 +74,52 @@ EOF
   };
 
   # ============================================================================
+  # NIX-LD (binaires dynlinkés: AppImage, installers, tarballs, etc.)
+  # ============================================================================
+  programs.nix-ld.enable = true;
+
+  programs.nix-ld.libraries = with pkgs; [
+    stdenv.cc.cc.lib
+    zlib
+    openssl
+    curl
+
+    glib
+    gtk3
+    pango
+    cairo
+    atk
+    at-spi2-atk
+    at-spi2-core
+    gdk-pixbuf
+
+    dbus
+    expat
+    udev
+
+    alsa-lib
+    cups
+
+    nspr
+    nss
+
+    libx11
+    libxcb
+    libxcomposite
+    libxdamage
+    libxext
+    libxfixes
+    libxrandr
+    libxkbfile
+    libxkbcommon
+
+    mesa
+    libgbm
+    libglvnd
+    libdrm
+];
+
+  # ============================================================================
   # SYSTEM CORE (Locale, Network, User)
   # ============================================================================
   networking.hostName = "nixos";
@@ -92,12 +135,12 @@ EOF
     isNormalUser = true;
     shell = pkgs.bash;
     extraGroups = [
-      "wheel"           # Sudo
-      "networkmanager"  # Networking
-      "video"           # Graphics
-      "docker"          # Containers
-      "libvirtd"        # VMs
-      "dialout"         # Serial/Arduino
+      "wheel"
+      "networkmanager"
+      "video"
+      "docker"
+      "libvirtd"
+      "dialout"
     ];
   };
 
@@ -109,17 +152,14 @@ EOF
     xkb.layout = "fr";
   };
 
-  # GDM & GNOME
   services.displayManager.gdm.enable = true;
   services.desktopManager.gnome.enable = true;
 
-  # Hyprland
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
   };
 
-  # Integration & Portals
   services.gnome.gnome-keyring.enable = true;
 
   xdg.portal = {
@@ -132,7 +172,7 @@ EOF
   };
 
   # ============================================================================
-  # HARDWARE SUPPORT (Audio, BT, Graphics, Firmware)
+  # HARDWARE SUPPORT
   # ============================================================================
   hardware.enableRedistributableFirmware = true;
 
@@ -146,7 +186,6 @@ EOF
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
 
-  # Graphics (OpenGL/Vulkan) - 32-bit needed for Steam/Proton
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
@@ -157,7 +196,6 @@ EOF
   # ============================================================================
   security.polkit.enable = true;
 
-  # Start a polkit agent in the user session
   systemd.user.services.polkit-gnome-authentication-agent-1 = {
     description = "polkit-gnome-authentication-agent-1";
     wantedBy = [ "graphical-session.target" ];
@@ -186,8 +224,7 @@ EOF
   programs.direnv.nix-direnv.enable = true;
   services.logrotate.enable = true;
 
-  # Handle Home Manager collisions during rebuilds
-  home-manager.backupFileExtension = "bak";
+  home-manager.backupFileExtension = null;
 
   environment.systemPackages = with pkgs; [
     # Cursor themes available system-wide
@@ -206,14 +243,13 @@ EOF
     networkmanager
     polkit_gnome
 
-    # Python + pip (Nix way)
-    python3
-    python3Packages.pip
-    python3Packages.virtualenv
-    pipx
+    # pour pouvoir diagnostiquer nix-ld facilement
+    nix-ld
 
-    # IDE
-    arduino-ide
+    # utiles si tu veux inspecter / debug
+    mesa
+    libglvnd
+    libdrm
   ];
 
   environment.sessionVariables = {
