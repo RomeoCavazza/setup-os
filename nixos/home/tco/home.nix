@@ -12,6 +12,12 @@ in
   home.homeDirectory = "/home/tco";
   home.stateVersion = "25.05";
 
+  home.sessionPath = [ "$HOME/.local/bin" ];
+
+  home.sessionVariables = {
+    XDG_DATA_DIRS = "$HOME/.local/share:$XDG_DATA_DIRS";
+  };
+
   # ============================================================================
   # DESKTOP SETTINGS (GNOME - Cursor)
   # ============================================================================
@@ -34,12 +40,17 @@ in
   home.file.".config/foot".source          = mkOut "/etc/nixos/nixos/config/foot";
   home.file.".config/swappy/config".source = mkOut "/etc/nixos/nixos/config/swappy/config";
 
+  # Wrappers (scripts) : source of truth /etc/nixos/nixos/config/bin/*
+  # NOTE: pas de executable=true ici -> le +x doit être sur le fichier source (/etc/...)
+  home.file.".local/bin/cursor".source      = mkOut "/etc/nixos/nixos/config/bin/cursor";
+  home.file.".local/bin/antigravity".source = mkOut "/etc/nixos/nixos/config/bin/antigravity";
+
   # ============================================================================
   # PACKAGES
   # ============================================================================
   home.packages = with pkgs; [
     # Core CLI / Productivity
-    bat eza fd fzf jq ripgrep yazi
+    bat eza fd fzf jq ripgrep yazi home-manager
 
     # Nix tooling
     dockfmt nixfmt-rfc-style shellcheck shfmt
@@ -54,12 +65,11 @@ in
     # Spelling / Dictionaries
     aspell aspellDicts.en aspellDicts.en-computers aspellDicts.fr
 
-    # Fonts
-    nerd-fonts.symbols-only
+    # UI
+    papirus-icon-theme swaynotificationcenter cava nerd-fonts.symbols-only hyprcursor rose-pine-hyprcursor nerd-fonts.jetbrains-mono
 
     # Monitoring
     atop bottom btop glances htop
-    # nvtopPackages.full
 
     # Apps / Desktop
     appimage-run discord
@@ -129,13 +139,19 @@ in
     enable = true;
     enableCompletion = true;
 
+    # Foot lance souvent un shell non-login -> hm-session-vars pas sourcé.
+    # On force un PATH propre ici.
+    initExtra = ''
+      if [ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then
+        . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+      fi
+      export PATH="$HOME/.local/bin:$PATH"
+    '';
+
     shellAliases = {
       g = "git";
       ll = "eza -l --icons";
       ls = "eza --icons";
-
-      # Cursor (AppImage)
-      cursor = "appimage-run ~/.local/bin/appimages/Cursor.AppImage --enable-features=UseOzonePlatform --ozone-platform=wayland";
 
       # Dev shells
       devai = "nix develop /etc/nixos/nixos#ai";
@@ -158,15 +174,24 @@ in
     '';
 
   # ============================================================================
-  # DESKTOP ENTRY (Cursor)
+  # DESKTOP ENTRY (Cursor + Antigravity)
   # ============================================================================
   xdg.desktopEntries.cursor = {
     name = "Cursor";
     genericName = "AI Code Editor";
     comment = "Built for AI coding";
-    exec = "appimage-run /home/tco/.local/bin/appimages/Cursor.AppImage --enable-features=UseOzonePlatform --ozone-platform=wayland";
+    exec = "cursor";
     terminal = false;
     categories = [ "Development" "TextEditor" "IDE" ];
     icon = "/home/tco/.local/share/icons/cursor-icon.png";
+  };
+
+  xdg.desktopEntries.antigravity = {
+    name = "Antigravity";
+    genericName = "IDE";
+    comment = "Antigravity IDE";
+    exec = "antigravity";
+    terminal = false;
+    categories = [ "Development" "IDE" ];
   };
 }
