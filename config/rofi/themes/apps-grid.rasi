@@ -1,139 +1,135 @@
+/* ~/.config/rofi/themes/apps-grid.rasi
+ * Neutral Glass + subtle cyan glow
+ */
+
+@import "~/.config/theme/tokens.rasi"
+
 configuration {
-    font: "SpaceMono Nerd Font 13";
-    show-icons: true;
-    icon-theme: "Papirus-Dark";
-    display-drun: "";
-    drun-display-format: "{name}";
-    hide-scrollbar: true;
-    sidebar-mode: false;
+  font: "SpaceMono Nerd Font 13";
+  show-icons: true;
+  icon-theme: "Papirus-Dark";
+  display-drun: "";
+  drun-display-format: "{name}";
+  hide-scrollbar: true;
+  sidebar-mode: false;
+
+  /* Hover becomes selected */
+  hover-select: true;
+  me-select-entry: "";
+  me-accept-entry: "MousePrimary";
 }
 
-/* === PALETTE fidèle waybar + hyprland + foot === */
 * {
-    al:            #00000000;              /* full transparent */
-    bg-window:     rgba(10, 14, 20, 45%); /* scrim léger — blur fait le reste */
-    bg-bar:        rgba(10, 14, 20, 70%); /* inputbar */
-    bg-selected:   #313244;              /* Catppuccin Surface0 — hover */
+  background-color: transparent;
+  text-color: @fg0;
 
-    accent:        #94E2D5;              /* teal — identique active_border Hyprland */
-    accent-border: rgba(148, 226, 213, 65%);
-    accent-dim:    rgba(148, 226, 213, 15%);
+  scrim: rgba(32, 36, 44, 55%);
+  bar:   rgba(26, 31, 38, 72%);
 
-    fg:            #c0caf5;              /* foreground foot */
-    fg-dim:        rgba(192, 202, 245, 50%);
+  tile:        rgba(43, 49, 60, 18%);
+  tileActive:  @glowSoft;
 
-    background-color: transparent;
-    text-color:       @fg;
+  edge: @borderLight;
 }
 
 window {
-    transparency:     "real";
-    width:            100%;
-    height:           100%;
-    background-color: @bg-window;
-    border:           0px;
+  transparency: "real";
+  location: center;
+  anchor: center;
+  width: 100%;
+  height: 100%;
+
+  background-color: @scrim;
+
+  border: 1px;
+  border-color: @edge;
+
+  padding: 0;
 }
 
 mainbox {
-    background-color: @al;
-    children:         [ inputbar, listview ];
-    spacing:          6%;
-    padding:          9% 11% 9% 11%;
+  padding: 8% 10%;
+  spacing: 18px;
+  children: [ inputbar, listview ];
 }
 
-/* === SEARCH BAR — centrée, flottante === */
+/* Search bar */
 inputbar {
-    children:         [ prompt, entry ];
-    background-color: @bg-bar;
-    text-color:       @fg;
-    expand:           false;
-    border:           1px;
-    border-radius:    999px;
-    border-color:     @accent-border;
-    margin:           0% 22% 0% 22%;
-    padding:          1.2%;
+  background-color: @bar;
+  border: 1px;
+  border-color: @edge;
+  border-radius: 999px;
+
+  padding: 12px 14px;
+  margin: 0 20%;
+
+  children: [ prompt, entry ];
 }
 
 prompt {
-    background-color: transparent;
-    text-color:       @accent;
-    padding:          0% 1% 0% 0.5%;
-    font:             "SpaceMono Nerd Font 13";
+  text-color: @accent;
+  padding: 0 10px 0 6px;
 }
 
 entry {
-    background-color:  transparent;
-    text-color:        @fg;
-    placeholder-color: @fg-dim;
-    cursor-color:      @accent;
-    expand:            true;
-    horizontal-align:  0;
-    placeholder:       "Rechercher une application…";
-    padding:           0.1% 0% 0% 0%;
-    blink:             true;
+  text-color: @fg0;
+  placeholder: "Rechercher une application…";
+  placeholder-color: rgba(201, 209, 225, 0.55);
+  cursor-color: @accent;
+  blink: true;
+  expand: true;
 }
 
-/* === GRID === */
+/* Grid */
 listview {
-    background-color: @al;
-    columns:          8;
-    lines:            4;
-    spacing:          1.5%;
-    cycle:            false;
-    dynamic:          true;
-    layout:           vertical;
+  columns: 7;
+  lines: 3;
+  spacing: 14px;
+  fixed-height: true;
+  dynamic: false;
+  layout: vertical;
+  background-color: transparent;
 }
 
-/* === TUILES === */
+/* Tiles */
 element {
-    background-color: @al;
-    text-color:       @fg;
-    orientation:      vertical;
-    border-radius:    16px;
-    padding:          2.5% 0%;
-    border:           1px;
-    border-color:     @accent-dim;
-    cursor:           pointer;
+  background-color: @tile;
+
+  border: 1px;
+  border-color: @edge;
+
+  border-radius: 18px;
+  padding: 14px 10px;
+
+  orientation: vertical;
+  cursor: pointer;
+}
+
+/* Hover = selected (via hover-select) */
+element selected {
+  background-color: @tileActive;
+  border: 1px;
+  border-color: @glow;
 }
 
 element-icon {
-    size:             76px;
-    border:           0px;
-    horizontal-align: 0.5;
-    background-color: transparent;
+  size: 72px;
+  background-color: transparent;
+  horizontal-align: 0.5;
+  vertical-align: 0.5;
 }
 
 element-text {
-    expand:           true;
-    horizontal-align: 0.5;
-    vertical-align:   0.5;
-    margin:           0.5% 0.5% -0.5% 0.5%;
-    background-color: transparent;
-    text-color:       @fg;
+  background-color: transparent;
+  text-color: @fg0;
+  horizontal-align: 0.5;
+  vertical-align: 0.5;
+  margin: 8px 6px 0 6px;
 }
 
-/* === HOVER / SELECTED === */
-element selected {
-    background-color: @bg-selected;
-    text-color:       @accent;
-    border:           1px;
-    border-radius:    16px;
-    border-color:     @accent-border;
-}
-
-element selected element-text {
-    text-color:       @accent;
-}
-
-element normal.active,
-element alternate.active,
-element selected.active {
-    background-color: @bg-selected;
-    border-color:     @accent-border;
-}
-
-element normal.urgent,
+/* Urgent safe */
+element.urgent,
 element selected.urgent {
-    background-color: rgba(247, 118, 142, 15%);
-    border-color:     rgba(247, 118, 142, 60%);
+  background-color: rgba(255, 77, 109, 0.14);
+  border-color: rgba(255, 77, 109, 0.45);
 }

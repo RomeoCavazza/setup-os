@@ -35,13 +35,13 @@ window#waybar {
 #clock, #battery, #cpu, #memory, #temperature,
 #pulseaudio, #tray, #bluetooth, #mpris,
 #custom-cava_mviz, #custom-nixos,
-#custom-active_app, #network {
+#network,
+#taskbar {
     background-color: transparent;
     padding: 0 12px;
     border-radius: 999px;
     transition: all 0.15s ease;
 
-    /* si un module avait un style de bordure ailleurs */
     border: 0;
     outline: none;
     box-shadow: none;
@@ -50,10 +50,49 @@ window#waybar {
 #clock:hover, #battery:hover, #cpu:hover, #memory:hover,
 #temperature:hover, #pulseaudio:hover, #tray:hover,
 #bluetooth:hover, #mpris:hover,
-#custom-nixos:hover, #custom-active_app:hover,
-#network:hover {
+#custom-nixos:hover,
+#network:hover,
+#taskbar:hover {
     background-color: rgba(148, 226, 213, 0.12);
     color: @accent;
+}
+
+/* ============================= */
+/* TASKBAR — toutes les icônes */
+/* ============================= */
+
+#taskbar {
+    padding: 0 10px;
+}
+
+#taskbar button {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    outline: none;
+
+    padding: 0 6px;
+    margin: 0 2px;
+
+    border-radius: 999px;
+    transition: all 0.15s ease;
+
+    /* au lieu de cacher, on affiche */
+    opacity: 0.75;
+}
+
+#taskbar button:hover {
+    background-color: rgba(148, 226, 213, 0.10);
+    opacity: 1;
+}
+
+#taskbar button.active {
+    background-color: rgba(148, 226, 213, 0.14);
+    opacity: 1;
+}
+
+#taskbar image {
+    margin: 0;
 }
 
 /* ============================= */

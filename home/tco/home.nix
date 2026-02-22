@@ -80,7 +80,7 @@ in
   # ============================================================================
   home.packages = with pkgs; [
     # Core CLI / Productivity
-    bat eza fd fzf jq ripgrep yazi home-manager superfile
+    bat eza fd fzf jq ripgrep yazi home-manager superfile grim slurp sway-contrib.grimshot libnotify
 
     # Nix tooling
     dockfmt nixfmt shellcheck shfmt

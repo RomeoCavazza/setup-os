@@ -6,12 +6,17 @@
     "tooltip-format": "NixOS"
   },
 
-  "custom/active_app": {
-    "exec": "$HOME/.config/waybar/activeapp.sh",
-    "return-type": "json",
-    "interval": 1,
-    "format": "{}",
-    "tooltip": true
+  "wlr/taskbar": {
+    "format": "{icon}",
+    "icon-size": 18,
+    "tooltip": true,
+    "on-click": "activate",
+    "on-click-middle": "close",
+    "ignore-list": ["waybar"],
+    "app_ids-mapping": {
+      "firefox": "firefox",
+      "org.gnome.Nautilus": "org.gnome.Nautilus"
+    }
   },
 
   "custom/cava_mviz": {
