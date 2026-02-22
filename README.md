@@ -47,11 +47,11 @@
 
 <br>
 
-| Neovim Setup | System Monitoring |
+| Hardware Detail | Development Setup |
 |:---:|:---:|
-| <img src="./assets/screen-nvim.png" alt="Neovim Screen" width="100%"> | <img src="./assets/screen-htop.png" alt="HTOP Screen" width="100%"> |
-| **Graphics & AI** | **Hardware Detail** |
-| <img src="./assets/screen-nvidia.png" alt="NVIDIA Screen" width="100%"> | <img src="./assets/screen-cad.png" alt="CAD Screen" width="100%"> |
+| <img src="./assets/screen-cad.png" alt="CAD Screen" width="100%"> | <img src="./assets/screen-nvim.png" alt="Neovim Screen" width="100%"> |
+| **System Monitoring** | **NVIDIA Graphics** |
+| <img src="./assets/screen-htop.png" alt="HTOP Screen" width="100%"> | <img src="./assets/screen-nvidia.png" alt="NVIDIA Screen" width="100%"> |
 
 ---
 
