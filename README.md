@@ -1,6 +1,6 @@
 <div align="center">
   <img src="./assets/nixos.png" alt="NixOS Logo" width="120">
-  <h1>【 nixos dotfiles 】</h1>
+  <h1>【 NixOS dotfiles 】</h1>
   <p><strong>Declarative, modular, and optimized workstation configuration</strong></p>
 
   <div align="center">
@@ -19,10 +19,13 @@
 
 ---
 
-## • overview •
+## • Overview •
 
 > [!IMPORTANT]
 > **Warning**: This configuration is tailored for my hardware. Don't blindly use these settings unless you know what they entail. Use at your own risk!
+
+> [!NOTE]
+> This repository uses a modular structure, allowing you to easily toggle specific services (databases, AI, monitoring) by importing the corresponding files in `configuration.nix`.
 
 ### Notable Features
 - **Window Management**: [Hyprland](https://hyprland.org/) with Dwindle layout and Catppuccin Mocha theme.
@@ -32,7 +35,7 @@
 
 ---
 
-## • screenshots •
+## • Screenshots •
 
 <div align="center">
   <img src="./assets/screen-fastfetch.png" alt="Fastfetch showcase" width="100%">
@@ -55,7 +58,7 @@
 
 ---
 
-## • contents •
+## • Contents •
 
 - **NixOS Config**: Main system configuration and Flake setup.
 - **Modules**: Pluggable components for databases, servers, and tools.
@@ -64,13 +67,16 @@
 
 ---
 
-## • installation •
+## • Installation •
 
 ### Prerequisites
 - [NixOS ISO](https://channels.nixos.org/nixos-unstable/latest-nixos-graphical-x86_64-linux.iso)
 - Basic knowledge of Nix flakes.
 
 ### Setup Instructions
+
+> [!TIP]
+> You can test individual development environments without installing them globally by using `nix develop .#ai` or `nix develop .#embedded`.
 
 1. **Backup your current config**:
    ```bash
@@ -91,7 +97,7 @@
 
 ---
 
-## • software overview •
+## • Software Overview •
 
 | Component | Purpose | Details |
 | :--- | :--- | :--- |
