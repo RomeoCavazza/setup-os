@@ -1,6 +1,6 @@
 <div align="center">
   <img src="./assets/nixos.png" alt="NixOS Logo" width="120">
-  <h1>【 Romeo's NixOS Dotfiles 】</h1>
+  <h1>【 nixos dotfiles 】</h1>
   <p><strong>Declarative, modular, and optimized workstation configuration</strong></p>
 
   <div align="center">
@@ -40,13 +40,18 @@
 
 <br>
 
+<div align="center">
+  <img src="./assets/screen-waybar.png" alt="Waybar showcase" width="100%">
+  <p><em>Desktop Interface - <a href="./config/hypr/waybar">Waybar Configuration</a></em></p>
+</div>
+
+<br>
+
 | Neovim Setup | System Monitoring |
 |:---:|:---:|
 | <img src="./assets/screen-nvim.png" alt="Neovim Screen" width="100%"> | <img src="./assets/screen-htop.png" alt="HTOP Screen" width="100%"> |
-| **Graphics & AI** | **Tools & UI** |
-| <img src="./assets/screen-nvidia.png" alt="NVIDIA Screen" width="100%"> | <img src="./assets/screen-waybar.png" alt="Waybar Screen" width="100%"> |
-| **Development** | **Waybar Detail** |
-| <img src="./assets/screen-cad.png" alt="CAD Screen" width="100%"> | <img src="./config/hypr/waybar/waybar.png" alt="Waybar Detail" width="100%"> |
+| **Graphics & AI** | **Hardware Detail** |
+| <img src="./assets/screen-nvidia.png" alt="NVIDIA Screen" width="100%"> | <img src="./assets/screen-cad.png" alt="CAD Screen" width="100%"> |
 
 ---
 
