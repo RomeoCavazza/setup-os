@@ -1,123 +1,97 @@
-<p align="center">
-  <img src="../assets/nixos.png" alt="NixOS" width="80">
-</p>
+<div align="center">
+  <img src="./assets/nixos.png" alt="NixOS Logo" width="120">
+  <h1>【 Romeo's NixOS Dotfiles 】</h1>
+  <p><strong>Declarative, modular, and optimized workstation configuration</strong></p>
 
-<h1 align="center">NixOS</h1>
+  <div align="center">
+    <img src="https://img.shields.io/badge/NixOS-Unstable-5277C3?style=for-the-badge&logo=nixos&logoColor=white" alt="NixOS">
+    <img src="https://img.shields.io/badge/Hyprland-Desktop-58E1FF?style=for-the-badge&logo=hyprland&logoColor=white" alt="Hyprland">
+    <img src="https://img.shields.io/badge/Flakes-Enabled-7EBAE4?style=for-the-badge&logo=snowflake&logoColor=white" alt="Flakes">
+  </div>
 
-<p align="center">
-  <strong>Configuration déclarative et modulaire avec Hyprland</strong>
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/NixOS_25.05-5277C3?style=for-the-badge&logo=nixos&logoColor=white" alt="NixOS">
-  <img src="https://img.shields.io/badge/Flakes-7EBAE4?style=for-the-badge&logo=snowflake&logoColor=white" alt="Flakes">
-  <img src="https://img.shields.io/badge/Hyprland-58E1FF?style=for-the-badge&logo=hyprland&logoColor=white" alt="Hyprland">
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL">
-  <img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white" alt="Redis">
-  <img src="https://img.shields.io/badge/Grafana-F46800?style=for-the-badge&logo=grafana&logoColor=white" alt="Grafana">
-  <img src="https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=prometheus&logoColor=white" alt="Prometheus">
-  <img src="https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white" alt="Nginx">
-  <img src="https://img.shields.io/badge/Ollama-000000?style=for-the-badge&logo=ollama&logoColor=white" alt="Ollama">
-  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
-</p>
-
-<img src="../assets/fastfetch-nixos.png" alt="NixOS" width="550">
+  <div align="center">
+    <img src="https://img.shields.io/badge/PostgreSQL-17-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL">
+    <img src="https://img.shields.io/badge/Docker-Enabled-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
+    <img src="https://img.shields.io/badge/NVIDIA-Prime-76B900?style=for-the-badge&logo=nvidia&logoColor=white" alt="NVIDIA">
+    <img src="https://img.shields.io/badge/Ollama-AI-000000?style=for-the-badge&logo=ollama&logoColor=white" alt="Ollama">
+  </div>
+</div>
 
 ---
 
-## Structure
+## • overview •
 
-```
-nixos/
-├── config/hypr/         # Configuration Hyprland
-├── home/tco/           # Home Manager
-├── modules/            # Modules système
-├── configuration.nix
-├── flake.nix
-└── flake.lock
-```
+> [!IMPORTANT]
+> **Warning**: This configuration is tailored for my hardware. Don't blindly use these settings unless you know what they entail. Use at your own risk!
 
----
-
-## Installation
-
-[Télécharger l'ISO](https://channels.nixos.org/nixos-25.05/latest-nixos-graphical-x86_64-linux.iso)
-
-```bash
-sudo cp -r /etc/nixos /etc/nixos-backup
-sudo git clone https://github.com/RomeoCavazza/setup-os.git /etc/nixos-new
-sudo cp -r /etc/nixos-new/nixos/* /etc/nixos/
-cd /etc/nixos
-sudo nixos-rebuild switch --flake .#nixos
-```
+### Notable Features
+- **Window Management**: [Hyprland](https://hyprland.org/) with Dwindle layout and Catppuccin Mocha theme.
+- **Hardware Optimization**: NVIDIA PRIME support, Pipewire audio, and custom bootloader entries.
+- **Development Ready**: Built-in modules for PostgreSQL, Redis, Ollama (Local AI), and Data Science.
+- **Observability**: Ready-to-use Grafana, Prometheus, and Loki stack.
 
 ---
 
-## Modules
+## • screenshots •
 
-| Module | Description | Ports |
-|--------|-------------|-------|
-| databases.nix | PostgreSQL 17 + PostGIS + Redis | 5432, 6379 |
-| lamp.nix | Apache + PHP 8.3 + MariaDB | 80, 3306 |
-| launcher.nix | Rofi + Nemo + Waybar | — |
-| nginx.nix | Reverse proxy | 8081-8083 |
-| nvidia-prime.nix | NVIDIA PRIME (optionnel) | — |
-| observability.nix | Loki + Prometheus + Grafana | 3000, 9090, 3100 |
-| ollama.nix | IA locale | 11434 |
-| starship.nix | Terminal prompt moderne | — |
-| streamlit.nix | Apps Streamlit | 8501 |
-| tmpfiles.nix | Règles systemd tmpfiles | — |
+<div align="center">
+  <img src="./assets/screen-fastfetch.png" alt="Fastfetch showcase" width="100%">
+</div>
 
-### Exemple d'import
+<br>
 
-```nix
-imports = [
-  ./modules/databases.nix
-  ./modules/observability.nix
-  ./modules/ollama.nix
-  ./modules/starship.nix
-];
-```
+| Neovim Setup | System Monitoring |
+|:---:|:---:|
+| <img src="./assets/screen-nvim.png" alt="Neovim Screen" width="100%"> | <img src="./assets/screen-htop.png" alt="HTOP Screen" width="100%"> |
+| **Graphics & AI** | **Tools & UI** |
+| <img src="./assets/screen-nvidia.png" alt="NVIDIA Screen" width="100%"> | <img src="./assets/screen-waybar.png" alt="Waybar Screen" width="100%"> |
+| **Development** | **Waybar Detail** |
+| <img src="./assets/screen-cad.png" alt="CAD Screen" width="100%"> | <img src="./config/hypr/waybar/waybar.png" alt="Waybar Detail" width="100%"> |
 
 ---
 
-## Hyprland
+## • contents •
 
-| Paramètre | Valeur |
-|-----------|--------|
-| Layout | dwindle |
-| Gaps | 8px (in), 16px (out) |
-| Workspaces | 5 (F1-F5) |
-| Theme | Catppuccin Mocha |
-
-**Raccourcis** : `Super+Return` terminal · `Super+Q` fermer · `Super+F` float
+- **NixOS Config**: Main system configuration and Flake setup.
+- **Modules**: Pluggable components for databases, servers, and tools.
+- **Hyprland**: Highly customized Wayland compositor configuration.
+- **Home Manager**: User-specific environment management.
 
 ---
 
-## Services
+## • installation •
 
-| Service | Port |
-|---------|------|
-| PostgreSQL | 5432 |
-| Redis | 6379 |
-| Ollama | 11434 |
-| Grafana | 3000 |
-| Prometheus | 9090 |
-| Nginx | 8081-8083 |
+### Prerequisites
+- [NixOS ISO](https://channels.nixos.org/nixos-unstable/latest-nixos-graphical-x86_64-linux.iso)
+- Basic knowledge of Nix flakes.
+
+### Setup Instructions
+
+1. **Backup your current config**:
+   ```bash
+   sudo cp -r /etc/nixos /etc/nixos-backup
+   ```
+
+2. **Clone this repository**:
+   ```bash
+   sudo git clone https://github.com/RomeoCavazza/setup-os.git /etc/nixos-new
+   sudo cp -r /etc/nixos-new/* /etc/nixos/
+   ```
+
+3. **Apply the configuration**:
+   ```bash
+   cd /etc/nixos
+   sudo nixos-rebuild switch --flake .#nixos
+   ```
 
 ---
 
----
+## • software overview •
 
-## Ressources
-
-[NixOS Wiki](https://nixos.wiki/) · [Hyprland Wiki](https://wiki.hyprland.org/)
-
----
-
-<p align="center">
-  Made by <a href="https://github.com/RomeoCavazza">Romeo Cavazza</a>
-</p>
+| Component | Purpose | Details |
+| :--- | :--- | :--- |
+| **Hyprland** | Compositor | Catppuccin Mocha, Waybar, Rofi |
+| **PostgreSQL** | Database | Version 17 with PostGIS |
+| **Ollama** | Local AI | Hosted on port 11434 |
+| **Nginx** | Reverse Proxy | Configured for ports 8081-8083 |
+| **Grafana** | Monitoring | Dashboard on port 3000 |
