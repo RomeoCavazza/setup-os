@@ -1,6 +1,6 @@
 <div align="center">
   <img src="./assets/nixos.png" alt="NixOS Logo" width="120">
-  <h1>【 NixOS dotfiles 】</h1>
+  <h1>NixOS dotfiles</h1>
   <p><strong>Declarative, modular, and optimized workstation configuration</strong></p>
 
   <div align="center">
