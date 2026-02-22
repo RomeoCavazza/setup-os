@@ -1,7 +1,6 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
 let
-  # Helper: symlink depuis /etc/nixos (hors nix store)
   mkOut = config.lib.file.mkOutOfStoreSymlink;
 in
 {
@@ -15,45 +14,76 @@ in
   home.sessionPath = [ "$HOME/.local/bin" ];
 
   home.sessionVariables = {
+    QT_QPA_PLATFORM = "wayland";
+    QT_QPA_PLATFORMTHEME = "qt6ct";
+    QT_STYLE_OVERRIDE = "kvantum";
     XDG_DATA_DIRS = "$HOME/.local/share:$XDG_DATA_DIRS";
   };
 
   # ============================================================================
-  # DESKTOP SETTINGS (GNOME - Cursor)
-  # ============================================================================
-  dconf.settings = {
-    "org/gnome/desktop/interface" = {
-      cursor-theme = "Adwaita";
-      cursor-size = 24;
-    };
-  };
-
-  # ============================================================================
-  # DOTFILES (Hyprland / Waybar / Rofi / Foot / Swappy)
-  # Source of truth: /etc/nixos/nixos/config/*
+  # DOTFILES
   # ============================================================================
   xdg.enable = true;
 
-  home.file.".config/hypr".source          = mkOut "/etc/nixos/nixos/config/hypr";
-  home.file.".config/waybar".source        = mkOut "/etc/nixos/nixos/config/hypr/waybar";
-  home.file.".config/rofi".source          = mkOut "/etc/nixos/nixos/config/rofi";
-  home.file.".config/foot".source          = mkOut "/etc/nixos/nixos/config/foot";
-  home.file.".config/swappy/config".source = mkOut "/etc/nixos/nixos/config/swappy/config";
+  # NOTE: chemins relatifs à ce home.nix (dans /etc/nixos/home/tco)
+  home.file.".config/hypr".source          = ../../config/hypr;
+  home.file.".config/waybar".source        = ../../config/hypr/waybar;
+  home.file.".config/rofi".source          = ../../config/rofi;
+  home.file.".config/foot".source          = ../../config/foot;
+  home.file.".config/swappy/config".source = ../../config/swappy/config;
 
-  # Wrappers (scripts) : source of truth /etc/nixos/nixos/config/bin/*
-  # NOTE: pas de executable=true ici -> le +x doit être sur le fichier source (/etc/...)
-  home.file.".local/bin/cursor".source      = mkOut "/etc/nixos/nixos/config/bin/cursor";
-  home.file.".local/bin/antigravity".source = mkOut "/etc/nixos/nixos/config/bin/antigravity";
+  # ============================================================================
+  # USER BIN WRAPPERS / SCRIPTS
+  # ============================================================================
+  home.file.".local/bin/cursor".source = mkOut "/etc/nixos/config/bin/cursor";
+
+  home.file.".local/bin/antigravity" = {
+    force = true;
+    executable = true;
+    text = ''
+      #!/usr/bin/env bash
+      set -euo pipefail
+      exec /etc/nixos/config/bin/antigravity "$@"
+    '';
+  };
+
+  home.file.".local/bin/dw-apply" = {
+    source = ../../config/bin/dw-apply;
+    executable = true;
+  };
+
+  home.file.".local/bin/dw-toggle-global" = {
+    source = ../../config/bin/dw-toggle-global;
+    executable = true;
+  };
+
+  home.file.".local/bin/dw-toggle" = {
+    source = ../../config/bin/dw-toggle;
+    executable = true;
+  };
+
+  home.file.".local/bin/dw-daemon" = {
+    source = ../../config/bin/dw-daemon;
+    executable = true;
+  };
+
+  home.file.".local/bin/hypr-plugins-init" = {
+    source = ../../config/bin/hypr-plugins-init;
+    executable = true;
+  };
+
+  home.file.".local/lib/libhypr-darkwindow.so".source =
+    "${pkgs.hyprlandPlugins.hypr-darkwindow}/lib/libhypr-darkwindow.so";
 
   # ============================================================================
   # PACKAGES
   # ============================================================================
   home.packages = with pkgs; [
     # Core CLI / Productivity
-    bat eza fd fzf jq ripgrep yazi home-manager
+    bat eza fd fzf jq ripgrep yazi home-manager superfile
 
     # Nix tooling
-    dockfmt nixfmt-rfc-style shellcheck shfmt
+    dockfmt nixfmt shellcheck shfmt
 
     # Editor / Code
     zed-editor neovim git lua-language-server lazygit aider-chat desktop-file-utils
@@ -66,7 +96,35 @@ in
     aspell aspellDicts.en aspellDicts.en-computers aspellDicts.fr
 
     # UI
-    papirus-icon-theme swaynotificationcenter cava nerd-fonts.symbols-only hyprcursor rose-pine-hyprcursor nerd-fonts.jetbrains-mono
+    papirus-icon-theme
+    swaynotificationcenter
+    cava
+    nerd-fonts.symbols-only
+    hyprcursor
+    rose-pine-hyprcursor
+    nerd-fonts.jetbrains-mono
+    bibata-cursors
+
+    # GTK theming
+    adw-gtk3
+    gnome-themes-extra
+
+    # Pywal stack (optional)
+    pywal
+    wpgtk
+
+    # Qt theming + tools
+    qt6Packages.qtbase
+    qt6Packages.qt6ct
+    qt6Packages.qttools
+    kdePackages.qtstyleplugin-kvantum
+    libsForQt5.qtstyleplugin-kvantum
+
+    # Hyprland plugin
+    hyprlandPlugins.hypr-darkwindow
+
+    # Needed by dw-daemon
+    socat
 
     # Monitoring
     atop bottom btop glances htop
@@ -80,6 +138,28 @@ in
     # CAD / Electronics
     freecad-wayland kicad
   ];
+
+  # ============================================================================
+  # GTK (theme + icons + cursor)
+  # ============================================================================
+  gtk = {
+    enable = true;
+
+    theme = {
+      name = "Adwaita-dark";
+      package = pkgs.gnome-themes-extra;
+    };
+
+    iconTheme = {
+      name = "Papirus-Dark";
+      package = pkgs.papirus-icon-theme;
+    };
+
+    cursorTheme = {
+      name = "Bibata-Modern-Ice";
+      package = pkgs.bibata-cursors;
+    };
+  };
 
   # ============================================================================
   # STARSHIP
@@ -139,8 +219,6 @@ in
     enable = true;
     enableCompletion = true;
 
-    # Foot lance souvent un shell non-login -> hm-session-vars pas sourcé.
-    # On force un PATH propre ici.
     initExtra = ''
       if [ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then
         . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
@@ -152,24 +230,57 @@ in
       g = "git";
       ll = "eza -l --icons";
       ls = "eza --icons";
-
-      # Dev shells
-      devai = "nix develop /etc/nixos/nixos#ai";
-      devemb = "nix develop /etc/nixos/nixos#embedded";
-
-      # Rebuild
-      rebuild = "sudo nixos-rebuild switch --flake /etc/nixos/nixos#nixos";
+      devai = "nix develop /etc/nixos#ai";
+      devemb = "nix develop /etc/nixos#embedded";
+      rebuild = "sudo nixos-rebuild switch --flake /etc/nixos#nixos";
     };
   };
 
   # ============================================================================
-  # HOME ACTIVATION
+  # HOME ACTIVATION: wal files + templates
   # ============================================================================
-  home.activation.ensurePywalFootFile =
+  home.activation.ensureWalFiles =
     lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       mkdir -p "$HOME/.cache/wal"
-      if [ ! -f "$HOME/.cache/wal/colors-foot.ini" ]; then
-        touch "$HOME/.cache/wal/colors-foot.ini"
+      mkdir -p "$HOME/.config/wal/templates"
+
+      : > "$HOME/.cache/wal/colors-foot.ini"
+      : > "$HOME/.cache/wal/colors-hyprland.conf"
+
+      if [ ! -f "$HOME/.config/wal/templates/colors-foot.ini" ]; then
+        cat > "$HOME/.config/wal/templates/colors-foot.ini" <<'EOF'
+[colors]
+background={background.strip}
+foreground={foreground.strip}
+
+regular0={color0.strip}
+regular1={color1.strip}
+regular2={color2.strip}
+regular3={color3.strip}
+regular4={color4.strip}
+regular5={color5.strip}
+regular6={color6.strip}
+regular7={color7.strip}
+
+bright0={color8.strip}
+bright1={color9.strip}
+bright2={color10.strip}
+bright3={color11.strip}
+bright4={color12.strip}
+bright5={color13.strip}
+bright6={color14.strip}
+bright7={color15.strip}
+EOF
+      fi
+
+      if [ ! -f "$HOME/.config/wal/templates/colors-hyprland.conf" ]; then
+        cat > "$HOME/.config/wal/templates/colors-hyprland.conf" <<'EOF'
+# Generated by pywal
+general {
+  col.active_border = rgba({color6.strip}ff)
+  col.inactive_border = rgba({color0.strip}aa)
+}
+EOF
       fi
     '';
 
@@ -193,5 +304,32 @@ in
     exec = "antigravity";
     terminal = false;
     categories = [ "Development" "IDE" ];
+  };
+
+  # ============================================================================
+  # DW-DAEMON (systemd user) — auto shade on new windows
+  # ============================================================================
+  systemd.user.services.dw-daemon = {
+    Unit = {
+      Description = "Hypr DarkWindow auto-shade daemon";
+      After = [ "graphical-session.target" ];
+      PartOf = [ "graphical-session.target" ];
+    };
+
+    Service = {
+      ExecStart = "%h/.local/bin/dw-daemon";
+      Restart = "on-failure";
+      RestartSec = 1;
+
+      # PATH robuste (sinon socat/jq/hyprctl peuvent être introuvables en unit)
+      Environment = [
+        "PATH=/run/wrappers/bin:/etc/profiles/per-user/%u/bin:/run/current-system/sw/bin:%h/.local/bin"
+        "XDG_CACHE_HOME=%h/.cache"
+      ];
+    };
+
+    Install = {
+      WantedBy = [ "graphical-session.target" ];
+    };
   };
 }
