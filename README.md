@@ -50,10 +50,10 @@
 
 <br>
 
-| Hardware Detail | Development Setup |
+| Hardware & Modeling | Code Environment |
 |:---:|:---:|
 | <img src="./assets/screen-cad.png" alt="CAD Screen" width="100%"> | <img src="./assets/screen-nvim.png" alt="Neovim Screen" width="100%"> |
-| **System Monitoring** | **NVIDIA Graphics** |
+| **System Metrics** | **Graphics Engine** |
 | <img src="./assets/screen-htop.png" alt="HTOP Screen" width="100%"> | <img src="./assets/screen-nvidia.png" alt="NVIDIA Screen" width="100%"> |
 
 ---
