@@ -6,4 +6,4 @@ chromakey_background = 32,36,44
 chromakey_enable = fullscreen:0
 
 # Toggle sur la fenêtre active
-bind = SUPER, O, togglechromakey
+bind = SUPER, P, togglechromakey

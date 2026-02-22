@@ -1,11 +1,9 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 {
   imports = [
-    # Hardware Scan
     ./hardware-configuration.nix
 
-    # --- Modules: Core ---
     ./modules/nvidia-prime.nix
     ./modules/virtualisation.nix
     ./modules/emacs.nix
@@ -13,7 +11,6 @@
     ./modules/launcher.nix
     ./modules/starship.nix
 
-    # --- Modules: Services ---
     ./modules/databases.nix
     ./modules/ollama.nix
     ./modules/nginx.nix
@@ -21,7 +18,7 @@
   ];
 
   # ============================================================================
-  # BOOTLOADER (Systemd-boot)
+  # BOOTLOADER
   # ============================================================================
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.editor = false;
@@ -57,7 +54,7 @@ EOF
   ];
 
   # ============================================================================
-  # NIX SETTINGS
+  # NIX
   # ============================================================================
   nixpkgs.config.allowUnfree = true;
 
@@ -74,7 +71,7 @@ EOF
   };
 
   # ============================================================================
-  # NIX-LD (binaires dynlinkés: AppImage, installers, tarballs, etc.)
+  # NIX-LD
   # ============================================================================
   programs.nix-ld.enable = true;
 
@@ -117,13 +114,12 @@ EOF
     libgbm
     libglvnd
     libdrm
-];
+  ];
 
   # ============================================================================
-  # SYSTEM CORE (Locale, Network, User)
+  # CORE
   # ============================================================================
   networking.hostName = "nixos";
-
   networking.networkmanager.enable = true;
   networking.networkmanager.wifi.powersave = false;
 
@@ -145,7 +141,7 @@ EOF
   };
 
   # ============================================================================
-  # DESKTOP ENVIRONMENT
+  # DESKTOP
   # ============================================================================
   services.xserver = {
     enable = true;
@@ -172,7 +168,7 @@ EOF
   };
 
   # ============================================================================
-  # HARDWARE SUPPORT
+  # HARDWARE
   # ============================================================================
   hardware.enableRedistributableFirmware = true;
 
@@ -208,7 +204,7 @@ EOF
   };
 
   # ============================================================================
-  # SHUTDOWN / REBOOT RELIABILITY
+  # RELIABILITY
   # ============================================================================
   services.logind.settings.Login.KillUserProcesses = true;
 
@@ -217,7 +213,7 @@ EOF
   };
 
   # ============================================================================
-  # QUALITY OF LIFE & SYSTEM PACKAGES
+  # QoL
   # ============================================================================
   programs.zoxide.enable = true;
   programs.direnv.enable = true;
@@ -226,12 +222,14 @@ EOF
 
   home-manager.backupFileExtension = null;
 
+  # ============================================================================
+  # PACKAGES
+  # ============================================================================
   environment.systemPackages = with pkgs; [
-    # Cursor themes available system-wide
     adwaita-icon-theme
     bibata-cursors
 
-    vim neovim node2nix
+    bash vim neovim node2nix
     git wget curl
     iw ethtool pciutils usbutils
     tree ripgrep fd fzf
@@ -243,13 +241,20 @@ EOF
     networkmanager
     polkit_gnome
 
-    # pour pouvoir diagnostiquer nix-ld facilement
     nix-ld
-
-    # utiles si tu veux inspecter / debug
     mesa
     libglvnd
     libdrm
+
+    # Hyprchroma plugin package
+    inputs.hyprchroma.packages.${pkgs.stdenv.hostPlatform.system}.default
+  ];
+
+  # Evite les erreurs "source globbing error" (wal files existent toujours)
+  systemd.tmpfiles.rules = [
+    "d /home/tco/.cache/wal 0755 tco users -"
+    "f /home/tco/.cache/wal/colors-hyprland.conf 0644 tco users -"
+    "f /home/tco/.cache/wal/colors-foot.ini 0644 tco users -"
   ];
 
   environment.sessionVariables = {
