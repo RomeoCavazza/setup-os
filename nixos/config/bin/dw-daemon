@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+STATE_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/dw-global.state"
+ON_SHADER="glass_all"
+OFF_SHADER="dw_off"
+HYPRCTL="${HYPRCTL:-hyprctl}"
+
+# défaut: ON
+state="on"
+[[ -f "$STATE_FILE" ]] && state="$(cat "$STATE_FILE" || true)"
+
+apply_addr() {
+  local addr="$1"
+  [[ -n "$addr" ]] || return 0
+
+  local shader="$ON_SHADER"
+  [[ "$state" == "on" ]] || shader="$OFF_SHADER"
+
+  "$HYPRCTL" dispatch darkwindow:shade "address:^${addr}$" "$shader" >/dev/null 2>&1 || true
+}
+
+# 1) applique à toutes les fenêtres déjà mappées
+"$HYPRCTL" -j clients \
+  | jq -r '.[] | select(.mapped==true and .address!=null) | .address' \
+  | while read -r a; do apply_addr "$a"; done
+
+# 2) écoute les events Hyprland (openwindow)
+SOCK="${XDG_RUNTIME_DIR}/hypr/${HYPRLAND_INSTANCE_SIGNATURE}/.socket2.sock"
+exec socat -u "UNIX-CONNECT:${SOCK}" - \
+  | while IFS= read -r line; do
+      case "$line" in
+        openwindow\>*)
+          payload="${line#openwindow>>}"
+          addr="${payload%%,*}"
+          apply_addr "$addr"
+          ;;
+        *)
+          # refresh state (si tu toggles on/off)
+          [[ -f "$STATE_FILE" ]] && state="$(cat "$STATE_FILE" || true)" || state="on"
+          ;;
+      esac
+    done
