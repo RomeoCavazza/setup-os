@@ -14,7 +14,7 @@
 
   "modules-left": [
     "custom/nixos",
-    "custom/active_app",
+    "wlr/taskbar",
     "cpu",
     "memory",
     "temperature",

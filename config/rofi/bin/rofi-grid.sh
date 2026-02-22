@@ -2,28 +2,30 @@
 set -euo pipefail
 
 THEME="$HOME/.config/rofi/themes/apps-grid.rasi"
+WAYBAR_CFG="$HOME/.config/waybar/config.jsonc"
+WAYBAR_CSS="$HOME/.config/waybar/style.css"
 
-# Sauvegarde blur
-OLD_SIZE="$(hyprctl getoption decoration:blur:size   | awk '/int:/ {print $2; exit}')"
-OLD_PASSES="$(hyprctl getoption decoration:blur:passes | awk '/int:/ {print $2; exit}')"
-OLD_IGNORE="$(hyprctl getoption decoration:blur:ignore_opacity | awk '/int:/ {print $2; exit}')"
+getopt_int() { hyprctl getoption "$1" | awk '/int:/ {print $2; exit}'; }
 
-# Boost blur
-hyprctl keyword decoration:blur:size 10 >/dev/null
-hyprctl keyword decoration:blur:passes "$OLD_PASSES" >/dev/null
-hyprctl keyword decoration:blur:ignore_opacity "$OLD_IGNORE" >/dev/null
+OLD_SIZE="$(getopt_int decoration:blur:size)"
+OLD_PASSES="$(getopt_int decoration:blur:passes)"
+OLD_IGNORE="$(getopt_int decoration:blur:ignore_opacity)"
 
-# Tue waybar → rofi prend tout l'écran
-kill $(pgrep waybar) 2>/dev/null || true
+restore() {
+  hyprctl keyword decoration:blur:size "$OLD_SIZE" >/dev/null 2>&1 || true
+  hyprctl keyword decoration:blur:passes "$OLD_PASSES" >/dev/null 2>&1 || true
+  hyprctl keyword decoration:blur:ignore_opacity "$OLD_IGNORE" >/dev/null 2>&1 || true
 
-# Rofi bloquant — Hyprland s'occupe du placement via windowrulev2
+  # Relance waybar (toujours) — on laisse pas de conditions fragiles
+  nohup waybar -c "$WAYBAR_CFG" -s "$WAYBAR_CSS" >/dev/null 2>&1 &
+}
+trap restore EXIT INT TERM
+
+# Boost blur (léger)
+hyprctl keyword decoration:blur:size 8 >/dev/null 2>&1
+
+# Kill waybar (match cmdline, version nix/wrapped friendly)
+pkill -u "$USER" -f 'waybar' 2>/dev/null || true
+
+# Run rofi (blocking)
 rofi -show drun -theme "$THEME"
-
-# Restore blur
-hyprctl keyword decoration:blur:size    "$OLD_SIZE"   >/dev/null
-hyprctl keyword decoration:blur:passes  "$OLD_PASSES" >/dev/null
-hyprctl keyword decoration:blur:ignore_opacity "$OLD_IGNORE" >/dev/null
-
-# Relance waybar en arrière-plan
-waybar </dev/null >/dev/null 2>&1 &
-disown
