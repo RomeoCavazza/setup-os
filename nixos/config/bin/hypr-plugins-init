@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Recharge Hyprland (reparse la config) et ré-applique les règles shader ciblées
+hyprctl reload >/dev/null 2>&1 || true
+"$HOME/.local/bin/dw-apply" >/dev/null 2>&1 || true
