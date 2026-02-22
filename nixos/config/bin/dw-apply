@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+hyprctl -j clients \
+  | jq -r '.[] | select(.mapped==true) | .address' \
+  | while read -r addr; do
+      [[ -n "$addr" ]] || continue
+      hyprctl dispatch darkwindow:shade "address:^${addr}$" glass_all >/dev/null 2>&1 || true
+    done

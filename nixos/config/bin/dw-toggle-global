@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+STATE_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/dw-global.state"
+ON_SHADER="glass_all"
+OFF_SHADER="dw_off"
+
+state="off"
+[[ -f "$STATE_FILE" ]] && state="$(cat "$STATE_FILE" || true)"
+
+if [[ "$state" == "on" ]]; then
+  target="$OFF_SHADER"
+  next="off"
+  msg="DarkWindow: OFF"
+else
+  target="$ON_SHADER"
+  next="on"
+  msg="DarkWindow: ON"
+fi
+
+hyprctl -j clients \
+  | jq -r '.[] | select(.mapped==true) | .address' \
+  | while read -r addr; do
+      [[ -n "$addr" ]] || continue
+      hyprctl dispatch darkwindow:shade "address:^${addr}$" "$target" >/dev/null 2>&1 || true
+    done
+
+echo "$next" > "$STATE_FILE"
+hyprctl notify -1 1200 "00eaff" "$msg" >/dev/null 2>&1 || true
