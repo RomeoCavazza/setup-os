@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SYS_RE="system_panel\.conkyrc"
+NET_RE="network_panel\.conkyrc"
+
+if pgrep -af "$SYS_RE|$NET_RE" >/dev/null 2>&1; then
+  pkill -f "$SYS_RE" || true
+  pkill -f "$NET_RE" || true
+  exit 0
+fi
+
+bash -lc "/home/tco/dotfiles/conky/start_edex_conky_compact.sh"

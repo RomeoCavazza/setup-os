@@ -3,14 +3,12 @@
 {
   imports = [
     ./hardware-configuration.nix
-
     ./modules/nvidia-prime.nix
     ./modules/virtualisation.nix
     ./modules/emacs.nix
     ./modules/science-data.nix
     ./modules/launcher.nix
     ./modules/starship.nix
-
     ./modules/databases.nix
     ./modules/ollama.nix
     ./modules/nginx.nix
@@ -18,7 +16,7 @@
   ];
 
   # ============================================================================
-  # BOOTLOADER
+  # BOOTLOADER & KERNEL
   # ============================================================================
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.editor = false;
@@ -43,6 +41,9 @@ EOF
     ${pkgs.coreutils}/bin/chmod 0644 /boot/loader/loader.conf || true
   '';
 
+  # Ajout de i2c-dev et i2c-i801 pour que OpenRGB puisse voir le hardware Intel/Lenovo
+  boot.kernelModules = [ "i2c-dev" "i2c-i801" ];
+
   boot.kernelParams = [
     "nvidia-drm.modeset=1"
     "pcie_aspm=off"
@@ -54,7 +55,7 @@ EOF
   ];
 
   # ============================================================================
-  # NIX
+  # NIX SETTINGS
   # ============================================================================
   nixpkgs.config.allowUnfree = true;
 
@@ -71,53 +72,20 @@ EOF
   };
 
   # ============================================================================
-  # NIX-LD
+  # NIX-LD (Compatibilité binaire)
   # ============================================================================
   programs.nix-ld.enable = true;
-
   programs.nix-ld.libraries = with pkgs; [
-    stdenv.cc.cc.lib
-    zlib
-    openssl
-    curl
-
-    glib
-    gtk3
-    pango
-    cairo
-    atk
-    at-spi2-atk
-    at-spi2-core
-    gdk-pixbuf
-
-    dbus
-    expat
-    udev
-
-    alsa-lib
-    cups
-
-    nspr
-    nss
-
-    libx11
-    libxcb
-    libxcomposite
-    libxdamage
-    libxext
-    libxfixes
-    libxrandr
-    libxkbfile
-    libxkbcommon
-
-    mesa
-    libgbm
-    libglvnd
-    libdrm
+    stdenv.cc.cc.lib zlib openssl curl
+    glib gtk3 pango cairo atk at-spi2-atk at-spi2-core gdk-pixbuf
+    dbus expat udev alsa-lib cups nspr nss
+    libxshmfence libx11 libxcb libxcomposite libxdamage libxext
+    libxfixes libxrandr libxtst libxkbfile libxkbcommon
+    mesa libgbm libglvnd libdrm
   ];
 
   # ============================================================================
-  # CORE
+  # CORE NETWORKING & L10N
   # ============================================================================
   networking.hostName = "nixos";
   networking.networkmanager.enable = true;
@@ -130,18 +98,11 @@ EOF
   users.users.tco = {
     isNormalUser = true;
     shell = pkgs.bash;
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-      "video"
-      "docker"
-      "libvirtd"
-      "dialout"
-    ];
+    extraGroups = [ "wheel" "networkmanager" "video" "docker" "libvirtd" "dialout" "i2c" ];
   };
 
   # ============================================================================
-  # DESKTOP
+  # DESKTOP ENVIRONMENT
   # ============================================================================
   services.xserver = {
     enable = true;
@@ -168,7 +129,7 @@ EOF
   };
 
   # ============================================================================
-  # HARDWARE
+  # HARDWARE SERVICES
   # ============================================================================
   hardware.enableRedistributableFirmware = true;
 
@@ -187,6 +148,9 @@ EOF
     enable32Bit = true;
   };
 
+  # Activation propre de OpenRGB
+  services.hardware.openrgb.enable = true;
+
   # ============================================================================
   # SECURITY / POLKIT
   # ============================================================================
@@ -204,30 +168,28 @@ EOF
   };
 
   # ============================================================================
-  # RELIABILITY
+  # QoL & SYSTEMD SETTINGS
   # ============================================================================
   services.logind.settings.Login.KillUserProcesses = true;
+  systemd.settings.Manager.DefaultTimeoutStopSec = "15s";
 
-  systemd.settings.Manager = {
-    DefaultTimeoutStopSec = "15s";
-  };
-
-  # ============================================================================
-  # QoL
-  # ============================================================================
   programs.zoxide.enable = true;
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
   services.logrotate.enable = true;
 
-  home-manager.backupFileExtension = null;
-
   # ============================================================================
-  # PACKAGES
+  # PACKAGES & ENVIRONMENT
   # ============================================================================
   environment.systemPackages = with pkgs; [
     adwaita-icon-theme
     bibata-cursors
+    brightnessctl
+    openrgb        # Ajout explicite ici
+
+    appimage-run
+    fuse2
+    libxshmfence
 
     bash vim neovim node2nix
     git wget curl
@@ -246,21 +208,29 @@ EOF
     libglvnd
     libdrm
 
-    # Hyprchroma plugin package
+    (writeShellScriptBin "edex-ui" ''
+      set -euo pipefail
+      export LD_LIBRARY_PATH="${pkgs.libxshmfence}/lib:''${LD_LIBRARY_PATH:-}"
+      exec ${pkgs.appimage-run}/bin/appimage-run /opt/edex-ui/edex-ui.AppImage \
+        --no-sandbox --disable-gpu-sandbox --ozone-platform=x11 --disable-features=UseOzonePlatform "$@"
+    '')
+
     inputs.hyprchroma.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
 
-  # Evite les erreurs "source globbing error" (wal files existent toujours)
+  # Ajout de ton dossier bin personnel dans le PATH pour pouvoir lancer `legion-pulse`
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+    EDITOR = "vim";
+    PATH = [ "/etc/nixos/config/bin:$PATH" ];
+  };
+
+  # Tmpfiles pour éviter les erreurs de wal
   systemd.tmpfiles.rules = [
     "d /home/tco/.cache/wal 0755 tco users -"
     "f /home/tco/.cache/wal/colors-hyprland.conf 0644 tco users -"
     "f /home/tco/.cache/wal/colors-foot.ini 0644 tco users -"
   ];
-
-  environment.sessionVariables = {
-    NIXOS_OZONE_WL = "1";
-    EDITOR = "vim";
-  };
 
   system.stateVersion = "24.05";
 }
