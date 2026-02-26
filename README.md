@@ -38,7 +38,17 @@
 ## • Screenshots •
 
 <div align="center">
-  <video src="./assets/hero-video.mp4" autoplay loop muted width="100%"></video>
+  <a href="https://github.com/RomeoCavazza/setup-os/raw/main/assets/hero-video.mp4">
+    <img src="./assets/screen-fastfetch.png" alt="▶ Click to watch the video" width="100%">
+  </a>
+  <p><em>▶ Click the image above to watch the full demo video</em></p>
+</div>
+
+<br>
+
+<div align="center">
+  <img src="./assets/screen-waybar.png" alt="Waybar showcase" width="100%">
+  <p><em>Desktop Interface — <a href="./config/hypr/waybar">Waybar Configuration</a></em></p>
 </div>
 
 <br>
@@ -46,15 +56,16 @@
 > [!TIP]
 > This setup ships with **two desktop environments** accessible via GDM — switch seamlessly between **Hyprland** and **GNOME** at login.
 
-| Hyprland | GNOME |
-|:---:|:---:|
-| <img src="./assets/screen-fastfetch.png" alt="Hyprland Desktop" width="100%"> | <img src="./assets/gnome-desktop.png" alt="GNOME Desktop" width="100%"> |
+<div align="center">
+  <h4>Hyprland</h4>
+  <img src="./assets/screen-fastfetch.png" alt="Hyprland Desktop" width="100%">
+</div>
 
 <br>
 
 <div align="center">
-  <img src="./assets/screen-waybar.png" alt="Waybar showcase" width="100%">
-  <p><em>Desktop Interface - <a href="./config/hypr/waybar">Waybar Configuration</a></em></p>
+  <h4>GNOME</h4>
+  <img src="./assets/gnome-desktop.png" alt="GNOME Desktop" width="100%">
 </div>
 
 <br>
