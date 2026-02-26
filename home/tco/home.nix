@@ -25,6 +25,11 @@ in
   # ============================================================================
   xdg.enable = true;
 
+  # --- HYPR THEME FILES (sources dans le repo flake) ---
+  xdg.configFile."hypr/theme/seaglass.conf".source = ../../config/hypr/theme/seaglass.conf;
+  xdg.configFile."hypr/theme/hyprchroma.conf".source = ../../config/hypr/theme/hyprchroma.conf;
+  xdg.configFile."hypr/theme/rules.conf".source = ../../config/hypr/theme/rules.conf;
+
   # NOTE: chemins relatifs à ce home.nix (dans /etc/nixos/home/tco)
   home.file.".config/hypr".source          = ../../config/hypr;
   home.file.".config/waybar".source        = ../../config/hypr/waybar;
@@ -80,13 +85,13 @@ in
   # ============================================================================
   home.packages = with pkgs; [
     # Core CLI / Productivity
-    bat eza fd fzf jq ripgrep yazi home-manager superfile grim slurp sway-contrib.grimshot libnotify
+    bat eza fd fzf jq ripgrep yazi home-manager superfile grim slurp wf-recorder sway-contrib.grimshot libnotify
 
     # Nix tooling
-    dockfmt nixfmt shellcheck shfmt
+    dockfmt nixfmt shellcheck shfmt obs-studio
 
     # Editor / Code
-    zed-editor neovim git lua-language-server lazygit aider-chat desktop-file-utils
+    zed-editor neovim git lua lua-language-server luaPackages.lgi lazygit aider-chat desktop-file-utils
     cargo openssl pkg-config rust-analyzer rustc rustfmt
     black isort
     typescript-language-server vscode-langservers-extracted tailwindcss-language-server
@@ -98,12 +103,13 @@ in
     # UI
     papirus-icon-theme
     swaynotificationcenter
-    cava
+    cava cool-retro-term
     nerd-fonts.symbols-only
     hyprcursor
     rose-pine-hyprcursor
     nerd-fonts.jetbrains-mono
     bibata-cursors
+    conky
 
     # GTK theming
     adw-gtk3
