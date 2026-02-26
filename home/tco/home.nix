@@ -133,10 +133,10 @@ in
     socat
 
     # Monitoring
-    atop bottom btop glances htop
+    atop bottom btop glances htop nvtopPackages.full
 
     # Apps / Desktop
-    appimage-run discord
+    appimage-run discord pkgs.spotify
 
     # Terminal toys
     cbonsai cmatrix hollywood pipes sl

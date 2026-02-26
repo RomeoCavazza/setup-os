@@ -38,8 +38,17 @@
 ## • Screenshots •
 
 <div align="center">
-  <img src="./assets/screen-fastfetch.png" alt="Fastfetch showcase" width="100%">
+  <video src="./assets/hero-video.mp4" autoplay loop muted width="100%"></video>
 </div>
+
+<br>
+
+> [!TIP]
+> This setup ships with **two desktop environments** accessible via GDM — switch seamlessly between **Hyprland** and **GNOME** at login.
+
+| Hyprland | GNOME |
+|:---:|:---:|
+| <img src="./assets/screen-fastfetch.png" alt="Hyprland Desktop" width="100%"> | <img src="./assets/gnome-desktop.png" alt="GNOME Desktop" width="100%"> |
 
 <br>
 
