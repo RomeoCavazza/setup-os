@@ -92,7 +92,7 @@ nixos/
 
 ### Prerequisites
 - [NixOS ISO](https://channels.nixos.org/nixos-unstable/latest-nixos-graphical-x86_64-linux.iso)
-- Basic knowledge of Nix flakes.
+- [Ventoy](https://www.ventoy.net/en/download.html) or [Rufus](https://rufus.ie/en/) to create a bootable USB drive.
 
 ### Setup Instructions
 
