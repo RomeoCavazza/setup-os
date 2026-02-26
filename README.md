@@ -27,11 +27,24 @@
 > [!NOTE]
 > This repository uses a modular structure, allowing you to easily toggle specific services (databases, AI, monitoring) by importing the corresponding files in `configuration.nix`.
 
-### Notable Features
-- **Window Management**: [Hyprland](https://hyprland.org/) with Dwindle layout and Catppuccin Mocha theme.
-- **Hardware Optimization**: NVIDIA PRIME support, Pipewire audio, and custom bootloader entries.
-- **Development Ready**: Built-in modules for PostgreSQL, Redis, Ollama (Local AI), and Data Science.
-- **Observability**: Ready-to-use Grafana, Prometheus, and Loki stack.
+```
+nixos/
+├── config/
+│   ├── bin/          # Custom scripts
+│   ├── doom/         # Doom Emacs
+│   ├── foot/         # Terminal
+│   └── hypr/         # Hyprland + Waybar
+├── home/tco/         # Home Manager
+├── modules/          # Toggleable system modules
+│   ├── databases.nix
+│   ├── nvidia-prime.nix
+│   ├── ollama.nix
+│   ├── observability.nix
+│   └── ...
+├── configuration.nix
+├── flake.nix
+└── flake.lock
+```
 
 ---
 
