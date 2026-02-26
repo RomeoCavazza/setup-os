@@ -4,7 +4,7 @@
   <p><strong>Declarative, modular, and optimized workstation configuration</strong></p>
 
   <div align="center">
-    <img src="https://img.shields.io/badge/NixOS-Unstable-5277C3?style=for-the-badge&logo=nixos&logoColor=white" alt="NixOS">
+    <img src="https://img.shields.io/badge/NixOS-26.05_(Yarara)-5277C3?style=for-the-badge&logo=nixos&logoColor=white" alt="NixOS">
     <img src="https://img.shields.io/badge/Hyprland-Desktop-58E1FF?style=for-the-badge&logo=hyprland&logoColor=white" alt="Hyprland">
     <img src="https://img.shields.io/badge/Flakes-Enabled-7EBAE4?style=for-the-badge&logo=snowflake&logoColor=white" alt="Flakes">
   </div>
@@ -78,15 +78,6 @@
 
 ---
 
-## • Contents •
-
-- **NixOS Config**: Main system configuration and Flake setup.
-- **Modules**: Pluggable components for databases, servers, and tools.
-- **Hyprland**: Highly customized Wayland compositor configuration.
-- **Home Manager**: User-specific environment management.
-
----
-
 ## • Installation •
 
 ### Prerequisites
@@ -115,14 +106,3 @@
    sudo nixos-rebuild switch --flake .#nixos
    ```
 
----
-
-## • Software Overview •
-
-| Component | Purpose | Details |
-| :--- | :--- | :--- |
-| **Hyprland** | Compositor | Catppuccin Mocha, Waybar, Rofi |
-| **PostgreSQL** | Database | Version 17 with PostGIS |
-| **Ollama** | Local AI | Hosted on port 11434 |
-| **Nginx** | Reverse Proxy | Configured for ports 8081-8083 |
-| **Grafana** | Monitoring | Dashboard on port 3000 |
