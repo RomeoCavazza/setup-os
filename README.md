@@ -38,10 +38,7 @@
 ## • Screenshots •
 
 <div align="center">
-  <a href="https://github.com/RomeoCavazza/setup-os/raw/main/assets/hero-video.mp4">
-    <img src="./assets/screen-fastfetch.png" alt="▶ Click to watch the video" width="100%">
-  </a>
-  <p><em>▶ Click the image above to watch the full demo video</em></p>
+  <img src="./assets/hero-video.gif" alt="Desktop demo" width="100%">
 </div>
 
 <br>
@@ -57,15 +54,15 @@
 > This setup ships with **two desktop environments** accessible via GDM — switch seamlessly between **Hyprland** and **GNOME** at login.
 
 <div align="center">
-  <h4>Hyprland</h4>
-  <img src="./assets/screen-fastfetch.png" alt="Hyprland Desktop" width="100%">
+  <h4>GNOME</h4>
+  <img src="./assets/gnome-desktop.png" alt="GNOME Desktop" width="100%">
 </div>
 
 <br>
 
 <div align="center">
-  <h4>GNOME</h4>
-  <img src="./assets/gnome-desktop.png" alt="GNOME Desktop" width="100%">
+  <h4>Hyprland</h4>
+  <img src="./assets/screen-fastfetch.png" alt="Hyprland Desktop" width="100%">
 </div>
 
 <br>
