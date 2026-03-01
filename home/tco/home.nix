@@ -4,9 +4,6 @@ let
   mkOut = config.lib.file.mkOutOfStoreSymlink;
 in
 {
-  # ============================================================================
-  # USER IDENTITY & STATE
-  # ============================================================================
   home.username = "tco";
   home.homeDirectory = "/home/tco";
   home.stateVersion = "25.05";
@@ -20,26 +17,18 @@ in
     XDG_DATA_DIRS = "$HOME/.local/share:$XDG_DATA_DIRS";
   };
 
-  # ============================================================================
-  # DOTFILES
-  # ============================================================================
   xdg.enable = true;
 
-  # --- HYPR THEME FILES (sources dans le repo flake) ---
   xdg.configFile."hypr/theme/seaglass.conf".source = ../../config/hypr/theme/seaglass.conf;
   xdg.configFile."hypr/theme/hyprchroma.conf".source = ../../config/hypr/theme/hyprchroma.conf;
   xdg.configFile."hypr/theme/rules.conf".source = ../../config/hypr/theme/rules.conf;
 
-  # NOTE: chemins relatifs à ce home.nix (dans /etc/nixos/home/tco)
   home.file.".config/hypr".source          = ../../config/hypr;
   home.file.".config/waybar".source        = ../../config/hypr/waybar;
   home.file.".config/rofi".source          = ../../config/rofi;
   home.file.".config/foot".source          = ../../config/foot;
   home.file.".config/swappy/config".source = ../../config/swappy/config;
 
-  # ============================================================================
-  # USER BIN WRAPPERS / SCRIPTS
-  # ============================================================================
   home.file.".local/bin/cursor".source = mkOut "/etc/nixos/config/bin/cursor";
 
   home.file.".local/bin/antigravity" = {
@@ -52,37 +41,15 @@ in
     '';
   };
 
-  home.file.".local/bin/dw-apply" = {
-    source = ../../config/bin/dw-apply;
-    executable = true;
-  };
-
-  home.file.".local/bin/dw-toggle-global" = {
-    source = ../../config/bin/dw-toggle-global;
-    executable = true;
-  };
-
-  home.file.".local/bin/dw-toggle" = {
-    source = ../../config/bin/dw-toggle;
-    executable = true;
-  };
-
-  home.file.".local/bin/dw-daemon" = {
-    source = ../../config/bin/dw-daemon;
-    executable = true;
-  };
-
-  home.file.".local/bin/hypr-plugins-init" = {
-    source = ../../config/bin/hypr-plugins-init;
-    executable = true;
-  };
+  home.file.".local/bin/dw-apply" = { source = ../../config/bin/dw-apply; executable = true; };
+  home.file.".local/bin/dw-toggle-global" = { source = ../../config/bin/dw-toggle-global; executable = true; };
+  home.file.".local/bin/dw-toggle" = { source = ../../config/bin/dw-toggle; executable = true; };
+  home.file.".local/bin/dw-daemon" = { source = ../../config/bin/dw-daemon; executable = true; };
+  home.file.".local/bin/hypr-plugins-init" = { source = ../../config/bin/hypr-plugins-init; executable = true; };
 
   home.file.".local/lib/libhypr-darkwindow.so".source =
     "${pkgs.hyprlandPlugins.hypr-darkwindow}/lib/libhypr-darkwindow.so";
 
-  # ============================================================================
-  # PACKAGES
-  # ============================================================================
   home.packages = with pkgs; [
     # Core CLI / Productivity
     bat eza fd fzf jq ripgrep yazi home-manager superfile grim slurp wf-recorder sway-contrib.grimshot libnotify
@@ -133,55 +100,33 @@ in
     socat
 
     # Monitoring
-    atop bottom btop glances htop nvtopPackages.full
+    atop bottom btop glances htop nvitop
 
     # Apps / Desktop
     appimage-run discord pkgs.spotify
 
+    # KiCad
+    kicad
+
     # Terminal toys
     cbonsai cmatrix hollywood pipes sl
-
-    # CAD / Electronics
-    freecad-wayland kicad
   ];
 
-  # ============================================================================
-  # GTK (theme + icons + cursor)
-  # ============================================================================
   gtk = {
     enable = true;
-
-    theme = {
-      name = "Adwaita-dark";
-      package = pkgs.gnome-themes-extra;
-    };
-
-    iconTheme = {
-      name = "Papirus-Dark";
-      package = pkgs.papirus-icon-theme;
-    };
-
-    cursorTheme = {
-      name = "Bibata-Modern-Ice";
-      package = pkgs.bibata-cursors;
-    };
+    theme = { name = "Adwaita-dark"; package = pkgs.gnome-themes-extra; };
+    iconTheme = { name = "Papirus-Dark"; package = pkgs.papirus-icon-theme; };
+    cursorTheme = { name = "Bibata-Modern-Ice"; package = pkgs.bibata-cursors; };
   };
 
-  # ============================================================================
-  # STARSHIP
-  # ============================================================================
   programs.starship = {
     enable = true;
     enableBashIntegration = true;
   };
 
-  # ============================================================================
-  # VSCODE
-  # ============================================================================
   programs.vscode = {
     enable = true;
     package = pkgs.vscode;
-
     profiles.default = {
       extensions = with pkgs.vscode-extensions; [
         ms-python.python
@@ -192,7 +137,6 @@ in
         jnoortheen.nix-ide
         mkhl.direnv
       ];
-
       userSettings = {
         "editor.fontFamily" = "'JetBrainsMono Nerd Font', 'Droid Sans Mono', 'monospace'";
         "editor.fontLigatures" = true;
@@ -203,24 +147,15 @@ in
     };
   };
 
-  # ============================================================================
-  # GIT
-  # ============================================================================
   programs.git = {
     enable = true;
     settings = {
-      user = {
-        name = "Romeo Cavazza";
-        email = "romeo.cavazza@gmail.com";
-      };
+      user = { name = "Romeo Cavazza"; email = "romeo.cavazza@gmail.com"; };
       init.defaultBranch = "main";
       pull.rebase = true;
     };
   };
 
-  # ============================================================================
-  # BASH
-  # ============================================================================
   programs.bash = {
     enable = true;
     enableCompletion = true;
@@ -242,9 +177,6 @@ in
     };
   };
 
-  # ============================================================================
-  # HOME ACTIVATION: wal files + templates
-  # ============================================================================
   home.activation.ensureWalFiles =
     lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       mkdir -p "$HOME/.cache/wal"
@@ -290,9 +222,6 @@ EOF
       fi
     '';
 
-  # ============================================================================
-  # DESKTOP ENTRY (Cursor + Antigravity)
-  # ============================================================================
   xdg.desktopEntries.cursor = {
     name = "Cursor";
     genericName = "AI Code Editor";
@@ -312,9 +241,6 @@ EOF
     categories = [ "Development" "IDE" ];
   };
 
-  # ============================================================================
-  # DW-DAEMON (systemd user) — auto shade on new windows
-  # ============================================================================
   systemd.user.services.dw-daemon = {
     Unit = {
       Description = "Hypr DarkWindow auto-shade daemon";
@@ -326,16 +252,12 @@ EOF
       ExecStart = "%h/.local/bin/dw-daemon";
       Restart = "on-failure";
       RestartSec = 1;
-
-      # PATH robuste (sinon socat/jq/hyprctl peuvent être introuvables en unit)
       Environment = [
         "PATH=/run/wrappers/bin:/etc/profiles/per-user/%u/bin:/run/current-system/sw/bin:%h/.local/bin"
         "XDG_CACHE_HOME=%h/.cache"
       ];
     };
 
-    Install = {
-      WantedBy = [ "graphical-session.target" ];
-    };
+    Install = { WantedBy = [ "graphical-session.target" ]; };
   };
 }

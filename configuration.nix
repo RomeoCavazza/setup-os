@@ -41,7 +41,6 @@ EOF
     ${pkgs.coreutils}/bin/chmod 0644 /boot/loader/loader.conf || true
   '';
 
-  # Ajout de i2c-dev et i2c-i801 pour que OpenRGB puisse voir le hardware Intel/Lenovo
   boot.kernelModules = [ "i2c-dev" "i2c-i801" ];
 
   boot.kernelParams = [
@@ -63,6 +62,13 @@ EOF
     experimental-features = [ "nix-command" "flakes" ];
     auto-optimise-store = true;
     warn-dirty = false;
+
+    # éviter le warning "download buffer is full"
+    download-buffer-size = 268435456; # 256 MiB
+
+    # important: build sandbox dans /build
+    sandbox = true;
+    sandbox-build-dir = "/build";
   };
 
   nix.gc = {
@@ -72,7 +78,38 @@ EOF
   };
 
   # ============================================================================
-  # NIX-LD (Compatibilité binaire)
+  # BUILD DIR: /build bind -> /home/nix-build (FIX BOOT STAGE1)
+  # ============================================================================
+  # On veut /build sur la partition /home (grande), mais PAS monté en stage1.
+  # /build doit se monter après /home, sinon initrd plante.
+  systemd.tmpfiles.rules = [
+    # wal (évite erreurs)
+    "d /home/tco/.cache/wal 0755 tco users -"
+    "f /home/tco/.cache/wal/colors-hyprland.conf 0644 tco users -"
+    "f /home/tco/.cache/wal/colors-foot.ini 0644 tco users -"
+
+    # backend du sandbox build-dir (écriture autorisée aux nixbld*)
+    "d /home/nix-build 2775 root nixbld - -"
+  ];
+
+  fileSystems."/build" = {
+    device = "/home/nix-build";
+    fsType = "none";
+    options = [
+      "bind"
+      "x-systemd.requires-mounts-for=/home"
+      "x-systemd.mkdir"
+    ];
+    neededForBoot = false;
+  };
+
+  # ⚠️ IMPORTANT:
+  # On NE bind PAS /nix vers /home/.nix :
+  # /home n'est pas disponible en stage1, et /nix est requis pour booter.
+  # Donc pas de fileSystems."/nix" ici.
+
+  # ============================================================================
+  # NIX-LD
   # ============================================================================
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs; [
@@ -85,7 +122,7 @@ EOF
   ];
 
   # ============================================================================
-  # CORE NETWORKING & L10N
+  # NETWORKING & L10N
   # ============================================================================
   networking.hostName = "nixos";
   networking.networkmanager.enable = true;
@@ -102,7 +139,7 @@ EOF
   };
 
   # ============================================================================
-  # DESKTOP ENVIRONMENT
+  # DESKTOP
   # ============================================================================
   services.xserver = {
     enable = true;
@@ -129,7 +166,7 @@ EOF
   };
 
   # ============================================================================
-  # HARDWARE SERVICES
+  # HARDWARE
   # ============================================================================
   hardware.enableRedistributableFirmware = true;
 
@@ -148,7 +185,6 @@ EOF
     enable32Bit = true;
   };
 
-  # Activation propre de OpenRGB
   services.hardware.openrgb.enable = true;
 
   # ============================================================================
@@ -168,7 +204,7 @@ EOF
   };
 
   # ============================================================================
-  # QoL & SYSTEMD SETTINGS
+  # QoL
   # ============================================================================
   services.logind.settings.Login.KillUserProcesses = true;
   systemd.settings.Manager.DefaultTimeoutStopSec = "15s";
@@ -179,19 +215,18 @@ EOF
   services.logrotate.enable = true;
 
   # ============================================================================
-  # PACKAGES & ENVIRONMENT
+  # PACKAGES & ENV
   # ============================================================================
   environment.systemPackages = with pkgs; [
     adwaita-icon-theme
     bibata-cursors
     brightnessctl
-    openrgb        # Ajout explicite ici
 
     appimage-run
     fuse2
     libxshmfence
 
-    bash vim neovim node2nix
+    bash vim neovim
     git wget curl
     iw ethtool pciutils usbutils
     tree ripgrep fd fzf
@@ -218,19 +253,10 @@ EOF
     inputs.hyprchroma.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
 
-  # Ajout de ton dossier bin personnel dans le PATH pour pouvoir lancer `legion-pulse`
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
     EDITOR = "vim";
-    PATH = [ "/etc/nixos/config/bin:$PATH" ];
   };
-
-  # Tmpfiles pour éviter les erreurs de wal
-  systemd.tmpfiles.rules = [
-    "d /home/tco/.cache/wal 0755 tco users -"
-    "f /home/tco/.cache/wal/colors-hyprland.conf 0644 tco users -"
-    "f /home/tco/.cache/wal/colors-foot.ini 0644 tco users -"
-  ];
 
   system.stateVersion = "24.05";
 }
