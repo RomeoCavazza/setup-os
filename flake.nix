@@ -44,15 +44,11 @@
           buildInputs = with pkgs; [
             python311 git
             stdenv.cc.cc.lib zlib glib
-            cudaPackages.cudatoolkit
-            cudaPackages.cudnn
-            cudaPackages.libcublas
             linuxPackages.nvidia_x11
             python311Packages.pip
           ];
           shellHook = ''
             export LD_LIBRARY_PATH=${pkgs.stdenv.cc.cc.lib}/lib:${pkgs.linuxPackages.nvidia_x11}/lib:$LD_LIBRARY_PATH
-            export CUDA_PATH=${pkgs.cudaPackages.cudatoolkit}
           '';
         };
 
