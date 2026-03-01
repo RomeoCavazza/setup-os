@@ -97,12 +97,14 @@
       http_port = 3000;
       domain = "localhost";
     };
+    settings.security.secret_key = "shellgeist-super-secret-key-change-me";
   };
 
   environment.systemPackages = with pkgs; [
     prometheus
     loki
     promtail
+    nvtopPackages.full
   ];
 
   # If everything is local-only, no need to open firewall ports
