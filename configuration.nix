@@ -12,7 +12,7 @@
     ./modules/databases.nix
     ./modules/ollama.nix
     ./modules/nginx.nix
-    # ./modules/observability.nix
+    ./modules/observability.nix
   ];
 
   # ============================================================================

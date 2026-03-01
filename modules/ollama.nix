@@ -3,8 +3,7 @@
 {
   services.ollama = {
     enable = true;
-
-    package = pkgs.ollama;
+    package = pkgs.ollama-cuda;
   };
 
   systemd.services.ollama.serviceConfig = {
