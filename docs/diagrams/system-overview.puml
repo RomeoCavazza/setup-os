@@ -1,0 +1,27 @@
+@startuml
+title setup-os system overview
+
+package "Flake" {
+  [flake.nix] as Flake
+  [devShells] as Shells
+}
+
+package "System" {
+  [configuration.nix] as Config
+  [hardware-configuration.nix] as Hardware
+  [modules/*.nix] as Modules
+}
+
+package "User" {
+  [home/tco/home.nix] as Home
+  [config/] as Dotfiles
+}
+
+Flake --> Config
+Flake --> Home
+Flake --> Shells
+Config --> Hardware
+Config --> Modules
+Home --> Dotfiles
+
+@enduml
