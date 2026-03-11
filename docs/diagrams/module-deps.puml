@@ -1,0 +1,27 @@
+@startuml
+title configuration.nix module imports
+
+package "configuration.nix" {
+  [hardware-configuration.nix] as hw
+  [nvidia-prime.nix] as nv
+  [virtualisation.nix] as virt
+  [emacs.nix] as emacs
+  [science-data.nix] as sci
+  [launcher.nix] as launcher
+  [starship.nix] as starship
+  [databases.nix] as db
+  [ollama.nix] as ollama
+  [nginx.nix] as nginx
+  [observability.nix] as obs
+}
+
+hw --> nv : optional
+hw --> virt : optional
+emacs .. sci
+sci .. launcher
+launcher .. starship
+db .. ollama
+ollama .. nginx
+nginx .. obs
+
+@enduml

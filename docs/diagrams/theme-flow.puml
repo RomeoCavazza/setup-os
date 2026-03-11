@@ -1,0 +1,29 @@
+@startuml
+title Theme propagation (Seaglass)
+
+skinparam backgroundColor #FEFEFE
+
+rectangle "Theme" {
+  [Seaglass theme\n#94E2D5] as theme
+}
+
+rectangle "Config layer" {
+  [Hyprland\nseaglass.conf\ntokens.conf] as hypr
+  [Waybar\nmocha.css\nstyle.css] as waybar
+  [Rofi\ncolumn-tco.rasi] as rofi
+}
+
+rectangle "Rendering" {
+  [Foot\nfoot.ini] as foot
+  [Hyprchroma\ntint] as hyprchroma
+  [GTK / Icons\nAdwaita-dark\nPapirus-Dark] as gtk
+}
+
+theme --> hypr
+theme --> waybar
+theme --> rofi
+hypr --> foot
+waybar --> hyprchroma
+rofi --> gtk
+
+@enduml

@@ -1,0 +1,15 @@
+@startuml
+title Flake outputs
+
+rectangle "flake.nix" as flake {
+  (nixosConfigurations.nixos) as nixos
+  (homeConfigurations.tco) as home
+  (devShells.x86_64-linux) as shells
+}
+
+nixos --> [configuration.nix\n+ modules]
+home --> [home/tco/home.nix]
+shells --> [ai] : python311, pip, nvidia
+shells --> [embedded] : rust, gdb, openocd, arduino
+
+@enduml
