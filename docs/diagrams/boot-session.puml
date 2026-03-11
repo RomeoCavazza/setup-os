@@ -1,0 +1,18 @@
+@startuml
+title Boot and session selection
+
+|Boot|
+start
+:systemd-boot;
+:GDM;
+
+|Session|
+if (User choice?) then (Hyprland)
+  :Hyprland + XWayland;
+  :Waybar, Rofi, Foot;
+else (GNOME)
+  :GNOME Desktop;
+  :Adwaita, Papirus;
+endif
+
+@enduml
