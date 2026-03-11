@@ -1,6 +1,8 @@
 @startuml
 title configuration.nix module imports
 
+skinparam backgroundColor #E8E8E8
+
 package "configuration.nix" {
   [hardware-configuration.nix] as hw
   [nvidia-prime.nix] as nv

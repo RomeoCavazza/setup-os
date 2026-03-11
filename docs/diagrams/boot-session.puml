@@ -1,6 +1,8 @@
 @startuml
 title Boot and session selection
 
+skinparam backgroundColor #E8E8E8
+
 |Boot|
 start
 :systemd-boot;
