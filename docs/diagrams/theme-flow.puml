@@ -1,7 +1,7 @@
 @startuml
 title Theme propagation (Seaglass)
 
-skinparam backgroundColor #FEFEFE
+skinparam backgroundColor #E8E8E8
 
 rectangle "Theme" {
   [Seaglass theme\n#94E2D5] as theme

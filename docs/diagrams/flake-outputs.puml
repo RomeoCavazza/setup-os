@@ -1,6 +1,8 @@
 @startuml
 title Flake outputs
 
+skinparam backgroundColor #E8E8E8
+
 rectangle "flake.nix" as flake {
   (nixosConfigurations.nixos) as nixos
   (homeConfigurations.tco) as home

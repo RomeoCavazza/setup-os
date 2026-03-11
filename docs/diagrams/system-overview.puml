@@ -1,6 +1,8 @@
 @startuml
 title setup-os overview
 
+skinparam backgroundColor #E8E8E8
+
 [Flake inputs] --> [flake.nix]
 [flake.nix] --> [System layer]
 [flake.nix] --> [User layer]
