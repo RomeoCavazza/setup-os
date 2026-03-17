@@ -1,0 +1,19 @@
+@startuml rofi-launcher-flow
+skinparam monochrome true
+participant "launcher.sh" as Launcher
+participant "colors.rasi" as Colors
+participant Rofi
+participant "rofi-grid.sh" as Grid
+participant Hyprland
+participant Waybar
+
+Launcher -> Colors : select random accent
+Launcher -> Rofi : launch with random theme
+Rofi -> Grid : execute context (if grid)
+Grid -> Hyprland : save & increase blur
+Grid -> Waybar : kill processes
+Rofi -> Rofi : user selects tool
+Rofi -> Grid : on exit
+Grid -> Hyprland : restore blur
+Grid -> Waybar : relaunch
+@enduml

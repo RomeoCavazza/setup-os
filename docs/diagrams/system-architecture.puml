@@ -1,0 +1,35 @@
+@startuml system-architecture
+actor User
+rectangle "NixOS Configuration" as Config
+rectangle "Rofi Launcher & Applets" as Rofi
+rectangle "Rofi Theming & Display Management" as RofiTheme
+rectangle "Waybar Status Bar" as Waybar
+rectangle "Dynamic Shell Scripts" as Scripts
+rectangle "Core System Utilities" as Utils
+rectangle "Styling & Theming Assets" as Styling
+rectangle "Hyprland Compositor" as Hyprland
+
+User --> Config
+User --> Rofi
+
+Config --> Rofi
+Config --> Waybar
+Config --> Scripts
+Config --> Hyprland
+
+Rofi --> RofiTheme
+Rofi --> Scripts
+
+RofiTheme --> Waybar
+RofiTheme --> Hyprland
+RofiTheme --> Styling
+
+Waybar --> Styling
+Scripts --> Styling
+Scripts --> Utils
+Utils --> Styling
+Utils --> Hyprland
+Hyprland <--> Scripts
+@enduml
+
+@enduml
