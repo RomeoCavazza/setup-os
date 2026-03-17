@@ -1,0 +1,35 @@
+@startuml dev-shells
+!theme plain
+skinparam backgroundColor #0f172a
+skinparam defaultFontColor #e2e8f0
+skinparam arrowColor #94e2d5
+skinparam borderColor #475569
+skinparam shadowing false
+
+skinparam rectangle {
+  BackgroundColor #1e293b
+  BorderColor #475569
+  FontColor #e2e8f0
+}
+skinparam package {
+  BackgroundColor #0f172a
+  BorderColor #475569
+  FontColor #94e2d5
+}
+
+package "flake.nix devShells" {
+  package "devShells.ai  (alias: devai)" {
+    rectangle "python311 + pip" as py
+    rectangle "nvidia_x11\n(LD_LIBRARY_PATH patched)" as gpu
+    rectangle "stdenv.cc.cc.lib + zlib + glib" as libs
+  }
+
+  package "devShells.embedded  (alias: devemb)" {
+    rectangle "Rust stable\n(rust-src, rust-analyzer)" as rust
+    rectangle "GCC + Clang + CMake + GDB" as cc
+    rectangle "Arduino IDE/CLI\nesptool, openocd, minicom" as mcu
+    rectangle "mosquitto (MQTT broker)" as mqtt
+  }
+}
+
+@enduml
