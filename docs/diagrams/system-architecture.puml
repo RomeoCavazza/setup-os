@@ -1,35 +1,44 @@
 @startuml system-architecture
-actor User
-rectangle "NixOS Configuration" as Config
-rectangle "Rofi Launcher & Applets" as Rofi
-rectangle "Rofi Theming & Display Management" as RofiTheme
-rectangle "Waybar Status Bar" as Waybar
-rectangle "Dynamic Shell Scripts" as Scripts
-rectangle "Core System Utilities" as Utils
-rectangle "Styling & Theming Assets" as Styling
-rectangle "Hyprland Compositor" as Hyprland
+!theme plain
+skinparam backgroundColor #0f172a
+skinparam defaultFontColor #e2e8f0
+skinparam arrowColor #94e2d5
+skinparam borderColor #475569
+skinparam shadowing false
 
-User --> Config
-User --> Rofi
+skinparam rectangle {
+  BackgroundColor #1e293b
+  BorderColor #475569
+  FontColor #e2e8f0
+}
+skinparam package {
+  BackgroundColor #0f172a
+  BorderColor #475569
+  FontColor #94e2d5
+}
 
-Config --> Rofi
-Config --> Waybar
-Config --> Scripts
-Config --> Hyprland
+package "configuration.nix" {
+  rectangle "Boot\nsystemd-boot\n+ Windows entry" as boot
+  rectangle "Nix Runtime\nauto-optimise, sandbox\nGC weekly" as nix
+  rectangle "Display\nGDM + Hyprland + GNOME\nXDG portals" as display
+  rectangle "Audio\nPipewire + ALSA\n+ Pulse compat" as audio
+  rectangle "Security\npolkit + gnome-keyring" as sec
+  rectangle "Services\nblueman, openrgb\nflatpak, snap, guix" as svc
+}
 
-Rofi --> RofiTheme
-Rofi --> Scripts
+package "modules/" {
+  rectangle "nvidia-prime.nix\nPRIME offload\nIntel PCI:0:2:0 / NVIDIA PCI:2:0:0" as nvidia
+  rectangle "virtualisation.nix\nDocker + libvirt/KVM\nARM binfmt" as virt
+  rectangle "emacs.nix  launcher.nix\nstarship.nix  databases.nix\nollama.nix  nginx.nix\nscience-data.nix  observability.nix" as mods
+}
 
-RofiTheme --> Waybar
-RofiTheme --> Hyprland
-RofiTheme --> Styling
+rectangle "hardware-configuration.nix" as hw
 
-Waybar --> Styling
-Scripts --> Styling
-Scripts --> Utils
-Utils --> Styling
-Utils --> Hyprland
-Hyprland <--> Scripts
-@enduml
+hw --> boot
+hw --> nvidia
+"configuration.nix" --> hw
+"configuration.nix" --> nvidia
+"configuration.nix" --> virt
+"configuration.nix" --> mods
 
 @enduml
