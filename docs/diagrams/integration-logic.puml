@@ -1,0 +1,30 @@
+@startuml integration-logic
+!define PROCESS (P, #BBAAEE)
+
+skinparam monochrome true
+
+package "NixOS Configuration" {
+  [configuration.nix] as root
+}
+
+package "User Interface" {
+  [Rofi] as rofi
+  [Waybar] as waybar
+  [Rofi Applets] as applets
+}
+
+package "Backend" {
+  [Shell Scripts] as scripts
+  [Styling (CSS, Rasi)] as styles
+}
+
+root --> rofi : integrates
+root --> waybar : integrates
+rofi --> applets : invokes
+rofi --> styles : applies
+applets --> styles : uses
+applets --> scripts : executes
+waybar --> styles : applies
+waybar --> scripts : uses
+
+@enduml
