@@ -29,7 +29,7 @@ package "configuration.nix" {
 package "modules/" {
   rectangle "nvidia-prime.nix\nPRIME offload\nIntel PCI:0:2:0 / NVIDIA PCI:2:0:0" as nvidia
   rectangle "virtualisation.nix\nDocker + libvirt/KVM\nARM binfmt" as virt
-  rectangle "emacs.nix  launcher.nix\nstarship.nix  databases.nix\nollama.nix  nginx.nix\nscience-data.nix  observability.nix" as mods
+  rectangle "emacs.nix  launcher.nix\nstarship.nix  databases.nix\nollama.nix  nginx.nix\nobservability.nix" as mods
 }
 
 rectangle "hardware-configuration.nix" as hw

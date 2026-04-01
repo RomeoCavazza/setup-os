@@ -15,7 +15,8 @@ rectangle "Config layer" {
 
 rectangle "Rendering" {
   [Foot\nfoot.ini] as foot
-  [Hyprchroma\ntint] as hyprchroma
+  [Hyprchroma fork\nhypr-darkwindow] as hyprchroma
+  [Hyprspace\noverview] as hyprspace
   [GTK / Icons\nAdwaita-dark\nPapirus-Dark] as gtk
 }
 
@@ -23,7 +24,8 @@ theme --> hypr
 theme --> waybar
 theme --> rofi
 hypr --> foot
-waybar --> hyprchroma
+hypr --> hyprchroma
+hypr --> hyprspace
 rofi --> gtk
 
 @enduml
