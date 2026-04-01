@@ -18,7 +18,7 @@ skinparam package {
 }
 
 package "home.nix" {
-  rectangle "home.file\n(mkOutOfStoreSymlink)" as dotfiles
+  rectangle "home.file\n(repo-tracked sources)" as dotfiles
   rectangle "home.packages\n(user tools)" as pkgs
   rectangle "programs.*\n(VSCode, git, bash, starship)" as progs
   rectangle "gtk.*\n(Adwaita-dark, Papirus-Dark)" as gtk
