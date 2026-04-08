@@ -22,7 +22,7 @@ package "home.nix" {
   rectangle "home.packages\n(user tools)" as pkgs
   rectangle "programs.*\n(VSCode, git, bash, starship)" as progs
   rectangle "gtk.*\n(Adwaita-dark, Papirus-Dark)" as gtk
-  rectangle "home.activation\n(pywal templates)" as act
+  rectangle "xdg.configFile\n(pywal templates)" as act
 }
 
 rectangle "config/hypr/ → ~/.config/hypr/" as hypr
