@@ -17,28 +17,30 @@ skinparam package {
   FontColor #94e2d5
 }
 
+rectangle "hardware-configuration.nix" as hw
+
 package "configuration.nix" {
-  rectangle "Boot\nsystemd-boot\n+ Windows entry" as boot
-  rectangle "Nix Runtime\nauto-optimise, sandbox\nGC weekly" as nix
-  rectangle "Display\nGDM + Hyprland + GNOME\nXDG portals" as display
-  rectangle "Audio\nPipewire + ALSA\n+ Pulse compat" as audio
-  rectangle "Security\npolkit + gnome-keyring" as sec
-  rectangle "Services\nblueman, openrgb\nflatpak, snap, guix" as svc
+  rectangle "Boot\nsystemd-boot (limit=1)\n+ Windows dual-boot" as boot
+  rectangle "Nix Runtime\nauto-optimise, sandbox\nGC weekly 7d" as nix
+  rectangle "Display\nGDM + Hyprland + GNOME\nXDG portals (hyprland + gtk)" as display
+  rectangle "Audio\nPipewire + ALSA\n+ PulseAudio compat" as audio
+  rectangle "System Services\npolkit, bluetooth, flatpak\nsnap, guix, openrgb" as svc
 }
 
 package "modules/" {
-  rectangle "nvidia-prime.nix\nPRIME offload\nIntel PCI:0:2:0 / NVIDIA PCI:2:0:0" as nvidia
-  rectangle "virtualisation.nix\nDocker + libvirt/KVM\nARM binfmt" as virt
-  rectangle "emacs.nix  launcher.nix\ndatabases.nix  ollama.nix\nnginx.nix  observability.nix" as mods
+  rectangle "nvidia-prime.nix\nPRIME offload + D3cold PM\nIntel PCI:0:2:0 / NVIDIA PCI:2:0:0" as nvidia
+  rectangle "virtualisation.nix\nDocker + libvirt/KVM\nARM binfmt (aarch64)" as virt
+  rectangle "backup.nix\nRestic → Backblaze B2\nb2-critical + b2-data" as backup
+  rectangle "databases.nix  ollama.nix\nnginx.nix  observability.nix\nemacs.nix  launcher.nix\ngdm-wallpaper.nix" as mods
 }
-
-rectangle "hardware-configuration.nix" as hw
 
 hw --> boot
 hw --> nvidia
-"configuration.nix" --> hw
+boot -[hidden]-> nix
+nvidia --> virt
 "configuration.nix" --> nvidia
 "configuration.nix" --> virt
+"configuration.nix" --> backup
 "configuration.nix" --> mods
 
 @enduml
