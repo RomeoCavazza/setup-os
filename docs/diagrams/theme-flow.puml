@@ -8,7 +8,7 @@ rectangle "Theme" {
 }
 
 rectangle "Config layer" {
-  [Hyprland\nseaglass.conf\ntokens.conf] as hypr
+  [Hyprland\nseaglass.conf] as hypr
   [Waybar\nmocha.css\nstyle.css] as waybar
   [Rofi\ncolumn-tco.rasi] as rofi
 }
