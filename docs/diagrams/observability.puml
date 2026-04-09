@@ -1,0 +1,55 @@
+@startuml
+!theme plain
+skinparam backgroundColor #0f172a
+skinparam defaultTextAlignment center
+skinparam ArrowColor #94e2d5
+skinparam ArrowThickness 2
+skinparam packageBorderColor #94e2d5
+skinparam packageBackgroundColor #111827
+skinparam packageFontColor #e2e8f0
+skinparam rectangleBorderColor #94e2d5
+skinparam rectangleBackgroundColor #111827
+skinparam rectangleFontColor #e2e8f0
+skinparam noteBackgroundColor #1f2937
+skinparam noteBorderColor #94e2d5
+skinparam noteFontColor #e2e8f0
+
+package "Host Metrics & Logs" {
+  rectangle "nix-metrics\n(textfile collector)" as nix_metrics
+  rectangle "journald" as journald
+}
+
+package "Observability Core" {
+  rectangle "node_exporter" as node_exporter
+  rectangle "Prometheus" as prometheus
+  rectangle "Promtail" as promtail
+  rectangle "Loki" as loki
+  rectangle "Grafana\n(3 dashboards)" as grafana
+}
+
+package "Continuous Documentation" {
+  rectangle "grafana-snapshot-sync\n(systemd timer)" as snapshot
+  rectangle "docs/assets/live/*.png" as pngs
+  rectangle "setup-os repo" as repo
+  rectangle "setup-os.wiki.git\n(submodule docs/wiki)" as wiki
+}
+
+nix_metrics --> node_exporter : nix_* metrics
+node_exporter --> prometheus : scrape :9100
+prometheus --> grafana : PromQL
+
+journald --> promtail : journal tail
+promtail --> loki : push logs
+loki --> grafana : LogQL
+
+grafana --> snapshot : /render/d/{uid}
+snapshot --> pngs : write if delta > 5%
+pngs --> repo : git add/commit/push
+repo --> wiki : docs/wiki sync flow
+
+note bottom of promtail
+labels injected:
+component=display|build|system
+end note
+
+@enduml
