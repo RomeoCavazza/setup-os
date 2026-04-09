@@ -1,4 +1,4 @@
-@startuml dev-shells
+@startuml dev-tooling
 !theme plain
 skinparam backgroundColor #0f172a
 skinparam defaultFontColor #e2e8f0
@@ -17,19 +17,28 @@ skinparam package {
   FontColor #94e2d5
 }
 
-package "flake.nix devShells" {
-  package "devShells.ai  (alias: devai)" {
-    rectangle "python311 + pip" as py
-    rectangle "nvidia_x11\n(LD_LIBRARY_PATH patched)" as gpu
-    rectangle "stdenv.cc.cc.lib + zlib + glib" as libs
-  }
-
-  package "devShells.embedded  (alias: devemb)" {
-    rectangle "Rust stable\n(rust-src, rust-analyzer)" as rust
-    rectangle "GCC + Clang + CMake + GDB" as cc
-    rectangle "Arduino IDE/CLI\nesptool, openocd, minicom" as mcu
-    rectangle "mosquitto (MQTT broker)" as mqtt
-  }
+package "home/tco/home.nix" {
+  rectangle "Rust toolchain\n(rust-overlay: nightly + stable\nrust-analyzer, cargo)" as rust
+  rectangle "Python 3.13\n(pip, black, isort\naider-chat)" as python
+  rectangle "Web\n(Node.js 22, TypeScript\npnpm, yarn, Tailwind LSP)" as web
+  rectangle "Editors\n(Doom Emacs daemon\nNeovim, VSCode, Zed)" as editors
+  rectangle "AI / LLM\n(Ollama CUDA\naider-chat, LM Studio)" as ai
 }
+
+package "home/tco/modules/apps/" {
+  rectangle "cad.nix\nKiCad, FreeCAD\nObsidian" as cad
+  rectangle "embedded.nix\nArduino IDE/CLI\nesptool, minicom" as emb
+  rectangle "data.nix\nDBeaver, Grafana\nInfluxDB2" as data
+}
+
+rectangle "direnv + nix-direnv\n(per-project environments)" as direnv
+
+rust -[hidden]-> python
+python -[hidden]-> web
+web -[hidden]-> editors
+editors -[hidden]-> ai
+cad -[hidden]-> emb
+emb -[hidden]-> data
+"home/tco/home.nix" --> direnv
 
 @enduml
