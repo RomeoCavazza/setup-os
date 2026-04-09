@@ -2,17 +2,21 @@
 !theme plain
 skinparam backgroundColor #0f172a
 skinparam defaultTextAlignment center
+skinparam defaultFontColor #ffffff
+skinparam ArrowFontColor #ffffff
 skinparam ArrowColor #94e2d5
 skinparam ArrowThickness 2
 skinparam packageBorderColor #94e2d5
 skinparam packageBackgroundColor #111827
-skinparam packageFontColor #e2e8f0
+skinparam packageFontColor #ffffff
+skinparam packageArrowFontColor #ffffff
 skinparam rectangleBorderColor #94e2d5
 skinparam rectangleBackgroundColor #111827
-skinparam rectangleFontColor #e2e8f0
+skinparam rectangleFontColor #ffffff
+skinparam rectangleArrowFontColor #ffffff
 skinparam noteBackgroundColor #1f2937
 skinparam noteBorderColor #94e2d5
-skinparam noteFontColor #e2e8f0
+skinparam noteFontColor #ffffff
 
 package "Host Metrics & Logs" {
   rectangle "nix-metrics\n(textfile collector)" as nix_metrics
@@ -34,18 +38,43 @@ package "Continuous Documentation" {
   rectangle "setup-os.wiki.git\n(submodule docs/wiki)" as wiki
 }
 
-nix_metrics --> node_exporter : nix_* metrics
-node_exporter --> prometheus : scrape :9100
-prometheus --> grafana : PromQL
+nix_metrics --> node_exporter
 
-journald --> promtail : journal tail
-promtail --> loki : push logs
-loki --> grafana : LogQL
+node_exporter --> prometheus
 
-grafana --> snapshot : /render/d/{uid}
-snapshot --> pngs : write if delta > 5%
-pngs --> repo : git add/commit/push
-repo --> wiki : docs/wiki sync flow
+prometheus --> grafana
+
+note right of grafana
+PromQL
+Scrape :9100
+end note
+
+journald --> promtail
+
+promtail --> loki
+
+loki --> grafana
+
+note right of loki
+LogQL
+journal tail
+push logs
+end note
+
+grafana --> snapshot
+
+snapshot --> pngs
+
+pngs --> repo
+
+repo --> wiki
+
+note right of snapshot
+/render/d/{uid}
+write if delta > 5%
+git add/commit/push
+docs/wiki sync flow
+end note
 
 note bottom of promtail
 labels injected:
