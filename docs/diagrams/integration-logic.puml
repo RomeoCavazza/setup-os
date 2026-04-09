@@ -1,30 +1,46 @@
 @startuml integration-logic
-!define PROCESS (P, #BBAAEE)
+!theme plain
+skinparam backgroundColor #0f172a
+skinparam defaultFontColor #e2e8f0
+skinparam arrowColor #94e2d5
+skinparam borderColor #475569
+skinparam shadowing false
 
-skinparam monochrome true
-
-package "NixOS Configuration" {
-  [configuration.nix] as root
+skinparam rectangle {
+  BackgroundColor #1e293b
+  BorderColor #475569
+  FontColor #e2e8f0
+}
+skinparam package {
+  BackgroundColor #0f172a
+  BorderColor #475569
+  FontColor #94e2d5
 }
 
-package "User Interface" {
-  [Rofi] as rofi
-  [Waybar] as waybar
-  [Rofi Applets] as applets
+package "NixOS System" {
+  rectangle "configuration.nix\n(system entry point)" as root
 }
 
-package "Backend" {
-  [Shell Scripts] as scripts
-  [Styling (CSS, Rasi)] as styles
+package "Wayland Desktop" {
+  rectangle "Hyprland\n(compositor)" as hypr
+  rectangle "Waybar\n(status bar)" as waybar
+  rectangle "Rofi\n(app launcher)" as rofi
 }
 
-root --> rofi : integrates
-root --> waybar : integrates
-rofi --> applets : invokes
-rofi --> styles : applies
-applets --> styles : uses
-applets --> scripts : executes
+package "Scripts & Styling" {
+  rectangle "WaybarCava.sh\nactiveapp.sh" as wscripts
+  rectangle "rofi-push.sh\nrofi-grid.sh" as rscripts
+  rectangle "mocha.css\nstyle.css\ncolumn-tco.rasi" as styles
+}
+
+root --> hypr : enables
+root --> waybar : launcher.nix
+root --> rofi : launcher.nix
+waybar --> wscripts : executes
 waybar --> styles : applies
-waybar --> scripts : uses
+rofi --> rscripts : executes
+rofi --> styles : applies
+rscripts --> hypr : gaps_out / blur
+rscripts --> waybar : kill / relaunch
 
 @enduml

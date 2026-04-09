@@ -1,23 +1,49 @@
 @startuml rofi-launcher-flow
-skinparam monochrome true
-participant "rofi-push.sh" as Push
-participant "column-tco.rasi" as Column
-participant Rofi
-participant "rofi-grid.sh" as Grid
-participant "apps-grid.rasi" as GridTheme
-participant Hyprland
-participant Waybar
+!theme plain
+skinparam backgroundColor #0f172a
+skinparam defaultFontColor #e2e8f0
+skinparam shadowing false
 
-Push -> Column : use sidebar theme
-Push -> Hyprland : widen left gap
-Push -> Rofi : launch sidebar
-Grid -> GridTheme : use grid theme
-Grid -> Rofi : launch app grid
-Grid -> Hyprland : save & increase blur
-Grid -> Waybar : kill processes
-Rofi -> Rofi : user selects tool
-Push -> Hyprland : restore gaps on exit
-Rofi -> Grid : on grid exit
-Grid -> Hyprland : restore blur
-Grid -> Waybar : relaunch
+skinparam participant {
+  BackgroundColor #1e293b
+  BorderColor #475569
+  FontColor #e2e8f0
+}
+
+skinparam sequenceArrowColor #94e2d5
+skinparam sequenceLifeLineBorderColor #475569
+skinparam sequenceLifeLineBackgroundColor #1e293b
+skinparam sequenceGroupBackgroundColor #1e293b
+skinparam sequenceGroupBorderColor #475569
+skinparam sequenceGroupFontColor #94e2d5
+skinparam sequenceGroupHeaderFontColor #94e2d5
+skinparam sequenceGroupBodyBackgroundColor #0f172a
+skinparam sequenceDividerBackgroundColor #1e293b
+skinparam sequenceDividerBorderColor #475569
+skinparam sequenceDividerFontColor #94e2d5
+skinparam sequenceBoxBackgroundColor #0f172a
+skinparam sequenceBoxBorderColor #475569
+
+participant "rofi-push.sh" as Push
+participant "rofi-grid.sh" as Grid
+participant "Rofi" as Rofi
+participant "Hyprland" as Hypr
+participant "Waybar" as Waybar
+
+group Sidebar Launcher
+  Push -> Hypr : widen left gap (gaps_out)
+  Push -> Rofi : launch with column-tco.rasi
+  Rofi -> Rofi : user selects app
+  Push -> Hypr : restore gaps on exit
+end
+
+group App Grid Launcher
+  Grid -> Hypr : save & increase blur_size
+  Grid -> Waybar : kill process
+  Grid -> Rofi : launch with apps-grid.rasi
+  Rofi -> Rofi : user selects app
+  Grid -> Hypr : restore blur_size
+  Grid -> Waybar : relaunch
+end
+
 @enduml
