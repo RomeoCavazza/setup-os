@@ -71,3 +71,12 @@ Sequence diagram of the two Rofi launch paths: the sidebar launcher (`rofi-push.
 Development environments managed through Home Manager — Rust, Python, web tooling, editors, AI/LLM stack — alongside the optional domain app modules for CAD, embedded, and data work.
 
 ![Development tooling](https://raw.githubusercontent.com/RomeoCavazza/setup-os/main/docs/diagrams/png/dev-tooling.png)
+
+---
+
+## Observability Flow
+
+End-to-end monitoring and documentation pipeline: metrics collection, logs
+shipping, dashboard rendering, and snapshot publication.
+
+![Observability flow](https://raw.githubusercontent.com/RomeoCavazza/setup-os/main/docs/diagrams/png/observability.png)
