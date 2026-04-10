@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# ==============================================================================
+# HYPR-LAYOUT-TOGGLE (Simple, decouplé de tout plugin)
+# ==============================================================================
+
+TARGET_W=939
+TARGET_H=1136
+
+WS=$(hyprctl activeworkspace -j | jq '.id')
+WINDOWS=$(hyprctl clients -j | jq -r ".[] | select(.workspace.id == $WS) | .address")
+
+# 1. DETECT STATE
+# Si au moins une fenêtre flotte sur ce workspace, on reset tout.
+if hyprctl clients -j | jq -e ".[] | select(.workspace.id == $WS and .floating == true)" >/dev/null; then
+  # 2. RESET (TILE ALL)
+  cmds=""
+  for addr in $WINDOWS; do
+    cmds+="dispatch settiled address:$addr; "
+  done
+  hyprctl --batch "$cmds"
+else
+  # 3. CANVAS (FLOAT ALL + APPLY REFERENCE SIZE)
+  cmds=""
+  for addr in $WINDOWS; do
+    cmds+="dispatch setfloating address:$addr; "
+    cmds+="dispatch resizewindowpixel exact $TARGET_W $TARGET_H,address:$addr; "
+  done
+  hyprctl --batch "$cmds"
+fi
