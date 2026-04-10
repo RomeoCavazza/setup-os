@@ -1,0 +1,46 @@
+@startuml theme-flow
+!theme plain
+skinparam backgroundColor #0f172a
+skinparam defaultFontColor #e2e8f0
+skinparam arrowColor #94e2d5
+skinparam borderColor #475569
+skinparam shadowing false
+
+skinparam rectangle {
+  BackgroundColor #1e293b
+  BorderColor #475569
+  FontColor #e2e8f0
+}
+skinparam package {
+  BackgroundColor #0f172a
+  BorderColor #475569
+  FontColor #94e2d5
+}
+
+rectangle "seaglass.conf\nAccent #94E2D5" as theme
+
+package "Hyprland Compositor" {
+  rectangle "Borders 12px rounding\ndual-border active state" as borders
+  rectangle "hypr-darkwindow\ninactive window tint" as dw
+  rectangle "Hyprspace\nworkspace overview" as hs
+  rectangle "hypr-canvas\ninfinite canvas" as hc
+}
+
+package "Status Bar" {
+  rectangle "Waybar\nmocha.css + style.css\nteal accent override" as waybar
+}
+
+rectangle "Rofi\ncolumn-tco.rasi\napps-grid.rasi" as rofi
+rectangle "Foot terminal\nrepo-tracked palette" as foot
+rectangle "GTK\nAdwaita-dark\nPapirus-Dark / Bibata-Ice" as gtk
+
+theme --> borders
+theme --> waybar
+theme --> rofi
+theme --> gtk
+borders --> dw
+borders --> hs
+borders --> hc
+borders --> foot
+
+@enduml

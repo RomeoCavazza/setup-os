@@ -1,0 +1,46 @@
+@startuml system-architecture
+!theme plain
+skinparam backgroundColor #0f172a
+skinparam defaultFontColor #e2e8f0
+skinparam arrowColor #94e2d5
+skinparam borderColor #475569
+skinparam shadowing false
+
+skinparam rectangle {
+  BackgroundColor #1e293b
+  BorderColor #475569
+  FontColor #e2e8f0
+}
+skinparam package {
+  BackgroundColor #0f172a
+  BorderColor #475569
+  FontColor #94e2d5
+}
+
+rectangle "hardware-configuration.nix" as hw
+
+package "configuration.nix" {
+  rectangle "Boot\nsystemd-boot (limit=1)\n+ Windows dual-boot" as boot
+  rectangle "Nix Runtime\nauto-optimise, sandbox\nGC weekly 7d" as nix
+  rectangle "Display\nGDM + Hyprland + GNOME\nXDG portals (hyprland + gtk)" as display
+  rectangle "Audio\nPipewire + ALSA\n+ PulseAudio compat" as audio
+  rectangle "System Services\npolkit, bluetooth, flatpak\nsnap, guix, openrgb" as svc
+}
+
+package "modules/" {
+  rectangle "nvidia-prime.nix\nPRIME offload + D3cold PM\nIntel PCI:0:2:0 / NVIDIA PCI:2:0:0" as nvidia
+  rectangle "virtualisation.nix\nDocker + libvirt/KVM\nARM binfmt (aarch64)" as virt
+  rectangle "backup.nix\nRestic → Backblaze B2\nb2-critical + b2-data" as backup
+  rectangle "databases.nix  ollama.nix\nnginx.nix  observability.nix\nemacs.nix  launcher.nix\ngdm-wallpaper.nix" as mods
+}
+
+hw --> boot
+hw --> nvidia
+boot -[hidden]-> nix
+nvidia --> virt
+"configuration.nix" --> nvidia
+"configuration.nix" --> virt
+"configuration.nix" --> backup
+"configuration.nix" --> mods
+
+@enduml

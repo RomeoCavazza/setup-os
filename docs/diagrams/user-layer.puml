@@ -1,0 +1,41 @@
+@startuml user-layer
+!theme plain
+skinparam backgroundColor #0f172a
+skinparam defaultFontColor #e2e8f0
+skinparam arrowColor #94e2d5
+skinparam borderColor #475569
+skinparam shadowing false
+
+skinparam rectangle {
+  BackgroundColor #1e293b
+  BorderColor #475569
+  FontColor #e2e8f0
+}
+skinparam package {
+  BackgroundColor #0f172a
+  BorderColor #475569
+  FontColor #94e2d5
+}
+
+package "home.nix" {
+  rectangle "home.file\n(repo-tracked sources)" as dotfiles
+  rectangle "home.packages\n(user tools)" as pkgs
+  rectangle "programs.*\n(VSCode, git, bash, starship)" as progs
+  rectangle "gtk.*\n(Adwaita-dark, Papirus-Dark)" as gtk
+  rectangle "xdg.configFile\n(pywal templates)" as act
+}
+
+rectangle "config/hypr/ → ~/.config/hypr/" as hypr
+rectangle "config/rofi/ → ~/.config/rofi/" as rofi
+rectangle "config/foot/ → ~/.config/foot/" as foot
+rectangle "config/bin/ → ~/.local/bin/" as bin
+
+dotfiles --> hypr
+dotfiles --> rofi
+dotfiles --> foot
+dotfiles --> bin
+pkgs --> gtk
+progs --> gtk
+act --> foot
+
+@enduml
