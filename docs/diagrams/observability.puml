@@ -70,7 +70,7 @@ pngs --> repo
 repo --> wiki
 
 note right of snapshot
-/render/d/{uid}
+headless capture via /d/{uid}/{slug}?kiosk
 write if delta > 5%
 git add/commit/push
 docs/wiki sync flow
