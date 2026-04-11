@@ -23,7 +23,7 @@ PSI spikes aligned with journald logs for fast root-cause analysis.
 
 ![Incident Dashboard](https://raw.githubusercontent.com/RomeoCavazza/setup-os/main/docs/assets/live/incident-dashboard.png)
 
-Snapshots are updated by automation and committed only when visual delta exceeds 5%.
+Snapshots are checked every 15 minutes and published when visual delta exceeds 0.5%.
 
 The three views read as a sequence: health now, drift over time, then incident explanation.
 
@@ -50,6 +50,29 @@ All services are Nix-declared and activated with `nixos-rebuild`.
 ## Dashboards
 
 `nixos-metrics` tracks live pressure and rebuild health, `nix-efficiency` tracks drift and closure efficiency, and `incident-correlation` links spikes back to logs.
+
+The dashboards are maintained as code. Grafana still consumes committed JSON
+files, but those files are generated from Jsonnet sources:
+
+| Generated dashboard | Source |
+|---|---|
+| `config/grafana/nix-dashboard.json` | `config/grafana/src/nix-dashboard.jsonnet` |
+| `config/grafana/nix-efficiency-dashboard.json` | `config/grafana/src/nix-efficiency-dashboard.jsonnet` |
+| `config/grafana/incident-correlation-dashboard.json` | `config/grafana/src/incident-correlation-dashboard.jsonnet` |
+
+Shared panel helpers live in `config/grafana/src/lib/dashboard.libsonnet`, with
+a small Grafonnet-style API for stat strips, gauges, time series, rows, logs,
+thresholds, and value mappings.
+
+Regeneration command:
+
+```bash
+cd /etc/nixos
+sudo -E nix shell nixpkgs#jsonnet nixpkgs#jq -c ./config/bin/grafana-generate
+```
+
+This keeps dashboard design reviewable in Git while preserving Grafana's simple
+JSON provisioning path.
 
 ## Key Metrics
 
@@ -81,21 +104,21 @@ LogQL example:
 
 ## Continuous Documentation Pipeline
 
-The documentation flow is simple:
+The documentation flow is intentionally quiet:
 
-1. `grafana-snapshot-sync.timer` runs hourly.
-2. Dashboards are captured via headless browser as PNG.
-3. New images are compared with previous versions.
-4. Only changes over 5% are committed.
-5. The resulting update is pushed to git.
+1. Dashboard sources are edited in `config/grafana/src/*.jsonnet`.
+2. `config/bin/grafana-generate` renders the provisioned JSON files.
+3. NixOS activates Grafana with the generated dashboards.
+4. `grafana-snapshot-sync.timer` runs every 15 minutes.
+5. Dashboards are captured via headless browser as PNG.
+6. New images are compared with previous versions.
+7. Changes over 0.5% are copied into the publisher checkout.
+8. The publisher commits `docs/assets/live/*.png` to `setup-os/main`.
+9. This wiki page keeps the same Markdown, but its raw GitHub image URLs resolve to the newest pushed PNG after the normal cache window.
 
 Rendered assets path: `docs/assets/live/`.
 
-Operational note: these snapshots are not the live source of truth; they mirror
-Grafana state on timer cadence.
+Publisher checkout: `/var/lib/grafana-snapshot-sync/setup-os`.
 
-## Wiki Integration
-
-The wiki lives in `setup-os.wiki.git` and is linked from the main repo through the `docs/wiki` submodule, so documentation follows the same release flow as the code.
-
-This keeps infra changes, dashboards, and documentation versioned together.
+Operational note: Grafana remains the live source of truth. The wiki is a
+near-live documentation mirror: timer cadence plus raw GitHub/browser cache.
