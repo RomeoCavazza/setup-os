@@ -164,9 +164,9 @@
               "options": {
                 "match": "null",
                 "result": {
-                  "color": "text",
+                  "color": "green",
                   "index": 0,
-                  "text": "No data"
+                  "text": "Quiet"
                 }
               },
               "type": "special"
