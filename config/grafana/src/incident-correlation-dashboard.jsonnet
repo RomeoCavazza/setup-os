@@ -42,7 +42,8 @@ g.dashboard(
       unit='none',
       thresholds=g.greenYellowRed(1, 5),
       mappings=[
-        g.noDataMapping,
+        // Loki returns null (no series) when no streams match — treat as Quiet
+        { type: 'special', options: { match: 'null', result: { text: 'Quiet', color: 'green', index: 0 } } },
         g.rangeMapping(0, 0, 'Quiet', 'green', 1),
         g.rangeMapping(1, 4, 'Watch', 'yellow', 2),
         g.rangeMapping(5, 999999, 'Noisy', 'red', 3),
