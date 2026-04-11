@@ -43,7 +43,8 @@ let
         }
         {
           source_labels = [ "__journal__systemd_unit" ];
-          regex = "(hyprland|hypr.*)\\.service";
+          # display-manager covers GDM/SDDM; hypr* covers any future hyprland system unit
+          regex = "(hyprland|hypr.*|display-manager)\\.service";
           replacement = "display";
           target_label = "component";
         }
