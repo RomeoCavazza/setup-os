@@ -69,7 +69,10 @@ in
   environment.etc."grafana-secret-key".text = "SW2YcwTIb9zpOOhoPsMm";
 
   systemd.tmpfiles.rules = [
-    "d ${textfileDir} 0755 root root -"
+    # tco owns the dir so the rebuild wrapper can write nix-rebuild.prom without sudo.
+    # nix-metrics runs as root and can write there regardless.
+    # node_exporter reads 644 files — no group membership needed.
+    "d ${textfileDir} 0755 tco users -"
     "d /var/lib/promtail 0755 root root -"
     "d /var/lib/grafana-snapshot-sync 0755 tco users -"
     "d /etc/nixos/docs/assets/live 0755 tco users -"
