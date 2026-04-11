@@ -71,8 +71,8 @@ repo --> wiki
 
 note right of snapshot
 headless capture via /d/{uid}/{slug}?kiosk
-write if delta > 5%
-git add/commit/push
+write if delta > 0.5%
+publish clone add/commit/push
 docs/wiki sync flow
 end note
 
