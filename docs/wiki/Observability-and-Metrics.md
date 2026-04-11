@@ -120,5 +120,10 @@ Rendered assets path: `docs/assets/live/`.
 
 Publisher checkout: `/var/lib/grafana-snapshot-sync/setup-os`.
 
+The publisher checkout is also the comparison baseline for PNG deltas. The
+timer does not rewrite `/etc/nixos/docs/assets/live`, so the system
+configuration checkout stays focused on source changes instead of generated
+snapshot noise.
+
 Operational note: Grafana remains the live source of truth. The wiki is a
 near-live documentation mirror: timer cadence plus raw GitHub/browser cache.
