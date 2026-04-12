@@ -27,11 +27,12 @@ Snapshots are checked every 15 minutes and published when visual delta exceeds 0
 
 The three views read as a sequence: health now, drift over time, then incident explanation.
 
-Recent cleanup decisions:
+Recent changes:
 
 - Removed freshness redundancy from the main cockpit dashboard
 - Kept freshness only in the efficiency dashboard
 - Applied explicit dual-axis semantics for closure volume (Bytes) vs path count (Count)
+- Visual overhaul: stat panels switched to `colorMode="background"` (full panel coloring on thresholds), timeseries upgraded with `gradientMode="hue"` fills, pressure panels stacked with threshold zone backgrounds
 
 ## Stack Summary
 
