@@ -1,707 +1,787 @@
 {
-   "annotations": {
-      "list": [
-         {
-            "builtIn": 1,
-            "datasource": {
-               "type": "grafana",
-               "uid": "-- Grafana --"
-            },
-            "enable": true,
-            "hide": true,
-            "iconColor": "rgba(0, 211, 255, 1)",
-            "name": "Annotations & Alerts",
-            "type": "dashboard"
-         }
-      ]
-   },
-   "description": "High-frequency pressure timeline linked to Loki logs for incident analysis.",
-   "editable": true,
-   "fiscalYearStartMonth": 0,
-   "graphTooltip": 0,
-   "liveNow": false,
-   "panels": [
+  "annotations": {
+    "list": [
       {
-         "gridPos": {
-            "h": 2,
-            "w": 24,
-            "x": 0,
-            "y": 0
-         },
-         "id": 0,
-         "options": {
-            "content": "**This dashboard is for correlation, not overview.** Start with pressure, then move immediately to logs when something spikes.",
-            "contentType": "markdown",
-            "mode": "markdown"
-         },
-         "title": "Incident context",
-         "transparent": true,
-         "type": "text"
-      },
-      {
-         "collapsed": false,
-         "gridPos": {
-            "h": 1,
-            "w": 24,
-            "x": 0,
-            "y": 2
-         },
-         "id": 20,
-         "title": "Incident KPIs — snapshot",
-         "type": "row"
-      },
-      {
-         "datasource": "Prometheus",
-         "fieldConfig": {
-            "defaults": {
-               "color": {
-                  "mode": "thresholds"
-               },
-               "unit": "dateTimeAsIso"
-            },
-            "overrides": [ ]
-         },
-         "gridPos": {
-            "h": 3,
-            "w": 4,
-            "x": 0,
-            "y": 3
-         },
-         "id": 21,
-         "options": {
-            "colorMode": "none",
-            "graphMode": "none",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-               "calcs": [
-                  "lastNotNull"
-               ],
-               "fields": "",
-               "values": false
-            },
-            "textMode": "auto"
-         },
-         "targets": [
-            {
-               "expr": "time() * 1000",
-               "legendFormat": "value",
-               "refId": "A"
-            }
-         ],
-         "title": "Rendered",
-         "type": "stat"
-      },
-      {
-         "datasource": "Prometheus",
-         "fieldConfig": {
-            "defaults": {
-               "color": {
-                  "mode": "thresholds"
-               },
-               "decimals": 1,
-               "thresholds": {
-                  "mode": "absolute",
-                  "steps": [
-                     {
-                        "color": "#299c46",
-                        "value": null
-                     },
-                     {
-                        "color": "#EAB839",
-                        "value": 10
-                     },
-                     {
-                        "color": "#d44a3a",
-                        "value": 30
-                     }
-                  ]
-               },
-               "unit": "percent"
-            },
-            "overrides": [ ]
-         },
-         "gridPos": {
-            "h": 3,
-            "w": 5,
-            "x": 4,
-            "y": 3
-         },
-         "id": 22,
-         "options": {
-            "colorMode": "background",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-               "calcs": [
-                  "lastNotNull"
-               ],
-               "fields": "",
-               "values": false
-            },
-            "textMode": "auto"
-         },
-         "targets": [
-            {
-               "expr": "max({__name__=~\"nix_pressure_cpu_avg10|nix_pressure_io_some_avg10|nix_pressure_mem_some_avg10\"})",
-               "legendFormat": "pressure",
-               "refId": "A"
-            }
-         ],
-         "title": "Max Pressure",
-         "type": "stat"
-      },
-      {
-         "datasource": "Loki",
-         "fieldConfig": {
-            "defaults": {
-               "color": {
-                  "mode": "thresholds"
-               },
-               "mappings": [
-                  {
-                     "options": {
-                        "match": "null",
-                        "result": {
-                           "color": "#299c46",
-                           "index": 0,
-                           "text": "Quiet"
-                        }
-                     },
-                     "type": "special"
-                  },
-                  {
-                     "options": {
-                        "from": 0,
-                        "result": {
-                           "color": "#299c46",
-                           "index": 1,
-                           "text": "Quiet"
-                        },
-                        "to": 0
-                     },
-                     "type": "range"
-                  },
-                  {
-                     "options": {
-                        "from": 1,
-                        "result": {
-                           "color": "#EAB839",
-                           "index": 2,
-                           "text": "Watch"
-                        },
-                        "to": 4
-                     },
-                     "type": "range"
-                  },
-                  {
-                     "options": {
-                        "from": 5,
-                        "result": {
-                           "color": "#d44a3a",
-                           "index": 3,
-                           "text": "Noisy"
-                        },
-                        "to": 999999
-                     },
-                     "type": "range"
-                  }
-               ],
-               "thresholds": {
-                  "mode": "absolute",
-                  "steps": [
-                     {
-                        "color": "#299c46",
-                        "value": null
-                     },
-                     {
-                        "color": "#EAB839",
-                        "value": 1
-                     },
-                     {
-                        "color": "#d44a3a",
-                        "value": 5
-                     }
-                  ]
-               },
-               "unit": "none"
-            },
-            "overrides": [ ]
-         },
-         "gridPos": {
-            "h": 3,
-            "w": 5,
-            "x": 9,
-            "y": 3
-         },
-         "id": 23,
-         "options": {
-            "colorMode": "background",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-               "calcs": [
-                  "lastNotNull"
-               ],
-               "fields": "",
-               "values": false
-            },
-            "textMode": "auto"
-         },
-         "targets": [
-            {
-               "expr": "sum(count_over_time({job=\"systemd-journal\",component=~\"display|build\"} |~ \"(?i)error|failed|panic\" [15m]))",
-               "refId": "A"
-            }
-         ],
-         "title": "Recent Errors",
-         "type": "stat"
-      },
-      {
-         "datasource": "Prometheus",
-         "fieldConfig": {
-            "defaults": {
-               "color": {
-                  "mode": "thresholds"
-               },
-               "max": 100,
-               "min": 0,
-               "thresholds": {
-                  "mode": "absolute",
-                  "steps": [
-                     {
-                        "color": "green",
-                        "value": null
-                     },
-                     {
-                        "color": "yellow",
-                        "value": 10
-                     },
-                     {
-                        "color": "red",
-                        "value": 30
-                     }
-                  ]
-               },
-               "unit": "percent"
-            },
-            "overrides": [ ]
-         },
-         "gridPos": {
-            "h": 5,
-            "w": 10,
-            "x": 14,
-            "y": 3
-         },
-         "id": 1,
-         "options": {
-            "reduceOptions": {
-               "calcs": [
-                  "lastNotNull"
-               ],
-               "fields": "",
-               "values": false
-            },
-            "showThresholdLabels": true,
-            "showThresholdMarkers": true
-         },
-         "targets": [
-            {
-               "expr": "nix_pressure_cpu_avg10",
-               "legendFormat": "cpu",
-               "refId": "A"
-            }
-         ],
-         "title": "CPU Pressure",
-         "type": "gauge"
-      },
-      {
-         "collapsed": false,
-         "gridPos": {
-            "h": 1,
-            "w": 24,
-            "x": 0,
-            "y": 8
-         },
-         "id": 30,
-         "title": "Pressure Signals — avg10 breakdown",
-         "type": "row"
-      },
-      {
-         "datasource": "Prometheus",
-         "fieldConfig": {
-            "defaults": {
-               "color": {
-                  "mode": "thresholds"
-               },
-               "max": 100,
-               "min": 0,
-               "thresholds": {
-                  "mode": "absolute",
-                  "steps": [
-                     {
-                        "color": "green",
-                        "value": null
-                     },
-                     {
-                        "color": "yellow",
-                        "value": 10
-                     },
-                     {
-                        "color": "red",
-                        "value": 30
-                     }
-                  ]
-               },
-               "unit": "percent"
-            },
-            "overrides": [ ]
-         },
-         "gridPos": {
-            "h": 5,
-            "w": 8,
-            "x": 0,
-            "y": 9
-         },
-         "id": 2,
-         "options": {
-            "reduceOptions": {
-               "calcs": [
-                  "lastNotNull"
-               ],
-               "fields": "",
-               "values": false
-            },
-            "showThresholdLabels": true,
-            "showThresholdMarkers": true
-         },
-         "targets": [
-            {
-               "expr": "nix_pressure_io_some_avg10",
-               "legendFormat": "io",
-               "refId": "A"
-            }
-         ],
-         "title": "IO Pressure",
-         "type": "gauge"
-      },
-      {
-         "datasource": "Prometheus",
-         "fieldConfig": {
-            "defaults": {
-               "color": {
-                  "mode": "thresholds"
-               },
-               "max": 100,
-               "min": 0,
-               "thresholds": {
-                  "mode": "absolute",
-                  "steps": [
-                     {
-                        "color": "green",
-                        "value": null
-                     },
-                     {
-                        "color": "yellow",
-                        "value": 10
-                     },
-                     {
-                        "color": "red",
-                        "value": 30
-                     }
-                  ]
-               },
-               "unit": "percent"
-            },
-            "overrides": [ ]
-         },
-         "gridPos": {
-            "h": 5,
-            "w": 8,
-            "x": 8,
-            "y": 9
-         },
-         "id": 3,
-         "options": {
-            "reduceOptions": {
-               "calcs": [
-                  "lastNotNull"
-               ],
-               "fields": "",
-               "values": false
-            },
-            "showThresholdLabels": true,
-            "showThresholdMarkers": true
-         },
-         "targets": [
-            {
-               "expr": "nix_pressure_mem_some_avg10",
-               "legendFormat": "mem",
-               "refId": "A"
-            }
-         ],
-         "title": "Memory Pressure",
-         "type": "gauge"
-      },
-      {
-         "datasource": "Prometheus",
-         "fieldConfig": {
-            "defaults": {
-               "color": {
-                  "mode": "palette-classic"
-               },
-               "custom": {
-                  "axisCenteredZero": false,
-                  "axisColorMode": "text",
-                  "axisLabel": "",
-                  "axisPlacement": "auto",
-                  "barAlignment": 0,
-                  "drawStyle": "line",
-                  "fillOpacity": 50,
-                  "gradientMode": "hue",
-                  "hideFrom": {
-                     "legend": false,
-                     "tooltip": false,
-                     "viz": false
-                  },
-                  "lineInterpolation": "smooth",
-                  "lineWidth": 2,
-                  "pointSize": 4,
-                  "scaleDistribution": {
-                     "type": "linear"
-                  },
-                  "showPoints": "never",
-                  "spanNulls": true,
-                  "stacking": {
-                     "group": "A",
-                     "mode": "normal"
-                  },
-                  "thresholdsStyle": {
-                     "mode": "line"
-                  }
-               },
-               "thresholds": {
-                  "mode": "absolute",
-                  "steps": [
-                     {
-                        "color": "#299c46",
-                        "value": null
-                     },
-                     {
-                        "color": "#EAB839",
-                        "value": 10
-                     },
-                     {
-                        "color": "#d44a3a",
-                        "value": 30
-                     }
-                  ]
-               },
-               "unit": "percent"
-            },
-            "overrides": [ ]
-         },
-         "gridPos": {
-            "h": 5,
-            "w": 8,
-            "x": 16,
-            "y": 9
-         },
-         "id": 4,
-         "options": {
-            "legend": {
-               "calcs": [
-                  "lastNotNull"
-               ],
-               "displayMode": "list",
-               "placement": "bottom",
-               "showLegend": true
-            },
-            "tooltip": {
-               "mode": "multi",
-               "sort": "none"
-            }
-         },
-         "targets": [
-            {
-               "expr": "nix_pressure_cpu_avg10",
-               "legendFormat": "CPU",
-               "refId": "A"
-            },
-            {
-               "expr": "nix_pressure_io_some_avg10",
-               "legendFormat": "IO",
-               "refId": "B"
-            },
-            {
-               "expr": "nix_pressure_mem_some_avg10",
-               "legendFormat": "MEM",
-               "refId": "C"
-            }
-         ],
-         "title": "Pressure Timeline",
-         "type": "timeseries"
-      },
-      {
-         "collapsed": false,
-         "gridPos": {
-            "h": 1,
-            "w": 24,
-            "x": 0,
-            "y": 14
-         },
-         "id": 31,
-         "title": "Log Correlation — journal stream",
-         "type": "row"
-      },
-      {
-         "datasource": "Prometheus",
-         "fieldConfig": {
-            "defaults": {
-               "color": {
-                  "mode": "palette-classic"
-               },
-               "custom": {
-                  "axisCenteredZero": false,
-                  "axisColorMode": "text",
-                  "axisLabel": "",
-                  "axisPlacement": "auto",
-                  "barAlignment": 0,
-                  "drawStyle": "line",
-                  "fillOpacity": 55,
-                  "gradientMode": "hue",
-                  "hideFrom": {
-                     "legend": false,
-                     "tooltip": false,
-                     "viz": false
-                  },
-                  "lineInterpolation": "smooth",
-                  "lineWidth": 2,
-                  "pointSize": 4,
-                  "scaleDistribution": {
-                     "type": "linear"
-                  },
-                  "showPoints": "never",
-                  "spanNulls": true,
-                  "stacking": {
-                     "group": "A",
-                     "mode": "normal"
-                  },
-                  "thresholdsStyle": {
-                     "mode": "area"
-                  }
-               },
-               "thresholds": {
-                  "mode": "absolute",
-                  "steps": [
-                     {
-                        "color": "#299c46",
-                        "value": null
-                     },
-                     {
-                        "color": "#EAB839",
-                        "value": 10
-                     },
-                     {
-                        "color": "#d44a3a",
-                        "value": 30
-                     }
-                  ]
-               },
-               "unit": "percent"
-            },
-            "overrides": [ ]
-         },
-         "gridPos": {
-            "h": 7,
-            "w": 24,
-            "x": 0,
-            "y": 15
-         },
-         "id": 6,
-         "options": {
-            "legend": {
-               "calcs": [
-                  "lastNotNull"
-               ],
-               "displayMode": "list",
-               "placement": "bottom",
-               "showLegend": true
-            },
-            "tooltip": {
-               "mode": "multi",
-               "sort": "none"
-            }
-         },
-         "targets": [
-            {
-               "expr": "nix_pressure_cpu_avg10",
-               "legendFormat": "CPU",
-               "refId": "A"
-            },
-            {
-               "expr": "nix_pressure_io_some_avg10",
-               "legendFormat": "IO",
-               "refId": "B"
-            },
-            {
-               "expr": "nix_pressure_mem_some_avg10",
-               "legendFormat": "MEM",
-               "refId": "C"
-            }
-         ],
-         "title": "Pressure Timeline Detail",
-         "type": "timeseries"
-      },
-      {
-         "datasource": "Loki",
-         "gridPos": {
-            "h": 10,
-            "w": 24,
-            "x": 0,
-            "y": 22
-         },
-         "id": 5,
-         "options": {
-            "dedupStrategy": "none",
-            "showCommonLabels": false,
-            "showLabels": false,
-            "showTime": true,
-            "sortOrder": "Descending",
-            "wrapLogMessage": true
-         },
-         "targets": [
-            {
-               "expr": "{job=\"systemd-journal\",component=~\"display|build\"}",
-               "refId": "A"
-            }
-         ],
-         "title": "Loki Journal (display/build)",
-         "type": "logs"
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
       }
-   ],
-   "refresh": "30s",
-   "schemaVersion": 39,
-   "tags": [
-      "nixos",
-      "local-observability"
-   ],
-   "time": {
-      "from": "now-6h",
-      "to": "now"
-   },
-   "timepicker": {
-      "refresh_intervals": [
-         "30s",
-         "1m",
-         "5m",
-         "15m"
-      ]
-   },
-   "timezone": "browser",
-   "title": "Incident Correlation",
-   "uid": "incident-correlation",
-   "version": 1
+    ]
+  },
+  "description": "High-frequency pressure timeline linked to Loki logs for incident analysis.",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 20,
+      "title": "Incident Snapshot",
+      "type": "row"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#36e7d6",
+                "value": null
+              },
+              {
+                "color": "#65b8ff",
+                "value": 10
+              },
+              {
+                "color": "#b48efa",
+                "value": 30
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 0,
+        "y": 1
+      },
+      "id": 21,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "expr": "max({__name__=~\"nix_pressure_cpu_avg10|nix_pressure_io_some_avg10|nix_pressure_mem_some_avg10\"})",
+          "legendFormat": "pressure",
+          "refId": "A"
+        }
+      ],
+      "title": "Max Pressure",
+      "type": "stat"
+    },
+    {
+      "datasource": "Loki",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "color": "#36e7d6",
+                  "index": 0,
+                  "text": "Quiet"
+                }
+              },
+              "type": "special"
+            },
+            {
+              "options": {
+                "from": 0,
+                "result": {
+                  "color": "#36e7d6",
+                  "index": 1,
+                  "text": "Quiet"
+                },
+                "to": 0
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 1,
+                "result": {
+                  "color": "#65b8ff",
+                  "index": 2,
+                  "text": "Watch"
+                },
+                "to": 4
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 5,
+                "result": {
+                  "color": "#b48efa",
+                  "index": 3,
+                  "text": "Noisy"
+                },
+                "to": 999999
+              },
+              "type": "range"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#36e7d6",
+                "value": null
+              },
+              {
+                "color": "#65b8ff",
+                "value": 1
+              },
+              {
+                "color": "#b48efa",
+                "value": 5
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 4,
+        "y": 1
+      },
+      "id": 22,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "expr": "sum(count_over_time({job=\"systemd-journal\",component=~\"display|build\"} |~ \"(?i)error|failed|panic\" [15m]))",
+          "refId": "A"
+        }
+      ],
+      "title": "Recent Errors",
+      "type": "stat"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#36e7d6",
+                "value": null
+              },
+              {
+                "color": "#65b8ff",
+                "value": 5
+              },
+              {
+                "color": "#b48efa",
+                "value": 10
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 8,
+        "y": 1
+      },
+      "id": 23,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "expr": "nix_pressure_cpu_avg10",
+          "legendFormat": "cpu",
+          "refId": "A"
+        }
+      ],
+      "title": "CPU Pressure",
+      "type": "stat"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#36e7d6",
+                "value": null
+              },
+              {
+                "color": "#65b8ff",
+                "value": 5
+              },
+              {
+                "color": "#b48efa",
+                "value": 10
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 12,
+        "y": 1
+      },
+      "id": 24,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "expr": "nix_pressure_io_some_avg10",
+          "legendFormat": "io",
+          "refId": "A"
+        }
+      ],
+      "title": "IO Pressure",
+      "type": "stat"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#36e7d6",
+                "value": null
+              },
+              {
+                "color": "#65b8ff",
+                "value": 5
+              },
+              {
+                "color": "#b48efa",
+                "value": 10
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 16,
+        "y": 1
+      },
+      "id": 25,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "expr": "nix_pressure_mem_some_avg10",
+          "legendFormat": "mem",
+          "refId": "A"
+        }
+      ],
+      "title": "Memory Pressure",
+      "type": "stat"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#36e7d6",
+                "value": null
+              },
+              {
+                "color": "#65b8ff",
+                "value": 300
+              },
+              {
+                "color": "#b48efa",
+                "value": 900
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 20,
+        "y": 1
+      },
+      "id": 26,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "expr": "nix_rebuild_duration_ms / 1000",
+          "legendFormat": "duration",
+          "refId": "A"
+        }
+      ],
+      "title": "Last Rebuild",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 4
+      },
+      "id": 30,
+      "title": "Pressure Signal",
+      "type": "row"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 12,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 4,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "line"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#36e7d6",
+                "value": null
+              },
+              {
+                "color": "#65b8ff",
+                "value": 10
+              },
+              {
+                "color": "#b48efa",
+                "value": 30
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#36e7d6",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 12
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "IO"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#27c6ff",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 10
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MEM"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#9cb7ff",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 8
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
+      "id": 31,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "expr": "nix_pressure_cpu_avg10",
+          "legendFormat": "CPU",
+          "refId": "A"
+        },
+        {
+          "expr": "nix_pressure_io_some_avg10",
+          "legendFormat": "IO",
+          "refId": "B"
+        },
+        {
+          "expr": "nix_pressure_mem_some_avg10",
+          "legendFormat": "MEM",
+          "refId": "C"
+        }
+      ],
+      "title": "Pressure Timeline",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "fillOpacity": 82,
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 0,
+            "spanNulls": false
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "#36e7d6",
+                  "index": 0,
+                  "text": "Good"
+                },
+                "1": {
+                  "color": "#65b8ff",
+                  "index": 1,
+                  "text": "Watch"
+                },
+                "2": {
+                  "color": "#b48efa",
+                  "index": 2,
+                  "text": "Critical"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#36e7d6",
+                "value": null
+              },
+              {
+                "color": "#65b8ff",
+                "value": 1
+              },
+              {
+                "color": "#b48efa",
+                "value": 2
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 14
+      },
+      "id": 32,
+      "options": {
+        "alignValue": "center",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "mergeValues": true,
+        "rowHeight": 0.83999999999999997,
+        "showValue": "never",
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "expr": "clamp_max((nix_pressure_cpu_avg10 >= bool 10) + (nix_pressure_cpu_avg10 >= bool 30), 2)",
+          "legendFormat": "CPU",
+          "refId": "A"
+        },
+        {
+          "expr": "clamp_max((nix_pressure_io_some_avg10 >= bool 10) + (nix_pressure_io_some_avg10 >= bool 30), 2)",
+          "legendFormat": "IO",
+          "refId": "B"
+        },
+        {
+          "expr": "clamp_max((nix_pressure_mem_some_avg10 >= bool 10) + (nix_pressure_mem_some_avg10 >= bool 30), 2)",
+          "legendFormat": "MEM",
+          "refId": "C"
+        }
+      ],
+      "title": "Incident Regime Timeline",
+      "type": "state-timeline"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 40,
+      "title": "Journal Correlation",
+      "type": "row"
+    },
+    {
+      "datasource": "Loki",
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 18
+      },
+      "id": 41,
+      "options": {
+        "dedupStrategy": "none",
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true
+      },
+      "targets": [
+        {
+          "expr": "{job=\"systemd-journal\",component=~\"display|build\"}",
+          "refId": "A"
+        }
+      ],
+      "title": "Loki Journal (display/build)",
+      "type": "logs"
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 39,
+  "tags": [
+    "nixos",
+    "local-observability"
+  ],
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "30s",
+      "1m",
+      "5m",
+      "15m"
+    ]
+  },
+  "timezone": "browser",
+  "title": "Incident Correlation",
+  "uid": "incident-correlation",
+  "version": 1
 }

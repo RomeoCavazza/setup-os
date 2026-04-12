@@ -1,794 +1,1069 @@
 {
-   "annotations": {
-      "list": [
-         {
-            "builtIn": 1,
-            "datasource": {
-               "type": "grafana",
-               "uid": "-- Grafana --"
-            },
-            "enable": true,
-            "hide": true,
-            "iconColor": "rgba(0, 211, 255, 1)",
-            "name": "Annotations & Alerts",
-            "type": "dashboard"
-         }
-      ]
-   },
-   "description": "Trend view for freshness, generation debt, and rebuild cost.",
-   "editable": true,
-   "fiscalYearStartMonth": 0,
-   "graphTooltip": 0,
-   "liveNow": false,
-   "panels": [
+  "annotations": {
+    "list": [
       {
-         "gridPos": {
-            "h": 2,
-            "w": 24,
-            "x": 0,
-            "y": 0
-         },
-         "id": 0,
-         "options": {
-            "content": "**Use this view to spot drift.** It answers one question: how much retained state, age, footprint, and rebuild cost is accumulating over time?",
-            "contentType": "markdown",
-            "mode": "markdown"
-         },
-         "title": "Efficiency lens",
-         "transparent": true,
-         "type": "text"
-      },
-      {
-         "collapsed": false,
-         "gridPos": {
-            "h": 1,
-            "w": 24,
-            "x": 0,
-            "y": 2
-         },
-         "id": 20,
-         "title": "Drift Scorecard — current state",
-         "type": "row"
-      },
-      {
-         "datasource": "Prometheus",
-         "fieldConfig": {
-            "defaults": {
-               "color": {
-                  "mode": "thresholds"
-               },
-               "unit": "dateTimeAsIso"
-            },
-            "overrides": [ ]
-         },
-         "gridPos": {
-            "h": 3,
-            "w": 4,
-            "x": 0,
-            "y": 3
-         },
-         "id": 21,
-         "options": {
-            "colorMode": "none",
-            "graphMode": "none",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-               "calcs": [
-                  "lastNotNull"
-               ],
-               "fields": "",
-               "values": false
-            },
-            "textMode": "auto"
-         },
-         "targets": [
-            {
-               "expr": "time() * 1000",
-               "legendFormat": "value",
-               "refId": "A"
-            }
-         ],
-         "title": "Rendered",
-         "type": "stat"
-      },
-      {
-         "datasource": "Prometheus",
-         "fieldConfig": {
-            "defaults": {
-               "color": {
-                  "mode": "thresholds"
-               },
-               "max": 45,
-               "min": 0,
-               "thresholds": {
-                  "mode": "absolute",
-                  "steps": [
-                     {
-                        "color": "#299c46",
-                        "value": null
-                     },
-                     {
-                        "color": "#EAB839",
-                        "value": 15
-                     },
-                     {
-                        "color": "#d44a3a",
-                        "value": 30
-                     }
-                  ]
-               },
-               "unit": "d"
-            },
-            "overrides": [ ]
-         },
-         "gridPos": {
-            "h": 5,
-            "w": 5,
-            "x": 4,
-            "y": 3
-         },
-         "id": 1,
-         "options": {
-            "reduceOptions": {
-               "calcs": [
-                  "lastNotNull"
-               ],
-               "fields": "",
-               "values": false
-            },
-            "showThresholdLabels": true,
-            "showThresholdMarkers": true
-         },
-         "targets": [
-            {
-               "expr": "nix_flake_lock_age_seconds / 86400",
-               "legendFormat": "days",
-               "refId": "A"
-            }
-         ],
-         "title": "Freshness Index",
-         "type": "gauge"
-      },
-      {
-         "datasource": "Prometheus",
-         "fieldConfig": {
-            "defaults": {
-               "color": {
-                  "mode": "thresholds"
-               },
-               "max": 40,
-               "min": 0,
-               "thresholds": {
-                  "mode": "absolute",
-                  "steps": [
-                     {
-                        "color": "#299c46",
-                        "value": null
-                     },
-                     {
-                        "color": "#EAB839",
-                        "value": 10
-                     },
-                     {
-                        "color": "#d44a3a",
-                        "value": 20
-                     }
-                  ]
-               },
-               "unit": "none"
-            },
-            "overrides": [ ]
-         },
-         "gridPos": {
-            "h": 5,
-            "w": 5,
-            "x": 9,
-            "y": 3
-         },
-         "id": 2,
-         "options": {
-            "reduceOptions": {
-               "calcs": [
-                  "lastNotNull"
-               ],
-               "fields": "",
-               "values": false
-            },
-            "showThresholdLabels": true,
-            "showThresholdMarkers": true
-         },
-         "targets": [
-            {
-               "expr": "nix_generations_count",
-               "legendFormat": "retained generations",
-               "refId": "A"
-            }
-         ],
-         "title": "Generation Debt",
-         "type": "gauge"
-      },
-      {
-         "datasource": "Prometheus",
-         "fieldConfig": {
-            "defaults": {
-               "color": {
-                  "mode": "thresholds"
-               },
-               "thresholds": {
-                  "mode": "absolute",
-                  "steps": [
-                     {
-                        "color": "#299c46",
-                        "value": null
-                     },
-                     {
-                        "color": "#EAB839",
-                        "value": 300
-                     },
-                     {
-                        "color": "#d44a3a",
-                        "value": 900
-                     }
-                  ]
-               },
-               "unit": "s"
-            },
-            "overrides": [ ]
-         },
-         "gridPos": {
-            "h": 5,
-            "w": 5,
-            "x": 14,
-            "y": 3
-         },
-         "id": 22,
-         "options": {
-            "colorMode": "background",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-               "calcs": [
-                  "lastNotNull"
-               ],
-               "fields": "",
-               "values": false
-            },
-            "textMode": "auto"
-         },
-         "targets": [
-            {
-               "expr": "nix_rebuild_duration_ms / 1000",
-               "legendFormat": "duration",
-               "refId": "A"
-            }
-         ],
-         "title": "Last Rebuild",
-         "type": "stat"
-      },
-      {
-         "datasource": "Prometheus",
-         "fieldConfig": {
-            "defaults": {
-               "color": {
-                  "mode": "thresholds"
-               },
-               "thresholds": {
-                  "mode": "absolute",
-                  "steps": [
-                     {
-                        "color": "#299c46",
-                        "value": null
-                     },
-                     {
-                        "color": "#EAB839",
-                        "value": 60000
-                     },
-                     {
-                        "color": "#d44a3a",
-                        "value": 100000
-                     }
-                  ]
-               },
-               "unit": "none"
-            },
-            "overrides": [ ]
-         },
-         "gridPos": {
-            "h": 5,
-            "w": 5,
-            "x": 19,
-            "y": 3
-         },
-         "id": 23,
-         "options": {
-            "colorMode": "background",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-               "calcs": [
-                  "lastNotNull"
-               ],
-               "fields": "",
-               "values": false
-            },
-            "textMode": "auto"
-         },
-         "targets": [
-            {
-               "expr": "nix_closure_paths",
-               "legendFormat": "paths",
-               "refId": "A"
-            }
-         ],
-         "title": "Closure Paths",
-         "type": "stat"
-      },
-      {
-         "collapsed": false,
-         "gridPos": {
-            "h": 1,
-            "w": 24,
-            "x": 0,
-            "y": 8
-         },
-         "id": 30,
-         "title": "Drift Trends — 6 h rolling",
-         "type": "row"
-      },
-      {
-         "datasource": "Prometheus",
-         "fieldConfig": {
-            "defaults": {
-               "color": {
-                  "mode": "palette-classic"
-               },
-               "custom": {
-                  "axisCenteredZero": false,
-                  "axisColorMode": "text",
-                  "axisLabel": "",
-                  "axisPlacement": "auto",
-                  "barAlignment": 0,
-                  "drawStyle": "line",
-                  "fillOpacity": 35,
-                  "gradientMode": "hue",
-                  "hideFrom": {
-                     "legend": false,
-                     "tooltip": false,
-                     "viz": false
-                  },
-                  "lineInterpolation": "smooth",
-                  "lineWidth": 2,
-                  "pointSize": 4,
-                  "scaleDistribution": {
-                     "type": "linear"
-                  },
-                  "showPoints": "never",
-                  "spanNulls": true,
-                  "stacking": {
-                     "group": "A",
-                     "mode": "none"
-                  },
-                  "thresholdsStyle": {
-                     "mode": "line"
-                  }
-               },
-               "thresholds": {
-                  "mode": "absolute",
-                  "steps": [
-                     {
-                        "color": "#299c46",
-                        "value": null
-                     },
-                     {
-                        "color": "#EAB839",
-                        "value": 300
-                     },
-                     {
-                        "color": "#d44a3a",
-                        "value": 900
-                     }
-                  ]
-               },
-               "unit": "s"
-            },
-            "overrides": [ ]
-         },
-         "gridPos": {
-            "h": 7,
-            "w": 12,
-            "x": 0,
-            "y": 9
-         },
-         "id": 3,
-         "options": {
-            "legend": {
-               "calcs": [
-                  "lastNotNull"
-               ],
-               "displayMode": "list",
-               "placement": "bottom",
-               "showLegend": true
-            },
-            "tooltip": {
-               "mode": "single",
-               "sort": "none"
-            }
-         },
-         "targets": [
-            {
-               "expr": "nix_rebuild_duration_ms / 1000",
-               "legendFormat": "duration s",
-               "refId": "A"
-            }
-         ],
-         "title": "Rebuild Duration Trend",
-         "type": "timeseries"
-      },
-      {
-         "datasource": "Prometheus",
-         "fieldConfig": {
-            "defaults": {
-               "color": {
-                  "mode": "palette-classic"
-               },
-               "custom": {
-                  "axisCenteredZero": false,
-                  "axisColorMode": "text",
-                  "axisLabel": "",
-                  "axisPlacement": "auto",
-                  "barAlignment": 0,
-                  "drawStyle": "line",
-                  "fillOpacity": 40,
-                  "gradientMode": "hue",
-                  "hideFrom": {
-                     "legend": false,
-                     "tooltip": false,
-                     "viz": false
-                  },
-                  "lineInterpolation": "smooth",
-                  "lineWidth": 2,
-                  "pointSize": 4,
-                  "scaleDistribution": {
-                     "type": "linear"
-                  },
-                  "showPoints": "never",
-                  "spanNulls": true,
-                  "stacking": {
-                     "group": "A",
-                     "mode": "none"
-                  },
-                  "thresholdsStyle": {
-                     "mode": "off"
-                  }
-               },
-               "unit": "none"
-            },
-            "overrides": [
-               {
-                  "matcher": {
-                     "id": "byName",
-                     "options": "lock age days"
-                  },
-                  "properties": [
-                     {
-                        "id": "unit",
-                        "value": "d"
-                     },
-                     {
-                        "id": "custom.axisPlacement",
-                        "value": "left"
-                     },
-                     {
-                        "id": "custom.axisLabel",
-                        "value": "Days"
-                     },
-                     {
-                        "id": "custom.fillOpacity",
-                        "value": 40
-                     }
-                  ]
-               },
-               {
-                  "matcher": {
-                     "id": "byName",
-                     "options": "generations"
-                  },
-                  "properties": [
-                     {
-                        "id": "unit",
-                        "value": "none"
-                     },
-                     {
-                        "id": "custom.axisPlacement",
-                        "value": "right"
-                     },
-                     {
-                        "id": "custom.axisLabel",
-                        "value": "Count"
-                     },
-                     {
-                        "id": "custom.fillOpacity",
-                        "value": 15
-                     }
-                  ]
-               }
-            ]
-         },
-         "gridPos": {
-            "h": 7,
-            "w": 12,
-            "x": 12,
-            "y": 9
-         },
-         "id": 6,
-         "options": {
-            "legend": {
-               "calcs": [
-                  "lastNotNull"
-               ],
-               "displayMode": "list",
-               "placement": "bottom",
-               "showLegend": true
-            },
-            "tooltip": {
-               "mode": "single",
-               "sort": "none"
-            }
-         },
-         "targets": [
-            {
-               "expr": "nix_flake_lock_age_seconds / 86400",
-               "legendFormat": "lock age days",
-               "refId": "A"
-            },
-            {
-               "expr": "nix_generations_count",
-               "legendFormat": "generations",
-               "refId": "B"
-            }
-         ],
-         "title": "Freshness and Generations",
-         "type": "timeseries"
-      },
-      {
-         "collapsed": false,
-         "gridPos": {
-            "h": 1,
-            "w": 24,
-            "x": 0,
-            "y": 16
-         },
-         "id": 31,
-         "title": "Storage Footprint — store vs closure",
-         "type": "row"
-      },
-      {
-         "datasource": "Prometheus",
-         "fieldConfig": {
-            "defaults": {
-               "color": {
-                  "mode": "palette-classic"
-               },
-               "custom": {
-                  "axisCenteredZero": false,
-                  "axisColorMode": "text",
-                  "axisLabel": "",
-                  "axisPlacement": "auto",
-                  "barAlignment": 0,
-                  "drawStyle": "line",
-                  "fillOpacity": 40,
-                  "gradientMode": "hue",
-                  "hideFrom": {
-                     "legend": false,
-                     "tooltip": false,
-                     "viz": false
-                  },
-                  "lineInterpolation": "smooth",
-                  "lineWidth": 2,
-                  "pointSize": 4,
-                  "scaleDistribution": {
-                     "type": "linear"
-                  },
-                  "showPoints": "never",
-                  "spanNulls": true,
-                  "stacking": {
-                     "group": "A",
-                     "mode": "none"
-                  },
-                  "thresholdsStyle": {
-                     "mode": "off"
-                  }
-               },
-               "unit": "decbytes"
-            },
-            "overrides": [
-               {
-                  "matcher": {
-                     "id": "byName",
-                     "options": "closure"
-                  },
-                  "properties": [
-                     {
-                        "id": "unit",
-                        "value": "decbytes"
-                     },
-                     {
-                        "id": "custom.fillOpacity",
-                        "value": 15
-                     }
-                  ]
-               }
-            ]
-         },
-         "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 17
-         },
-         "id": 4,
-         "options": {
-            "legend": {
-               "calcs": [
-                  "lastNotNull"
-               ],
-               "displayMode": "list",
-               "placement": "bottom",
-               "showLegend": true
-            },
-            "tooltip": {
-               "mode": "single",
-               "sort": "none"
-            }
-         },
-         "targets": [
-            {
-               "expr": "nix_store_bytes",
-               "legendFormat": "store",
-               "refId": "A"
-            },
-            {
-               "expr": "nix_closure_bytes",
-               "legendFormat": "closure",
-               "refId": "B"
-            }
-         ],
-         "title": "Store vs Closure Bytes",
-         "type": "timeseries"
-      },
-      {
-         "datasource": "Prometheus",
-         "fieldConfig": {
-            "defaults": {
-               "color": {
-                  "mode": "palette-classic"
-               },
-               "custom": {
-                  "axisCenteredZero": false,
-                  "axisColorMode": "text",
-                  "axisLabel": "Bytes",
-                  "axisPlacement": "auto",
-                  "barAlignment": 0,
-                  "drawStyle": "line",
-                  "fillOpacity": 35,
-                  "gradientMode": "hue",
-                  "hideFrom": {
-                     "legend": false,
-                     "tooltip": false,
-                     "viz": false
-                  },
-                  "lineInterpolation": "smooth",
-                  "lineWidth": 2,
-                  "pointSize": 4,
-                  "scaleDistribution": {
-                     "type": "linear"
-                  },
-                  "showPoints": "never",
-                  "spanNulls": true,
-                  "stacking": {
-                     "group": "A",
-                     "mode": "none"
-                  },
-                  "thresholdsStyle": {
-                     "mode": "off"
-                  }
-               },
-               "unit": "decbytes"
-            },
-            "overrides": [
-               {
-                  "matcher": {
-                     "id": "byName",
-                     "options": "closure paths"
-                  },
-                  "properties": [
-                     {
-                        "id": "unit",
-                        "value": "none"
-                     },
-                     {
-                        "id": "custom.axisPlacement",
-                        "value": "right"
-                     },
-                     {
-                        "id": "custom.axisLabel",
-                        "value": "Count"
-                     },
-                     {
-                        "id": "color",
-                        "value": {
-                           "fixedColor": "semi-dark-blue",
-                           "mode": "fixed"
-                        }
-                     },
-                     {
-                        "id": "custom.fillOpacity",
-                        "value": 15
-                     }
-                  ]
-               }
-            ]
-         },
-         "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 12,
-            "y": 17
-         },
-         "id": 5,
-         "options": {
-            "legend": {
-               "calcs": [
-                  "lastNotNull"
-               ],
-               "displayMode": "list",
-               "placement": "bottom",
-               "showLegend": true
-            },
-            "tooltip": {
-               "mode": "single",
-               "sort": "none"
-            }
-         },
-         "targets": [
-            {
-               "expr": "nix_closure_bytes",
-               "legendFormat": "closure bytes",
-               "refId": "A"
-            },
-            {
-               "expr": "nix_closure_paths",
-               "legendFormat": "closure paths",
-               "refId": "B"
-            }
-         ],
-         "title": "Closure Volume vs Path Count",
-         "type": "timeseries"
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
       }
-   ],
-   "refresh": "1m",
-   "schemaVersion": 39,
-   "tags": [
-      "nixos",
-      "local-observability"
-   ],
-   "time": {
-      "from": "now-6h",
-      "to": "now"
-   },
-   "timepicker": {
-      "refresh_intervals": [
-         "30s",
-         "1m",
-         "5m",
-         "15m"
-      ]
-   },
-   "timezone": "browser",
-   "title": "Nix Efficiency",
-   "uid": "nix-efficiency",
-   "version": 1
+    ]
+  },
+  "description": "Trend view for freshness, generation debt, and rebuild cost.",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 20,
+      "title": "Drift Health",
+      "type": "row"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#36e7d6",
+                "value": null
+              },
+              {
+                "color": "#65b8ff",
+                "value": 15
+              },
+              {
+                "color": "#b48efa",
+                "value": 30
+              }
+            ]
+          },
+          "unit": "d"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 0,
+        "y": 1
+      },
+      "id": 21,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "expr": "nix_flake_lock_age_seconds / 86400",
+          "legendFormat": "days",
+          "refId": "A"
+        }
+      ],
+      "title": "Flake Age",
+      "type": "stat"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#36e7d6",
+                "value": null
+              },
+              {
+                "color": "#65b8ff",
+                "value": 10
+              },
+              {
+                "color": "#b48efa",
+                "value": 20
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 4,
+        "y": 1
+      },
+      "id": 22,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "expr": "nix_generations_count",
+          "legendFormat": "generations",
+          "refId": "A"
+        }
+      ],
+      "title": "Generations Kept",
+      "type": "stat"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#36e7d6",
+                "value": null
+              },
+              {
+                "color": "#65b8ff",
+                "value": 300
+              },
+              {
+                "color": "#b48efa",
+                "value": 900
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 8,
+        "y": 1
+      },
+      "id": 23,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "expr": "nix_rebuild_duration_ms / 1000",
+          "legendFormat": "duration",
+          "refId": "A"
+        }
+      ],
+      "title": "Last Rebuild",
+      "type": "stat"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#36e7d6",
+                "value": null
+              },
+              {
+                "color": "#65b8ff",
+                "value": 60000
+              },
+              {
+                "color": "#b48efa",
+                "value": 100000
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 12,
+        "y": 1
+      },
+      "id": 24,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "expr": "nix_closure_paths",
+          "legendFormat": "paths",
+          "refId": "A"
+        }
+      ],
+      "title": "Closure Paths",
+      "type": "stat"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#36e7d6",
+                "value": null
+              },
+              {
+                "color": "#65b8ff",
+                "value": 80000000000
+              },
+              {
+                "color": "#b48efa",
+                "value": 140000000000
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 16,
+        "y": 1
+      },
+      "id": 25,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "expr": "nix_store_bytes",
+          "legendFormat": "store",
+          "refId": "A"
+        }
+      ],
+      "title": "Store Size",
+      "type": "stat"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#36e7d6",
+                "value": null
+              },
+              {
+                "color": "#65b8ff",
+                "value": 1000000000000
+              },
+              {
+                "color": "#b48efa",
+                "value": 1500000000000
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 20,
+        "y": 1
+      },
+      "id": 26,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "expr": "nix_closure_bytes",
+          "legendFormat": "closure",
+          "refId": "A"
+        }
+      ],
+      "title": "Closure Size",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 4
+      },
+      "id": 30,
+      "title": "Drift Trends",
+      "type": "row"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 12,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 4,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "flake age"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "d"
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "left"
+              },
+              {
+                "id": "custom.axisLabel",
+                "value": "Days"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#36e7d6",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 12
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "generations"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "custom.axisLabel",
+                "value": "Count"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#9cb7ff",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 6
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 5
+      },
+      "id": 31,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "nix_flake_lock_age_seconds / 86400",
+          "legendFormat": "flake age",
+          "refId": "A"
+        },
+        {
+          "expr": "nix_generations_count",
+          "legendFormat": "generations",
+          "refId": "B"
+        }
+      ],
+      "title": "Freshness and Generations",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 12,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 4,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "unit": "decbytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "store"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "decbytes"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#d3fbff",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 12
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "closure"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "decbytes"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#65b8ff",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 6
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 5
+      },
+      "id": 32,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "nix_store_bytes",
+          "legendFormat": "store",
+          "refId": "A"
+        },
+        {
+          "expr": "nix_closure_bytes",
+          "legendFormat": "closure",
+          "refId": "B"
+        }
+      ],
+      "title": "Store vs Closure Bytes",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 13
+      },
+      "id": 40,
+      "title": "Closure and Build Shape",
+      "type": "row"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Bytes",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 12,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 4,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "unit": "decbytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "closure bytes"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "decbytes"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#d3fbff",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 12
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "closure paths"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "custom.axisLabel",
+                "value": "Count"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#8df4ec",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 4
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 1
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 16,
+        "x": 0,
+        "y": 14
+      },
+      "id": 41,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "nix_closure_bytes",
+          "legendFormat": "closure bytes",
+          "refId": "A"
+        },
+        {
+          "expr": "nix_closure_paths",
+          "legendFormat": "closure paths",
+          "refId": "B"
+        }
+      ],
+      "title": "Closure Volume vs Path Count",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 4,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "line"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#36e7d6",
+                "value": null
+              },
+              {
+                "color": "#65b8ff",
+                "value": 300
+              },
+              {
+                "color": "#b48efa",
+                "value": 900
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "duration"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "s"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#36e7d6",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 10
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 14
+      },
+      "id": 42,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "nix_rebuild_duration_ms / 1000",
+          "legendFormat": "duration",
+          "refId": "A"
+        }
+      ],
+      "title": "Rebuild Duration",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 22
+      },
+      "id": 50,
+      "title": "Drift Regime",
+      "type": "row"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "fillOpacity": 82,
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 0,
+            "spanNulls": false
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "#36e7d6",
+                  "index": 0,
+                  "text": "Good"
+                },
+                "1": {
+                  "color": "#65b8ff",
+                  "index": 1,
+                  "text": "Watch"
+                },
+                "2": {
+                  "color": "#b48efa",
+                  "index": 2,
+                  "text": "Critical"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#36e7d6",
+                "value": null
+              },
+              {
+                "color": "#65b8ff",
+                "value": 1
+              },
+              {
+                "color": "#b48efa",
+                "value": 2
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 23
+      },
+      "id": 51,
+      "options": {
+        "alignValue": "center",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "mergeValues": true,
+        "rowHeight": 0.83999999999999997,
+        "showValue": "never",
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "expr": "clamp_max((nix_flake_lock_age_seconds / 86400 >= bool 15) + (nix_flake_lock_age_seconds / 86400 >= bool 30), 2)",
+          "legendFormat": "flake age",
+          "refId": "A"
+        },
+        {
+          "expr": "clamp_max((nix_generations_count >= bool 10) + (nix_generations_count >= bool 20), 2)",
+          "legendFormat": "generations",
+          "refId": "B"
+        },
+        {
+          "expr": "clamp_max((nix_rebuild_duration_ms / 1000 >= bool 300) + (nix_rebuild_duration_ms / 1000 >= bool 900), 2)",
+          "legendFormat": "rebuild",
+          "refId": "C"
+        }
+      ],
+      "title": "Freshness, Generation, and Rebuild Regimes",
+      "type": "state-timeline"
+    }
+  ],
+  "refresh": "1m",
+  "schemaVersion": 39,
+  "tags": [
+    "nixos",
+    "local-observability"
+  ],
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "30s",
+      "1m",
+      "5m",
+      "15m"
+    ]
+  },
+  "timezone": "browser",
+  "title": "Nix Efficiency",
+  "uid": "nix-efficiency",
+  "version": 1
 }

@@ -7,94 +7,141 @@ g.dashboard(
   'High-frequency pressure timeline linked to Loki logs for incident analysis.'
 ) {
   panels: [
-    g.textPanel(
-      0,
-      'Incident context',
-      '**This dashboard is for correlation, not overview.** Start with pressure, then move immediately to logs when something spikes.',
-      0, 0, 24
-    ),
-    g.rowPanel(20, 'Incident KPIs — snapshot', 2),
+    g.rowPanel(20, 'Incident Snapshot', 0),
     g.statPanel(
       21,
-      'Rendered',
-      'time() * 1000',
-      0, 3, 4,
-      unit='dateTimeAsIso',
-      colorMode='none',
-      graphMode='none'
-    ),
-    g.statPanel(
-      22,
       'Max Pressure',
       'max({__name__=~"nix_pressure_cpu_avg10|nix_pressure_io_some_avg10|nix_pressure_mem_some_avg10"})',
-      4, 3, 5,
+      0, 1, 4,
+      h=3,
       legend='pressure',
       unit='percent',
       decimals=1,
       thresholds=g.greenYellowRedHex(10, 30)
     ),
     g.statPanel(
-      23,
+      22,
       'Recent Errors',
       'sum(count_over_time({job="systemd-journal",component=~"display|build"} |~ "(?i)error|failed|panic" [15m]))',
-      9, 3, 5,
+      4, 1, 4,
+      h=3,
       datasource='Loki',
       unit='none',
       thresholds=g.greenYellowRedHex(1, 5),
       mappings=[
-        // Loki returns null (no series) when no streams match — treat as Quiet
-        { type: 'special', options: { match: 'null', result: { text: 'Quiet', color: '#299c46', index: 0 } } },
-        g.rangeMapping(0, 0, 'Quiet', '#299c46', 1),
-        g.rangeMapping(1, 4, 'Watch', '#EAB839', 2),
-        g.rangeMapping(5, 999999, 'Noisy', '#d44a3a', 3),
+        { type: 'special', options: { match: 'null', result: { text: 'Quiet', color: g.colors.aqua, index: 0 } } },
+        g.rangeMapping(0, 0, 'Quiet', g.colors.aqua, 1),
+        g.rangeMapping(1, 4, 'Watch', g.colors.sapphire, 2),
+        g.rangeMapping(5, 999999, 'Noisy', g.colors.mauve, 3),
       ]
     ),
-    g.gaugePanel(1, 'CPU Pressure', 'nix_pressure_cpu_avg10', 'cpu', 14, 3, 10),
-    g.rowPanel(30, 'Pressure Signals — avg10 breakdown', 8),
-    g.gaugePanel(2, 'IO Pressure', 'nix_pressure_io_some_avg10', 'io', 0, 9, 8),
-    g.gaugePanel(3, 'Memory Pressure', 'nix_pressure_mem_some_avg10', 'mem', 8, 9, 8),
+    g.statPanel(
+      23,
+      'CPU Pressure',
+      'nix_pressure_cpu_avg10',
+      8, 1, 4,
+      h=3,
+      legend='cpu',
+      unit='percent',
+      decimals=2,
+      thresholds=g.greenYellowRedHex(5, 10)
+    ),
+    g.statPanel(
+      24,
+      'IO Pressure',
+      'nix_pressure_io_some_avg10',
+      12, 1, 4,
+      h=3,
+      legend='io',
+      unit='percent',
+      decimals=2,
+      thresholds=g.greenYellowRedHex(5, 10)
+    ),
+    g.statPanel(
+      25,
+      'Memory Pressure',
+      'nix_pressure_mem_some_avg10',
+      16, 1, 4,
+      h=3,
+      legend='mem',
+      unit='percent',
+      decimals=2,
+      thresholds=g.greenYellowRedHex(5, 10)
+    ),
+    g.statPanel(
+      26,
+      'Last Rebuild',
+      'nix_rebuild_duration_ms / 1000',
+      20, 1, 4,
+      h=3,
+      legend='duration',
+      unit='s',
+      thresholds=g.greenYellowRedHex(300, 900)
+    ),
+    g.rowPanel(30, 'Pressure Signal', 4),
     g.timeseriesPanel(
-      4,
+      31,
       'Pressure Timeline',
       [
         { expr: 'nix_pressure_cpu_avg10', legend: 'CPU' },
         { expr: 'nix_pressure_io_some_avg10', legend: 'IO' },
         { expr: 'nix_pressure_mem_some_avg10', legend: 'MEM' },
       ],
-      16, 9, 8,
-      h=5,
+      0, 5, 24,
+      h=9,
       unit='percent',
-      fillOpacity=50,
-      gradientMode='hue',
-      stackingMode='normal',
+      fillOpacity=12,
+      gradientMode='opacity',
       thresholdsStyle='line',
       thresholds=g.greenYellowRedHex(10, 30),
-      tooltip='multi'
+      tooltip='multi',
+      tooltipSort='desc',
+      legendDisplayMode='table',
+      legendPlacement='right',
+      legendCalcs=['lastNotNull', 'max'],
+      lineInterpolation='linear',
+      overrides=[
+        g.overrideUnitByName('CPU', 'percent', color=g.fixedColor(g.colors.aqua), fillOpacity=12),
+        g.overrideUnitByName('IO', 'percent', color=g.fixedColor(g.colors.cyan), fillOpacity=10),
+        g.overrideUnitByName('MEM', 'percent', color=g.fixedColor(g.colors.lavender), fillOpacity=8),
+      ]
     ),
-    g.rowPanel(31, 'Log Correlation — journal stream', 14),
-    g.timeseriesPanel(
-      6,
-      'Pressure Timeline Detail',
+    g.stateTimelinePanel(
+      32,
+      'Incident Regime Timeline',
       [
-        { expr: 'nix_pressure_cpu_avg10', legend: 'CPU' },
-        { expr: 'nix_pressure_io_some_avg10', legend: 'IO' },
-        { expr: 'nix_pressure_mem_some_avg10', legend: 'MEM' },
+        {
+          expr: 'clamp_max((nix_pressure_cpu_avg10 >= bool 10) + (nix_pressure_cpu_avg10 >= bool 30), 2)',
+          legend: 'CPU',
+        },
+        {
+          expr: 'clamp_max((nix_pressure_io_some_avg10 >= bool 10) + (nix_pressure_io_some_avg10 >= bool 30), 2)',
+          legend: 'IO',
+        },
+        {
+          expr: 'clamp_max((nix_pressure_mem_some_avg10 >= bool 10) + (nix_pressure_mem_some_avg10 >= bool 30), 2)',
+          legend: 'MEM',
+        },
       ],
-      0, 15, 24,
-      h=7,
-      unit='percent',
-      fillOpacity=55,
-      gradientMode='hue',
-      stackingMode='normal',
-      thresholdsStyle='area',
-      thresholds=g.greenYellowRedHex(10, 30),
-      tooltip='multi'
+      0, 14, 24,
+      h=3,
+      mappings=[
+        {
+          type: 'value',
+          options: {
+            '0': { text: 'Good', color: g.colors.aqua, index: 0 },
+            '1': { text: 'Watch', color: g.colors.sapphire, index: 1 },
+            '2': { text: 'Critical', color: g.colors.mauve, index: 2 },
+          },
+        },
+      ]
     ),
+    g.rowPanel(40, 'Journal Correlation', 17),
     g.logsPanel(
-      5,
+      41,
       'Loki Journal (display/build)',
       '{job="systemd-journal",component=~"display|build"}',
-      0, 22, 24, 10
+      0, 18, 24, 12
     ),
   ],
 }
