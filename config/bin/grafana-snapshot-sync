@@ -89,9 +89,20 @@ const { chromium } = require(process.env.PLAYWRIGHT_CORE_PATH);
   });
 
   const page = await browser.newPage({ viewport: { width: 2200, height: 1200 } });
-  await page.goto(process.env.DASHBOARD_URL, { waitUntil: 'networkidle' });
+  await page.goto(process.env.DASHBOARD_URL, { waitUntil: 'domcontentloaded' });
   await page.waitForSelector('h2[title]', { timeout: 30000 });
-  await page.screenshot({ path: process.env.OUTPUT_FILE, fullPage: true });
+  await page.waitForLoadState('networkidle');
+  await new Promise(r => setTimeout(r, 3000));
+  // Resize viewport to full content height BEFORE screenshot.
+  // Avoids fullPage:true triggering a mid-capture viewport resize that causes Grafana
+  // to re-render panels (incident-correlation is 1325px tall, viewport default is 1200px).
+  const fullH = await page.evaluate(() => document.documentElement.scrollHeight);
+  if (fullH > 1200) {
+    await page.setViewportSize({ width: 2200, height: fullH });
+    await page.waitForLoadState('networkidle');
+    await new Promise(r => setTimeout(r, 3000));
+  }
+  await page.screenshot({ path: process.env.OUTPUT_FILE, fullPage: false });
   await browser.close();
 })().catch((error) => {
   console.error(error);
