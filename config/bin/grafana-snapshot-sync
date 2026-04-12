@@ -3,7 +3,7 @@
 
 set -euo pipefail
 
-GRAFANA_URL="${GRAFANA_URL:-http://127.0.0.1:3000}"
+GRAFANA_URL="${GRAFANA_URL:-http://localhost:3000}"
 SINCE="${SINCE:-now-6h}"
 UNTIL="${UNTIL:-now}"
 MIN_CHANGE_PERCENT="${MIN_CHANGE_PERCENT:-0.5}"
@@ -21,11 +21,11 @@ trap 'rm -rf "$TMP_DIR"' EXIT
 
 export GIT_SSH_COMMAND
 
-# uid:slug:file
+# uid:slug:file:viewport_height:capture_mode:hide_panel_title
 DASHBOARDS=(
-  "nixos-metrics:nixos-metrics:live-dashboard.png"
-  "nix-efficiency:nix-efficiency:nix-efficiency.png"
-  "incident-correlation:incident-correlation:incident-dashboard.png"
+  "nixos-metrics:nixos-metrics:live-dashboard.png:1200:full:"
+  "nix-efficiency:nix-efficiency:nix-efficiency.png:1200:full:"
+  "incident-correlation:incident-correlation:incident-dashboard.png:900:viewport:Loki Journal"
 )
 
 if [[ -e "$PUBLISH_REPO_DIR" && ! -d "${PUBLISH_REPO_DIR}/.git" ]]; then
@@ -64,11 +64,14 @@ fi
 selected_files=()
 
 for item in "${DASHBOARDS[@]}"; do
-  IFS=":" read -r uid slug filename <<< "$item"
+  IFS=":" read -r uid slug filename viewport_height capture_mode hide_panel_title <<< "$item"
+  viewport_height="${viewport_height:-1200}"
+  capture_mode="${capture_mode:-full}"
+  hide_panel_title="${hide_panel_title:-}"
   new_file="${TMP_DIR}/${filename}"
   target_file="${OUT_DIR}/${filename}"
 
-  dashboard_url="${GRAFANA_URL}/d/${uid}/${slug}?orgId=1&from=${SINCE}&to=${UNTIL}&kiosk"
+  dashboard_url="${GRAFANA_URL}/d/${uid}/${slug}?orgId=1&from=${SINCE}&to=${UNTIL}&refresh=5m&kiosk"
   if [[ -z "$PLAYWRIGHT_CORE_PATH" ]]; then
     echo "snapshot-sync: PLAYWRIGHT_CORE_PATH is not set" >&2
     exit 1
@@ -77,6 +80,9 @@ for item in "${DASHBOARDS[@]}"; do
   PLAYWRIGHT_CORE_PATH="$PLAYWRIGHT_CORE_PATH" \
   CHROME_BIN="$CHROME_BIN" \
   DASHBOARD_URL="$dashboard_url" \
+  VIEWPORT_HEIGHT="$viewport_height" \
+  SNAPSHOT_FULL_PAGE="$([[ "$capture_mode" == "full" ]] && echo "true" || echo "false")" \
+  HIDE_PANEL_TITLE="$hide_panel_title" \
   OUTPUT_FILE="$new_file" \
   node <<'NODE'
 const { chromium } = require(process.env.PLAYWRIGHT_CORE_PATH);
@@ -88,21 +94,37 @@ const { chromium } = require(process.env.PLAYWRIGHT_CORE_PATH);
     args: ['--no-sandbox'],
   });
 
-  const page = await browser.newPage({ viewport: { width: 2200, height: 1200 } });
+  const viewportHeight = Number(process.env.VIEWPORT_HEIGHT || 1200);
+  const fullPage = process.env.SNAPSHOT_FULL_PAGE !== 'false';
+
+  const page = await browser.newPage({
+    viewport: { width: 2200, height: viewportHeight },
+    deviceScaleFactor: 1,
+  });
+
   await page.goto(process.env.DASHBOARD_URL, { waitUntil: 'domcontentloaded' });
   await page.waitForSelector('h2[title]', { timeout: 30000 });
-  await page.waitForLoadState('networkidle');
-  await new Promise(r => setTimeout(r, 3000));
-  // Resize viewport to full content height BEFORE screenshot.
-  // Avoids fullPage:true triggering a mid-capture viewport resize that causes Grafana
-  // to re-render panels (incident-correlation is 1325px tall, viewport default is 1200px).
-  const fullH = await page.evaluate(() => document.documentElement.scrollHeight);
-  if (fullH > 1200) {
-    await page.setViewportSize({ width: 2200, height: fullH });
-    await page.waitForLoadState('networkidle');
-    await new Promise(r => setTimeout(r, 3000));
+  await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+  await page.waitForTimeout(6000);
+
+  if (process.env.HIDE_PANEL_TITLE) {
+    await page.evaluate((title) => {
+      for (const heading of document.querySelectorAll('h2[title]')) {
+        if (!heading.getAttribute('title')?.includes(title)) {
+          continue;
+        }
+        let panel = heading;
+        while (panel && panel.tagName !== 'SECTION') {
+          panel = panel.parentElement;
+        }
+        if (panel) {
+          panel.style.display = 'none';
+        }
+      }
+    }, process.env.HIDE_PANEL_TITLE);
   }
-  await page.screenshot({ path: process.env.OUTPUT_FILE, fullPage: false });
+
+  await page.screenshot({ path: process.env.OUTPUT_FILE, fullPage, animations: 'disabled' });
   await browser.close();
 })().catch((error) => {
   console.error(error);
@@ -112,6 +134,14 @@ NODE
 
   if [[ ! -f "$target_file" ]]; then
     echo "snapshot-sync: ${filename} is new and will be published"
+    selected_files+=("$filename")
+    continue
+  fi
+
+  old_dimensions=$(identify -format "%wx%h" "$target_file")
+  new_dimensions=$(identify -format "%wx%h" "$new_file")
+  if [[ "$old_dimensions" != "$new_dimensions" ]]; then
+    echo "snapshot-sync: ${filename} dimensions changed ${old_dimensions} -> ${new_dimensions}; will publish"
     selected_files+=("$filename")
     continue
   fi
