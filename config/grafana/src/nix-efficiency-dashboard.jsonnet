@@ -13,7 +13,7 @@ g.dashboard(
       '**Use this view to spot drift.** It answers one question: how much retained state, age, footprint, and rebuild cost is accumulating over time?',
       0, 0, 24
     ),
-    g.rowPanel(20, 'Drift scorecard', 2),
+    g.rowPanel(20, 'Drift Scorecard — current state', 2),
     g.statPanel(
       21,
       'Rendered',
@@ -33,7 +33,7 @@ g.dashboard(
       unit='d',
       min=0,
       max=45,
-      thresholds=g.greenYellowRed(15, 30)
+      thresholds=g.greenYellowRedHex(15, 30)
     ),
     g.gaugePanel(
       2,
@@ -45,7 +45,7 @@ g.dashboard(
       unit='none',
       min=0,
       max=40,
-      thresholds=g.greenYellowRed(10, 20)
+      thresholds=g.greenYellowRedHex(10, 20)
     ),
     g.statPanel(
       22,
@@ -55,7 +55,7 @@ g.dashboard(
       h=5,
       legend='duration',
       unit='s',
-      thresholds=g.greenYellowRed(300, 900)
+      thresholds=g.greenYellowRedHex(300, 900)
     ),
     g.statPanel(
       23,
@@ -65,16 +65,20 @@ g.dashboard(
       h=5,
       legend='paths',
       unit='none',
-      thresholds=g.greenYellowRed(60000, 100000)
+      thresholds=g.greenYellowRedHex(60000, 100000)
     ),
-    g.rowPanel(30, 'Drift trends', 8),
+    g.rowPanel(30, 'Drift Trends — 6 h rolling', 8),
     g.timeseriesPanel(
       3,
       'Rebuild Duration Trend',
       [{ expr: 'nix_rebuild_duration_ms / 1000', legend: 'duration s' }],
       0, 9, 12,
       h=7,
-      unit='s'
+      unit='s',
+      fillOpacity=35,
+      gradientMode='hue',
+      thresholdsStyle='line',
+      thresholds=g.greenYellowRedHex(300, 900)
     ),
     g.timeseriesPanel(
       6,
@@ -86,12 +90,14 @@ g.dashboard(
       12, 9, 12,
       h=7,
       unit='none',
+      fillOpacity=40,
+      gradientMode='hue',
       overrides=[
-        g.overrideUnitByName('lock age days', 'd', axisPlacement='left', axisLabel='Days'),
-        g.overrideUnitByName('generations', 'none', axisPlacement='right', axisLabel='Count'),
+        g.overrideUnitByName('lock age days', 'd', axisPlacement='left', axisLabel='Days', fillOpacity=40),
+        g.overrideUnitByName('generations', 'none', axisPlacement='right', axisLabel='Count', fillOpacity=15),
       ]
     ),
-    g.rowPanel(31, 'Storage footprint', 16),
+    g.rowPanel(31, 'Storage Footprint — store vs closure', 16),
     g.timeseriesPanel(
       4,
       'Store vs Closure Bytes',
@@ -100,7 +106,12 @@ g.dashboard(
         { expr: 'nix_closure_bytes', legend: 'closure' },
       ],
       0, 17, 12,
-      unit='decbytes'
+      unit='decbytes',
+      fillOpacity=40,
+      gradientMode='hue',
+      overrides=[
+        g.overrideUnitByName('closure', 'decbytes', fillOpacity=15),
+      ]
     ),
     g.timeseriesPanel(
       5,
@@ -112,13 +123,16 @@ g.dashboard(
       12, 17, 12,
       unit='decbytes',
       axisLabel='Bytes',
+      fillOpacity=35,
+      gradientMode='hue',
       overrides=[
         g.overrideUnitByName(
           'closure paths',
           'none',
           axisPlacement='right',
           axisLabel='Count',
-          color={ mode: 'fixed', fixedColor: 'semi-dark-blue' }
+          color={ mode: 'fixed', fixedColor: 'semi-dark-blue' },
+          fillOpacity=15
         ),
       ]
     ),
