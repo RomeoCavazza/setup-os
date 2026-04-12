@@ -17,6 +17,12 @@ local colors = {
     { color: colors.red, value: crit },
   ]),
 
+  greenYellowRedHex(warn, crit):: $.thresholds([
+    { color: '#299c46', value: null },
+    { color: '#EAB839', value: warn },
+    { color: '#d44a3a', value: crit },
+  ]),
+
   noDataMapping:: {
     type: 'special',
     options: {
@@ -113,7 +119,7 @@ local colors = {
     max=null,
     thresholds=null,
     mappings=null,
-    colorMode='value',
+    colorMode='background',
     graphMode='area'
   ):: {
     id: id,
@@ -191,7 +197,13 @@ local colors = {
     h=8,
     unit=null,
     axisLabel='',
-    overrides=[]
+    overrides=[],
+    fillOpacity=8,
+    gradientMode='none',
+    thresholdsStyle='off',
+    stackingMode='none',
+    tooltip='single',
+    thresholds=null
   ):: {
     id: id,
     gridPos: { x: x, y: y, w: w, h: h },
@@ -205,7 +217,7 @@ local colors = {
     ),
     options: {
       legend: { calcs: ['lastNotNull'], displayMode: 'list', placement: 'bottom', showLegend: true },
-      tooltip: { mode: 'single', sort: 'none' },
+      tooltip: { mode: tooltip, sort: 'none' },
     },
     fieldConfig: {
       defaults:
@@ -218,8 +230,8 @@ local colors = {
             axisPlacement: 'auto',
             barAlignment: 0,
             drawStyle: 'line',
-            fillOpacity: 8,
-            gradientMode: 'none',
+            fillOpacity: fillOpacity,
+            gradientMode: gradientMode,
             hideFrom: { legend: false, tooltip: false, viz: false },
             lineInterpolation: 'smooth',
             lineWidth: 2,
@@ -227,11 +239,12 @@ local colors = {
             scaleDistribution: { type: 'linear' },
             showPoints: 'never',
             spanNulls: true,
-            stacking: { group: 'A', mode: 'none' },
-            thresholdsStyle: { mode: 'off' },
+            stacking: { group: 'A', mode: stackingMode },
+            thresholdsStyle: { mode: thresholdsStyle },
           },
         }
-        + (if unit == null then {} else { unit: unit }),
+        + (if unit == null then {} else { unit: unit })
+        + (if thresholds == null then {} else { thresholds: thresholds }),
       overrides: overrides,
     },
   },
@@ -253,12 +266,15 @@ local colors = {
     },
   },
 
-  overrideUnitByName(name, unit, axisPlacement=null, axisLabel=null, color=null):: {
+  overrideUnitByName(name, unit, axisPlacement=null, axisLabel=null, color=null,
+                     fillOpacity=null, gradientMode=null):: {
     matcher: { id: 'byName', options: name },
     properties:
       [{ id: 'unit', value: unit }]
       + (if axisPlacement == null then [] else [{ id: 'custom.axisPlacement', value: axisPlacement }])
       + (if axisLabel == null then [] else [{ id: 'custom.axisLabel', value: axisLabel }])
-      + (if color == null then [] else [{ id: 'color', value: color }]),
+      + (if color == null then [] else [{ id: 'color', value: color }])
+      + (if fillOpacity == null then [] else [{ id: 'custom.fillOpacity', value: fillOpacity }])
+      + (if gradientMode == null then [] else [{ id: 'custom.gradientMode', value: gradientMode }]),
   },
 }
