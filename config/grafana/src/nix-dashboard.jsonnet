@@ -13,7 +13,7 @@ g.dashboard(
       '**Read left to right:** render freshness, Prometheus freshness, pressure, retained state, then trends. Grafana is the source of truth; PNG snapshots are a near-live mirror.',
       0, 0, 24
     ),
-    g.rowPanel(20, 'Health strip', 2),
+    g.rowPanel(20, 'System Health — live snapshot', 2),
     g.statPanel(
       21,
       'Rendered',
@@ -30,7 +30,7 @@ g.dashboard(
       4, 3, 4,
       unit='s',
       decimals=0,
-      thresholds=g.greenYellowRed(60, 300),
+      thresholds=g.greenYellowRedHex(60, 300),
       mappings=[g.noDataMapping]
     ),
     g.statPanel(
@@ -43,7 +43,7 @@ g.dashboard(
       decimals=1,
       min=0,
       max=100,
-      thresholds=g.greenYellowRed(10, 30)
+      thresholds=g.greenYellowRedHex(10, 30)
     ),
     g.statPanel(
       24,
@@ -52,7 +52,7 @@ g.dashboard(
       12, 3, 4,
       legend='generation',
       unit='none',
-      thresholds=g.thresholds([{ color: 'green', value: null }])
+      thresholds=g.thresholds([{ color: '#299c46', value: null }])
     ),
     g.statPanel(
       25,
@@ -61,7 +61,7 @@ g.dashboard(
       16, 3, 4,
       legend='store',
       unit='decbytes',
-      thresholds=g.greenYellowRed(80000000000, 140000000000)
+      thresholds=g.greenYellowRedHex(80000000000, 140000000000)
     ),
     g.statPanel(
       26,
@@ -70,13 +70,13 @@ g.dashboard(
       20, 3, 4,
       legend='closure',
       unit='decbytes',
-      thresholds=g.greenYellowRed(1000000000000, 1500000000000)
+      thresholds=g.greenYellowRedHex(1000000000000, 1500000000000)
     ),
-    g.rowPanel(30, 'Pressure now', 6),
+    g.rowPanel(30, 'Pressure Gauges — current avg10', 6),
     g.gaugePanel(1, 'CPU Pressure', 'nix_pressure_cpu_avg10', 'cpu', 0, 7, 8),
     g.gaugePanel(2, 'IO Pressure', 'nix_pressure_io_some_avg10', 'io', 8, 7, 8),
     g.gaugePanel(3, 'RAM Pressure', 'nix_pressure_mem_some_avg10', 'mem', 16, 7, 8),
-    g.rowPanel(31, 'Trends', 12),
+    g.rowPanel(31, 'Store and Build Trends', 12),
     g.timeseriesPanel(
       9,
       'Nix Store Size over Time',
@@ -86,7 +86,12 @@ g.dashboard(
       ],
       0, 13, 24,
       h=7,
-      unit='decbytes'
+      unit='decbytes',
+      fillOpacity=40,
+      gradientMode='hue',
+      overrides=[
+        g.overrideUnitByName('current closure', 'decbytes', fillOpacity=15),
+      ]
     ),
     g.timeseriesPanel(
       11,
@@ -94,7 +99,11 @@ g.dashboard(
       [{ expr: 'nix_rebuild_duration_ms / 1000', legend: 'duration s' }],
       0, 20, 24,
       h=7,
-      unit='s'
+      unit='s',
+      fillOpacity=35,
+      gradientMode='hue',
+      thresholdsStyle='line',
+      thresholds=g.greenYellowRedHex(300, 900)
     ),
   ],
 }
