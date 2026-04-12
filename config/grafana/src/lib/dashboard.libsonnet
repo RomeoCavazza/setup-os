@@ -1,26 +1,42 @@
 local colors = {
-  green: 'green',
-  yellow: 'yellow',
-  red: 'red',
-  text: 'text',
+  aqua: '#36e7d6',
+  cyan: '#27c6ff',
+  blue: '#155ec9',
+  sapphire: '#65b8ff',
+  sky: '#8df4ec',
+  ice: '#d3fbff',
+  lavender: '#9cb7ff',
+  mauve: '#b48efa',
+  rose: '#a66d88',
+  text: '#d8f7fb',
+  ok: '#36e7d6',
+  warn: '#65b8ff',
+  crit: '#b48efa',
 };
 
 {
+  colors:: colors,
+
+  fixedColor(color):: {
+    mode: 'fixed',
+    fixedColor: color,
+  },
+
   thresholds(steps):: {
     mode: 'absolute',
     steps: steps,
   },
 
   greenYellowRed(warn, crit):: $.thresholds([
-    { color: colors.green, value: null },
-    { color: colors.yellow, value: warn },
-    { color: colors.red, value: crit },
+    { color: colors.ok, value: null },
+    { color: colors.warn, value: warn },
+    { color: colors.crit, value: crit },
   ]),
 
   greenYellowRedHex(warn, crit):: $.thresholds([
-    { color: '#299c46', value: null },
-    { color: '#EAB839', value: warn },
-    { color: '#d44a3a', value: crit },
+    { color: colors.ok, value: null },
+    { color: colors.warn, value: warn },
+    { color: colors.crit, value: crit },
   ]),
 
   noDataMapping:: {
@@ -40,11 +56,13 @@ local colors = {
     },
   },
 
-  prometheusTarget(expr, legendFormat, refId='A'):: {
+  prometheusTarget(expr, legendFormat, refId='A', instant=false, format=null):: {
     expr: expr,
     legendFormat: legendFormat,
     refId: refId,
-  },
+  }
+  + (if instant then { instant: true } else {})
+  + (if format == null then {} else { format: format }),
 
   lokiTarget(expr, refId='A'):: {
     expr: expr,
@@ -119,7 +137,7 @@ local colors = {
     max=null,
     thresholds=null,
     mappings=null,
-    colorMode='background',
+    colorMode='value',
     graphMode='area'
   ):: {
     id: id,
@@ -187,6 +205,154 @@ local colors = {
     },
   },
 
+  barGaugePanel(
+    id,
+    title,
+    expr,
+    legend,
+    x,
+    y,
+    w,
+    h=5,
+    unit='percent',
+    min=0,
+    max=100,
+    thresholds=null,
+    orientation='horizontal',
+    displayMode='gradient',
+    valueMode='color'
+  ):: {
+    id: id,
+    gridPos: { x: x, y: y, w: w, h: h },
+    type: 'bargauge',
+    title: title,
+    datasource: 'Prometheus',
+    targets: [$.prometheusTarget(expr, legend)],
+    options: {
+      reduceOptions: { values: false, calcs: ['lastNotNull'], fields: '' },
+      orientation: orientation,
+      displayMode: displayMode,
+      valueMode: valueMode,
+      namePlacement: 'auto',
+      showUnfilled: true,
+      minVizWidth: 0,
+      minVizHeight: 10,
+    },
+    fieldConfig: {
+      defaults: {
+        unit: unit,
+        min: min,
+        max: max,
+        thresholds: if thresholds == null then $.greenYellowRed(10, 30) else thresholds,
+        color: { mode: 'thresholds' },
+      },
+      overrides: [],
+    },
+  },
+
+  pieChartPanel(
+    id,
+    title,
+    targets,
+    x,
+    y,
+    w,
+    h=6,
+    unit=null,
+    pieType='donut',
+    legendPlacement='right',
+    legendDisplayMode='table',
+    legendValues=['value', 'percent']
+  ):: {
+    id: id,
+    gridPos: { x: x, y: y, w: w, h: h },
+    type: 'piechart',
+    title: title,
+    datasource: 'Prometheus',
+    targets: std.mapWithIndex(
+      function(i, t)
+        $.prometheusTarget(t.expr, t.legend, std.get(t, 'refId', std.substr('ABCDEFGHIJKLMNOPQRSTUVWXYZ', i, 1))),
+      targets
+    ),
+    options: {
+      pieType: pieType,
+      displayLabels: [],
+      reduceOptions: { values: false, calcs: ['lastNotNull'], fields: '' },
+      legend: {
+        displayMode: legendDisplayMode,
+        placement: legendPlacement,
+        showLegend: true,
+        values: legendValues,
+      },
+      tooltip: { mode: 'multi', sort: 'desc' },
+    },
+    fieldConfig: {
+      defaults:
+        {
+          color: { mode: 'palette-classic' },
+          custom: {
+            hideFrom: { legend: false, tooltip: false, viz: false },
+          },
+        }
+        + (if unit == null then {} else { unit: unit }),
+      overrides: [],
+    },
+  },
+
+  stateTimelinePanel(
+    id,
+    title,
+    targets,
+    x,
+    y,
+    w,
+    h=4,
+    mappings=[],
+    thresholds=null,
+    unit='none',
+    showLegend=false,
+    showValue='never',
+    rowHeight=0.84
+  ):: {
+    id: id,
+    gridPos: { x: x, y: y, w: w, h: h },
+    type: 'state-timeline',
+    title: title,
+    datasource: 'Prometheus',
+    targets: std.mapWithIndex(
+      function(i, t)
+        $.prometheusTarget(t.expr, t.legend, std.get(t, 'refId', std.substr('ABCDEFGHIJKLMNOPQRSTUVWXYZ', i, 1))),
+      targets
+    ),
+    options: {
+      alignValue: 'center',
+      mergeValues: true,
+      rowHeight: rowHeight,
+      showValue: showValue,
+      legend: { displayMode: 'list', placement: 'bottom', showLegend: showLegend },
+      tooltip: { mode: 'multi', sort: 'desc' },
+    },
+    fieldConfig: {
+      defaults: {
+        unit: unit,
+        color: { mode: 'thresholds' },
+        thresholds: if thresholds == null then $.thresholds([
+          { color: colors.ok, value: null },
+          { color: colors.warn, value: 1 },
+          { color: colors.crit, value: 2 },
+        ]) else thresholds,
+        mappings: mappings,
+        custom: {
+          fillOpacity: 82,
+          lineWidth: 0,
+          spanNulls: false,
+          hideFrom: { legend: false, tooltip: false, viz: false },
+        },
+      },
+      overrides: [],
+    },
+  },
+
   timeseriesPanel(
     id,
     title,
@@ -203,7 +369,19 @@ local colors = {
     thresholdsStyle='off',
     stackingMode='none',
     tooltip='single',
-    thresholds=null
+    thresholds=null,
+    drawStyle='line',
+    lineInterpolation='smooth',
+    lineWidth=2,
+    pointSize=4,
+    showPoints='never',
+    barAlignment=0,
+    legendDisplayMode='list',
+    legendPlacement='bottom',
+    legendCalcs=['lastNotNull'],
+    tooltipSort='none',
+    axisPlacement='auto',
+    showLegend=true
   ):: {
     id: id,
     gridPos: { x: x, y: y, w: w, h: h },
@@ -216,8 +394,8 @@ local colors = {
       targets
     ),
     options: {
-      legend: { calcs: ['lastNotNull'], displayMode: 'list', placement: 'bottom', showLegend: true },
-      tooltip: { mode: tooltip, sort: 'none' },
+      legend: { calcs: legendCalcs, displayMode: legendDisplayMode, placement: legendPlacement, showLegend: showLegend },
+      tooltip: { mode: tooltip, sort: tooltipSort },
     },
     fieldConfig: {
       defaults:
@@ -227,17 +405,17 @@ local colors = {
             axisCenteredZero: false,
             axisColorMode: 'text',
             axisLabel: axisLabel,
-            axisPlacement: 'auto',
-            barAlignment: 0,
-            drawStyle: 'line',
+            axisPlacement: axisPlacement,
+            barAlignment: barAlignment,
+            drawStyle: drawStyle,
             fillOpacity: fillOpacity,
             gradientMode: gradientMode,
             hideFrom: { legend: false, tooltip: false, viz: false },
-            lineInterpolation: 'smooth',
-            lineWidth: 2,
-            pointSize: 4,
+            lineInterpolation: lineInterpolation,
+            lineWidth: lineWidth,
+            pointSize: pointSize,
             scaleDistribution: { type: 'linear' },
-            showPoints: 'never',
+            showPoints: showPoints,
             spanNulls: true,
             stacking: { group: 'A', mode: stackingMode },
             thresholdsStyle: { mode: thresholdsStyle },
@@ -267,7 +445,8 @@ local colors = {
   },
 
   overrideUnitByName(name, unit, axisPlacement=null, axisLabel=null, color=null,
-                     fillOpacity=null, gradientMode=null):: {
+                     fillOpacity=null, gradientMode=null, drawStyle=null,
+                     lineWidth=null):: {
     matcher: { id: 'byName', options: name },
     properties:
       [{ id: 'unit', value: unit }]
@@ -275,6 +454,8 @@ local colors = {
       + (if axisLabel == null then [] else [{ id: 'custom.axisLabel', value: axisLabel }])
       + (if color == null then [] else [{ id: 'color', value: color }])
       + (if fillOpacity == null then [] else [{ id: 'custom.fillOpacity', value: fillOpacity }])
-      + (if gradientMode == null then [] else [{ id: 'custom.gradientMode', value: gradientMode }]),
+      + (if gradientMode == null then [] else [{ id: 'custom.gradientMode', value: gradientMode }])
+      + (if drawStyle == null then [] else [{ id: 'custom.drawStyle', value: drawStyle }])
+      + (if lineWidth == null then [] else [{ id: 'custom.lineWidth', value: lineWidth }]),
   },
 }
