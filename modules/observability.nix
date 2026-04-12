@@ -97,8 +97,8 @@ in
 
   systemd.services.grafana-snapshot-sync = {
     description = "Render Grafana dashboards and sync changed PNGs to git";
-    after = [ "grafana.service" "network-online.target" ];
-    wants = [ "network-online.target" ];
+    after = [ "grafana.service" "nginx.service" "network-online.target" ];
+    wants = [ "nginx.service" "network-online.target" ];
     serviceConfig = {
       Type = "oneshot";
       User = "tco";
@@ -107,7 +107,7 @@ in
       ExecStart = "${snapshotScript}/bin/grafana-snapshot-sync";
     };
     environment = {
-      MIN_CHANGE_PERCENT = "0.5";
+      MIN_CHANGE_PERCENT = "0.3";
       HOME = "/home/tco";
       SNAPSHOT_GIT_NAME = "Romeo Cavazza";
       SNAPSHOT_GIT_EMAIL = "romeo.cavazza@users.noreply.github.com";
@@ -185,7 +185,8 @@ in
     settings = {
       server = {
         http_addr = "127.0.0.1";
-        http_port = 3000;
+        http_port = 3001;
+        root_url = "http://localhost:3000/";
       };
       security = {
         secret_key = "$__file{/etc/grafana-secret-key}";
