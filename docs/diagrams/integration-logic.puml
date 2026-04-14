@@ -30,7 +30,7 @@ package "Wayland Desktop" {
 package "Scripts & Styling" {
   rectangle "WaybarCava.sh\nactiveapp.sh" as wscripts
   rectangle "rofi-push.sh\nrofi-grid.sh" as rscripts
-  rectangle "mocha.css\nstyle.css\ncolumn-tco.rasi" as styles
+  rectangle "mocha.css\nstyle.scss -> style.css\ncolumn-tco.rasi" as styles
 }
 
 root --> hypr : enables

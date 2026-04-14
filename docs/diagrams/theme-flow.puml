@@ -27,7 +27,7 @@ package "Hyprland Compositor" {
 }
 
 package "Status Bar" {
-  rectangle "Waybar\nmocha.css + style.css\nteal accent override" as waybar
+  rectangle "Waybar\nmocha.css + generated style.css\nteal accent override" as waybar
 }
 
 rectangle "Rofi\ncolumn-tco.rasi\napps-grid.rasi" as rofi
