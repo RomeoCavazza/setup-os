@@ -35,7 +35,7 @@ package "Continuous Documentation" {
   rectangle "grafana-snapshot-sync\n(systemd timer)" as snapshot
   rectangle "docs/assets/live/*.png" as pngs
   rectangle "setup-os repo" as repo
-  rectangle "setup-os.wiki.git\n(submodule docs/wiki)" as wiki
+  rectangle "docs/wiki\n(tracked docs)" as wiki
 }
 
 nix_metrics --> node_exporter
