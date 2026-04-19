@@ -1,28 +1,28 @@
 @startuml rofi-launcher-flow
 !theme plain
-skinparam backgroundColor #0f172a
-skinparam defaultFontColor #e2e8f0
+skinparam backgroundColor #1e1e2e
+skinparam defaultFontColor #cdd6f4
 skinparam shadowing false
 
 skinparam participant {
-  BackgroundColor #1e293b
-  BorderColor #475569
-  FontColor #e2e8f0
+  BackgroundColor #181825
+  BorderColor #45475a
+  FontColor #cdd6f4
 }
 
 skinparam sequenceArrowColor #94e2d5
-skinparam sequenceLifeLineBorderColor #475569
-skinparam sequenceLifeLineBackgroundColor #1e293b
-skinparam sequenceGroupBackgroundColor #1e293b
-skinparam sequenceGroupBorderColor #475569
+skinparam sequenceLifeLineBorderColor #45475a
+skinparam sequenceLifeLineBackgroundColor #181825
+skinparam sequenceGroupBackgroundColor #181825
+skinparam sequenceGroupBorderColor #45475a
 skinparam sequenceGroupFontColor #94e2d5
 skinparam sequenceGroupHeaderFontColor #94e2d5
-skinparam sequenceGroupBodyBackgroundColor #0f172a
-skinparam sequenceDividerBackgroundColor #1e293b
-skinparam sequenceDividerBorderColor #475569
+skinparam sequenceGroupBodyBackgroundColor #1e1e2e
+skinparam sequenceDividerBackgroundColor #181825
+skinparam sequenceDividerBorderColor #45475a
 skinparam sequenceDividerFontColor #94e2d5
-skinparam sequenceBoxBackgroundColor #0f172a
-skinparam sequenceBoxBorderColor #475569
+skinparam sequenceBoxBackgroundColor #1e1e2e
+skinparam sequenceBoxBorderColor #45475a
 
 participant "rofi-push.sh" as Push
 participant "rofi-grid.sh" as Grid
