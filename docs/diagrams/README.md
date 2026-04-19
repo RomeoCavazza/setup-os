@@ -57,10 +57,6 @@ How `configuration.nix` wires Hyprland, Waybar, and Rofi together, with the runt
 
 ---
 
-
----
-
-
 ## Observability Flow
 
 End-to-end monitoring and documentation pipeline: metrics collection, logs
