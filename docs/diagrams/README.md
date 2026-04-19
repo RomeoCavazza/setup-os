@@ -60,13 +60,6 @@ How `configuration.nix` wires Hyprland, Waybar, and Rofi together, with the runt
 
 ---
 
-## Development Tooling
-
-Development environments managed through Home Manager — Rust, Python, web tooling, editors, AI/LLM stack — alongside the optional domain app modules for CAD, embedded, and data work.
-
-![Development tooling](https://raw.githubusercontent.com/RomeoCavazza/setup-os/main/docs/assets/diagrams/dev-tooling.png)
-
----
 
 ## Observability Flow
 
