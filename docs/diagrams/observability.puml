@@ -1,25 +1,25 @@
 @startuml
 !theme plain
-skinparam backgroundColor #0f172a
-skinparam defaultFontColor #e2e8f0
+skinparam backgroundColor #1e1e2e
+skinparam defaultFontColor #cdd6f4
 skinparam arrowColor #94e2d5
-skinparam borderColor #475569
+skinparam borderColor #45475a
 skinparam shadowing false
 
 skinparam rectangle {
-  BackgroundColor #1e293b
-  BorderColor #475569
-  FontColor #e2e8f0
+  BackgroundColor #181825
+  BorderColor #45475a
+  FontColor #cdd6f4
 }
 skinparam package {
-  BackgroundColor #0f172a
-  BorderColor #475569
+  BackgroundColor #1e1e2e
+  BorderColor #45475a
   FontColor #94e2d5
 }
 skinparam note {
-  BackgroundColor #1e293b
+  BackgroundColor #181825
   BorderColor #94e2d5
-  FontColor #e2e8f0
+  FontColor #cdd6f4
 }
 
 package "Host Metrics & Logs" {
