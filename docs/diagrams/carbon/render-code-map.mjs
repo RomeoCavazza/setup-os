@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 
 import { execFileSync } from "node:child_process";
-import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
-const repoRoot = path.resolve(scriptDir, "../..");
-const assetsDir = path.join(repoRoot, "docs", "assets");
+const repoRoot = path.resolve(scriptDir, "../../..");
+const htmlDir = scriptDir;
+const pngDir = path.resolve(scriptDir, "../png");
 
 const ignoreDirs = new Set([".git", ".venv", "result", "node_modules", "target", "__pycache__"]);
 
@@ -375,7 +376,6 @@ const viewDefinitions = [
     color: colors.root,
     graph: manualRootGraph(),
     patterns: [/nixosConfigurations\.nixos/, /specialArgs/, /home-manager\.users/, /promtail-bin/, /guix =/],
-    aliases: ["code-map"],
   },
   {
     id: "config",
@@ -901,8 +901,8 @@ function outputBase(viewId) {
 
 function renderView(view) {
   const base = outputBase(view.id);
-  const htmlPath = path.join(assetsDir, `${base}.html`);
-  const pngPath = path.join(assetsDir, `${base}.png`);
+  const htmlPath = path.join(htmlDir, `${base}.html`);
+  const pngPath = path.join(pngDir, `${base}.png`);
 
   const html = `${renderHtml(view).replace(/[ \t]+$/gm, "")}\n`;
   writeFileSync(htmlPath, html, "utf8");
@@ -924,14 +924,10 @@ function renderView(view) {
     { stdio: "inherit" },
   );
 
-  for (const alias of view.aliases ?? []) {
-    copyFileSync(htmlPath, path.join(assetsDir, `${alias}.html`));
-    copyFileSync(pngPath, path.join(assetsDir, `${alias}.png`));
-  }
-
   console.log(`Wrote ${path.relative(repoRoot, htmlPath)}`);
   console.log(`Wrote ${path.relative(repoRoot, pngPath)}`);
 }
 
-mkdirSync(assetsDir, { recursive: true });
+mkdirSync(htmlDir, { recursive: true });
+mkdirSync(pngDir, { recursive: true });
 for (const view of viewDefinitions) renderView(view);
