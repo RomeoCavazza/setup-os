@@ -1,6 +1,5 @@
 # Architecture Diagrams
 
-PlantUML source diagrams for the `setup-os` NixOS configuration. All diagrams share the same dark color scheme (Slate background `#0f172a`, teal accent `#94e2d5`).
 
 Pre-generated PNGs live in [`../assets/diagrams/`](../assets/diagrams/). To regenerate locally:
 
@@ -58,11 +57,6 @@ How `configuration.nix` wires Hyprland, Waybar, and Rofi together, with the runt
 
 ---
 
-## Rofi Launcher Flow
-
-Sequence diagram of the two Rofi launch paths: the sidebar launcher (`rofi-push.sh` → `column-tco.rasi`) and the app grid (`rofi-grid.sh` → `apps-grid.rasi`), including the Hyprland gap and blur manipulations each performs.
-
-![Rofi launcher flow](https://raw.githubusercontent.com/RomeoCavazza/setup-os/main/docs/assets/diagrams/rofi-launcher-flow.png)
 
 ---
 
