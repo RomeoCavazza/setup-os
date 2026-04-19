@@ -1,22 +1,26 @@
 @startuml
 !theme plain
 skinparam backgroundColor #0f172a
-skinparam defaultTextAlignment center
-skinparam defaultFontColor #ffffff
-skinparam ArrowFontColor #ffffff
-skinparam ArrowColor #94e2d5
-skinparam ArrowThickness 2
-skinparam packageBorderColor #94e2d5
-skinparam packageBackgroundColor #111827
-skinparam packageFontColor #ffffff
-skinparam packageArrowFontColor #ffffff
-skinparam rectangleBorderColor #94e2d5
-skinparam rectangleBackgroundColor #111827
-skinparam rectangleFontColor #ffffff
-skinparam rectangleArrowFontColor #ffffff
-skinparam noteBackgroundColor #1f2937
-skinparam noteBorderColor #94e2d5
-skinparam noteFontColor #ffffff
+skinparam defaultFontColor #e2e8f0
+skinparam arrowColor #94e2d5
+skinparam borderColor #475569
+skinparam shadowing false
+
+skinparam rectangle {
+  BackgroundColor #1e293b
+  BorderColor #475569
+  FontColor #e2e8f0
+}
+skinparam package {
+  BackgroundColor #0f172a
+  BorderColor #475569
+  FontColor #94e2d5
+}
+skinparam note {
+  BackgroundColor #1e293b
+  BorderColor #94e2d5
+  FontColor #e2e8f0
+}
 
 package "Host Metrics & Logs" {
   rectangle "nix-metrics\n(textfile collector)" as nix_metrics
