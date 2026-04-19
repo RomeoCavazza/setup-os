@@ -1,19 +1,19 @@
 @startuml flake-outputs
 !theme plain
-skinparam backgroundColor #0d1117
-skinparam defaultFontColor #c9d1d9
+skinparam backgroundColor #1e1e2e
+skinparam defaultFontColor #cdd6f4
 skinparam arrowColor #94e2d5
-skinparam borderColor #30363d
+skinparam borderColor #45475a
 skinparam shadowing false
 
 skinparam rectangle {
-  BackgroundColor #161b22
-  BorderColor #30363d
-  FontColor #c9d1d9
+  BackgroundColor #181825
+  BorderColor #45475a
+  FontColor #cdd6f4
 }
 skinparam package {
-  BackgroundColor #0d1117
-  BorderColor #30363d
+  BackgroundColor #1e1e2e
+  BorderColor #45475a
   FontColor #94e2d5
 }
 
